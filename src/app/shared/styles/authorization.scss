@@ -1,0 +1,20 @@
+.auth {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  word-break: break-word;
+
+  .auth-form {
+    display: flex;
+    flex-flow: column;
+    width: 400px;
+
+    .auth-form__actions {
+      display: flex;
+      flex-flow: row;
+      justify-content: space-around;
+      width: 100%;
+    }
+  }
+}
+

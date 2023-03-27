@@ -1,0 +1,21 @@
+<div class="auth">
+  <h1>Sign Up</h1>
+  <form (ngSubmit)="signUp()" [formGroup]="signUpForm" class="auth-form">
+    <mat-form-field>
+      <mat-label for="signup-name">Name:</mat-label>
+      <input formControlName="name" id="signup-name" matInput required type="name">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label for="signup-email">Email:</mat-label>
+      <input formControlName="email" id="signup-email" matInput required type="email">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label for="signup-password">Password:</mat-label>
+      <input formControlName="password" id="signup-password" matInput required type="password">
+    </mat-form-field>
+    <div class="auth-form__actions">
+      <button (click)="logIn()" mat-button>Log In</button>
+      <button type="submit" mat-button>Sign Up</button>
+    </div>
+  </form>
+</div>

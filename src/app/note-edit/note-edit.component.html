@@ -1,0 +1,25 @@
+<div class="note-block">
+  <h1>NOTE EDIT</h1>
+  <button routerLink="/main" mat-button>Back</button>
+  <div class="note">
+    <form [formGroup]="noteEditor" class="note-form" (ngSubmit)="createNote()">
+      <mat-form-field>
+        <mat-label for="topicId">Topic</mat-label>
+        <mat-select id="topicId" formControlName="topicId">
+          <mat-option *ngFor="let topic of topics$ | async" [value]="topic.id">{{topic.type}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="title">Title</mat-label>
+        <input type="text" id="title" matInput formControlName="title">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="text">Text</mat-label>
+        <textarea type="text" id="text" matInput formControlName="text"></textarea>
+      </mat-form-field>
+      <button mat-button type="submit">Save Note</button>
+    </form>
+
+  </div>
+</div>
+

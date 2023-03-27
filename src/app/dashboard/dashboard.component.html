@@ -1,0 +1,16 @@
+<div class="dashboard">
+  <h1>NOTESY main page</h1>
+  <button mat-button (click)="logOut()">LOG OUT</button>
+
+  <button mat-button (click)="newNote()">Create new Note</button>
+
+  <button mat-button (click)="getNotes()">Get Notes</button>
+
+  <div class="notes-list">
+    <app-note-card
+      *ngFor="let note of notes$ | async"
+      [noteCard]="note"
+    ></app-note-card>
+  </div>
+
+</div>
