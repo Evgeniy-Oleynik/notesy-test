@@ -1,10 +1,20 @@
-import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
-import { Topic } from '../interfaces/topic';
-import { inject } from '@angular/core';
-import { TopicsService } from '../services/topics.service';
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { IRequest } from 'ngxs-requests-plugin';
+import { filter, Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { NotesService } from '../services/notes.service';
 
-export const notesResolver: ResolveFn<void> = () => {
+@Injectable({providedIn: 'root'})
+export class NotesResolver implements Resolve<IRequest> {
+  constructor(private notesService: NotesService) {}
 
-  return inject(NotesService).getAllNotes(56, 1);
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IRequest> {
+    this.notesService.getAllNotes(56, 1);
+    return this.notesService.getNotesRequestState$.pipe(
+      filter(res => res.loaded),
+      take(1)
+    )
   }
+}
+

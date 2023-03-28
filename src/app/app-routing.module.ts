@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from './core/guard/auth.guard';
-import { topicsResolver } from './core/resolvers/topics.resolver';
-import { notesResolver } from './core/resolvers/notes.resolver';
+import { NotesResolver } from './core/resolvers/notes.resolver';
+import { NoteByIdResolver } from './core/resolvers/note-id.resolver';
+import { TopicsResolver } from './core/resolvers/topics.resolver';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -18,13 +19,14 @@ const routes: Routes = [
   {
     path: 'main',
     canActivate: [AuthGuard],
-    resolve: {notes$: notesResolver},
+    resolve: [NotesResolver],
     loadChildren: () => import('./dashboard/dashboard.module').then(mod => mod.DashboardModule)
   },
+  {path: 'notes', redirectTo: 'notes/new', pathMatch: 'full'},
   {
-    path: 'notes',
+    path: 'notes/:id',
     canActivate: [AuthGuard],
-    resolve: {topics$: topicsResolver},
+    resolve: [TopicsResolver, NoteByIdResolver],
     loadChildren: () => import('./note-edit/note-edit.module').then(mod => mod.NoteEditModule)
   },
   {path: '404', loadChildren: () => import('./notfound/notfound.module').then(mod => mod.NotfoundModule)},
