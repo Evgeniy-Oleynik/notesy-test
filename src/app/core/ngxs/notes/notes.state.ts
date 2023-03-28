@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Action, State, StateContext } from '@ngxs/store';
 import { HttpClient } from '@angular/common/http';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
@@ -15,6 +15,7 @@ import {
   PostNoteFailed,
   PostNoteSuccess
 } from './notes.actions';
+import { Router } from '@angular/router';
 
 @RequestState('getNotes')
 @Injectable()
@@ -58,6 +59,7 @@ export interface NotesStateModel {
 export class NotesState {
   constructor(
     private httpClient: HttpClient,
+    private router: Router,
   ) {}
 
   @Action(GetNotes)
@@ -130,6 +132,7 @@ export class NotesState {
   @Action(GetNoteByIdFailed)
   getNoteByIdFailed() {
     console.log('getNoteById failed');
+    this.router.navigate(['notes/new']);
   }
 
   @Action(PatchNoteById)
