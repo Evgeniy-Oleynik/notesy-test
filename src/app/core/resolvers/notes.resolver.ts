@@ -10,7 +10,7 @@ export class NotesResolver implements Resolve<IRequest> {
   constructor(private notesService: NotesService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IRequest> {
-    this.notesService.getAllNotes(56, 1);
+    this.notesService.getAllNotes(56, 1); // TODO: userid
     return this.notesService.getNotesRequestState$.pipe(
       filter(res => res.loaded),
       take(1)
