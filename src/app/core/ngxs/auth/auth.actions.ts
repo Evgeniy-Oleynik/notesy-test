@@ -11,6 +11,9 @@ const ActionTypes = {
   LOG_OUT_USER_SUCCESS: '[Auth] Log Out Success',
   LOG_OUT_USER_FAILED: '[Auth] Log Out Failed',
   SET_TOKEN: '[Auth] Set Token To Local Storage',
+  GET_USER_BY_TOKEN: '[Auth] Get User By Token',
+  GET_USER_BY_TOKEN_SUCCESS: '[Auth] Get User By Token Success',
+  GET_USER_BY_TOKEN_FAILED: '[Auth] Get User By Token Failed'
 }
 
 export class SignUpUser {
@@ -55,4 +58,19 @@ export class LogOutUserFailed {
 export class SetToken {
   static type = ActionTypes.SET_TOKEN
   constructor(public payload: string) {}
+}
+
+export class GetUserByToken {
+  static type = ActionTypes.GET_USER_BY_TOKEN
+  constructor(public payload: string) {
+  }
+}
+
+export class GetUserByTokenSuccess {
+  static type = ActionTypes.GET_USER_BY_TOKEN_SUCCESS
+  constructor(public payload: User) {}
+}
+
+export class GetUserByTokenFailed {
+  static type = ActionTypes.GET_USER_BY_TOKEN_FAILED
 }

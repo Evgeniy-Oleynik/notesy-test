@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, State, StateContext } from '@ngxs/store';
 import { User } from '../../interfaces/user';
 import {
+  GetUserByToken, GetUserByTokenFailed, GetUserByTokenSuccess,
   LogInUser,
   LogInUserFailed,
   LogInUserSuccess,
@@ -31,6 +32,11 @@ export class LogInUserRequestState {
 @RequestState('logOutUser')
 @Injectable()
 export class LogOutUserRequestState {
+}
+
+@RequestState('getUserByToken')
+@Injectable()
+export class GetUserByTokenRequestState {
 }
 
 export interface AuthStateModel {
@@ -82,7 +88,7 @@ export class AuthState {
     console.log('signup success');
     patchState({user: payload});
     if (payload.token) this.localStorageService.setItem('authToken', payload.token);
-    this.router.navigate(['/main']);
+    this.router.navigate(['/']);
   }
 
   @Action(LogInUser)
@@ -107,7 +113,7 @@ export class AuthState {
     console.log('login success');
     patchState({user: payload});
     if (payload.token) this.localStorageService.setItem('authToken', payload.token);
-    this.router.navigate(['/main']);
+    this.router.navigate(['/']);
   }
 
   @Action(LogOutUser)
@@ -136,8 +142,30 @@ export class AuthState {
 
   @Action(SetToken)
   setToken({patchState}: StateContext<AuthStateModel>, {payload}: SetToken) {
-    this.localStorageService.setItem('authToken', payload);
     console.log('set token', payload);
     patchState({user: {token: payload}});
+  }
+
+  @Action(GetUserByToken)
+  getUserByToken({dispatch}: StateContext<AuthStateModel>) {
+    const request = this.httpClient.get('api/users');
+
+    return dispatch(createRequestAction({
+      state: GetUserByTokenRequestState,
+      request,
+      failAction: GetUserByTokenFailed,
+      successAction: GetUserByTokenSuccess
+    }))
+  }
+
+  @Action(GetUserByTokenSuccess)
+  getUserByTokenSuccess({patchState}: StateContext<AuthStateModel>, {payload}: GetUserByTokenSuccess) {
+    console.log('getUserByToken success');
+    patchState({user: payload});
+  }
+
+  @Action(GetUserByTokenFailed)
+  getUserByTokenFailed() {
+    console.log('getUserByToken failed');
   }
 }
