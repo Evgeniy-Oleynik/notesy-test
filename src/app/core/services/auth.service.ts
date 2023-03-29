@@ -5,7 +5,7 @@ import { Observable, tap } from 'rxjs';
 import { User } from '../interfaces/user';
 import { AuthGetterState } from '../ngxs/auth/auth-getter.state';
 import { IRequest } from 'ngxs-requests-plugin';
-import { LogInUser, LogOutUser, SetToken, SignUpUser } from '../ngxs/auth/auth.actions';
+import { GetUserByToken, LogInUser, LogOutUser, SetToken, SignUpUser } from '../ngxs/auth/auth.actions';
 import { LocalStorageService } from './localstorage.service';
 import { Router } from '@angular/router';
 
@@ -19,7 +19,7 @@ export class AuthService {
     private localStorageService: LocalStorageService,
     private router: Router
   ) {
-    this.setTokenFromLS();
+    this.getUserByToken();
   }
 
   @Select(SignUpUserRequestState)
@@ -46,9 +46,16 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  setTokenFromLS() {
-    const token = this.localStorageService.getItem('authToken');
+  setTokenFromLS(token: string) {
     if (token) this.store.dispatch(new SetToken(token));
+  }
+
+  getUserByToken() {
+    const token = this.localStorageService.getItem('authToken');
+    if (token) {
+      this.store.dispatch(new SetToken(token));
+      this.store.dispatch(new GetUserByToken(token));
+    }
   }
 
   isAuthorized(): boolean {
