@@ -62,8 +62,7 @@ export class SetToken {
 
 export class GetUserByToken {
   static type = ActionTypes.GET_USER_BY_TOKEN
-  constructor(public payload: string) {
-  }
+  constructor(public payload: string) {}
 }
 
 export class GetUserByTokenSuccess {

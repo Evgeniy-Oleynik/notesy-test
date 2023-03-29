@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Action, State, StateContext } from '@ngxs/store';
 import { User } from '../../interfaces/user';
 import {
@@ -13,9 +13,7 @@ import {
   SignUpUserSuccess
 } from './auth.actions';
 import { HttpClient } from '@angular/common/http';
-import { map, tap } from 'rxjs';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
-import { RequestsState } from 'ngxs-requests-plugin/lib/requests.state';
 import { LocalStorageService } from '../../services/localstorage.service';
 import { Router } from '@angular/router';
 
@@ -63,6 +61,7 @@ export class AuthState {
     private httpClient: HttpClient,
     private localStorageService: LocalStorageService,
     private router: Router,
+    private zone: NgZone,
   ) {
   }
 
@@ -118,14 +117,13 @@ export class AuthState {
 
   @Action(LogOutUser)
   logOutUser({dispatch}: StateContext<AuthStateModel>) {
-    console.log(222);
     const request = this.httpClient.post('api/logout', '');
 
     return dispatch(createRequestAction({
       state: LogOutUserRequestState,
       request,
-      failAction: LogOutUserSuccess,
-      successAction: LogOutUserFailed
+      failAction: LogOutUserFailed,
+      successAction: LogOutUserSuccess
     }))
   }
 
@@ -133,6 +131,8 @@ export class AuthState {
   logOutUserSuccess({patchState}: StateContext<AuthStateModel>) {
     console.log('logout success');
     patchState({user: emptyUser});
+    this.localStorageService.removeItem('authToken');
+    this.zone.run(() => this.router.navigate(['/login']))
   }
 
   @Action(LogOutUserFailed)
@@ -147,8 +147,9 @@ export class AuthState {
   }
 
   @Action(GetUserByToken)
-  getUserByToken({dispatch}: StateContext<AuthStateModel>) {
-    const request = this.httpClient.get('api/users');
+  getUserByToken({patchState, dispatch}: StateContext<AuthStateModel>, {payload}: GetUserByToken) {
+    patchState({user: {token: payload}});
+    const request = this.httpClient.get('api/users/,');
 
     return dispatch(createRequestAction({
       state: GetUserByTokenRequestState,
