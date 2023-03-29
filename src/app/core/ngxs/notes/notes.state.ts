@@ -132,7 +132,6 @@ export class NotesState {
   @Action(GetNoteByIdFailed)
   getNoteByIdFailed() {
     console.log('getNoteById failed');
-    this.router.navigate(['notes/new']);
   }
 
   @Action(PatchNoteById)
