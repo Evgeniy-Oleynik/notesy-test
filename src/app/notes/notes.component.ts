@@ -12,11 +12,11 @@ import { NotesService } from '../core/services/notes.service';
 import { GetNotes } from '../core/ngxs/notes/notes.actions';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  selector: 'app-notes',
+  templateUrl: './notes.component.html',
+  styleUrls: ['./notes.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class NotesComponent implements OnInit {
 
   currentUser$ = this.authService.currentUser$;
   userById$!: Observable<User>;
@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit {
   }
 
   newNote() {
-    this.router.navigate(['/notes']);
+    this.router.navigate(['/notes/new']);
   }
 
   getNotes() {

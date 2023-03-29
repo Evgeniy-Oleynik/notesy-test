@@ -1,8 +1,8 @@
 <div class="note-block">
   <h1>NOTE EDIT</h1>
-  <button routerLink="/main" mat-button>Back</button>
+  <button routerLink="/" mat-button>Back</button>
   <div class="note">
-    <form [formGroup]="noteEditor" class="note-form" (ngSubmit)="createNote()">
+    <form [formGroup]="noteEditorFormGroup" class="note-form" (ngSubmit)="submitForm()">
       <mat-form-field>
         <mat-label for="topicId">Topic</mat-label>
         <mat-select id="topicId" formControlName="topicId">
@@ -17,9 +17,16 @@
         <mat-label for="text">Text</mat-label>
         <textarea type="text" id="text" matInput formControlName="text"></textarea>
       </mat-form-field>
-      <button mat-button type="submit">Save Note</button>
+      <ng-template [ngIf]="isEditMode$ | async" [ngIfElse]="createNote">
+        <button mat-button type="submit">Update Note</button>
+      </ng-template>
     </form>
+
+    {{currentNote$ | async | json}}
 
   </div>
 </div>
 
+<ng-template #createNote>
+  <button mat-button type="submit">Save Note</button>
+</ng-template>
