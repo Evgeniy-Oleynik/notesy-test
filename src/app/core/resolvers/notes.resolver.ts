@@ -1,20 +1,27 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { IRequest } from 'ngxs-requests-plugin';
-import { filter, Observable } from 'rxjs';
+import { filter } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { NotesService } from '../services/notes.service';
+import { AuthService } from '../services/auth.service';
 
 @Injectable({providedIn: 'root'})
 export class NotesResolver implements Resolve<IRequest> {
-  constructor(private notesService: NotesService) {}
+  constructor(
+    private authService: AuthService,
+    private notesService: NotesService
+  ) {
+  }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IRequest> {
-    this.notesService.getAllNotes(56, 1); // TODO: userid
-    return this.notesService.getNotesRequestState$.pipe(
-      filter(res => res.loaded),
-      take(1)
-    )
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
+    return this.authService.currentUser$.subscribe(user => {
+      if (user.id) this.notesService.getUserNotes(user.id);
+      return this.notesService.getNotesRequestState$.pipe(
+        filter(res => res.loaded),
+        take(1)
+      )
+    })
   }
 }
 
