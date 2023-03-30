@@ -20,7 +20,7 @@ const ActionTypes = {
 
 export class GetNotes {
   static type = ActionTypes.GET_NOTES;
-  constructor(public payload: {userId: number, topicId: number}) {}
+  constructor(public payload: {userId: number}) {}
 }
 
 export class GetNotesSuccess {

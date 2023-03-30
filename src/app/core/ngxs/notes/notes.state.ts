@@ -64,7 +64,7 @@ export class NotesState {
 
   @Action(GetNotes)
   getAllNotes({dispatch}: StateContext<NotesStateModel>, {payload}: GetNotes) {
-    const request = this.httpClient.get(`api/notes?topicId=${payload.topicId}&userId=${payload.userId}`);
+    const request = this.httpClient.get(`api/notes?userId=${payload.userId}`);
 
     dispatch(createRequestAction({
       state: GetNotesRequestState,
