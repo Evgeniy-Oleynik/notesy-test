@@ -13,6 +13,7 @@ const notesRoutes: Routes = [
   {
     path: 'new',
     canActivate: [AuthGuard],
+    resolve: [TopicsResolver],
     loadChildren: () => import('./note-edit/note-edit.module').then(mod => mod.NoteEditModule)
   },
   {
