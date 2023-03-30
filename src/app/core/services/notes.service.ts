@@ -23,8 +23,8 @@ export class NotesService {
     private store: Store,
   ) {}
 
-  getAllNotes(userId: number, topicId: number) {
-    this.store.dispatch(new GetNotes({userId, topicId}));
+  getUserNotes(userId: number) {
+    this.store.dispatch(new GetNotes({userId}));
   }
 
   getNoteById(id: number) {

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { LogInUserRequestState, SignUpUserRequestState, AuthState, LogOutUserRequestState } from '../ngxs/auth/auth.state';
+import { GetUserByTokenRequestState, LogInUserRequestState, SignUpUserRequestState } from '../ngxs/auth/auth.state';
 import { Observable } from 'rxjs';
 import { User } from '../interfaces/user';
 import { AuthGetterState } from '../ngxs/auth/auth-getter.state';
 import { IRequest } from 'ngxs-requests-plugin';
-import { GetUserByToken, LogInUser, LogOutUser, SetToken, SignUpUser } from '../ngxs/auth/auth.actions';
+import { GetUserByToken, LogInUser, LogOutUser, SignUpUser } from '../ngxs/auth/auth.actions';
 import { LocalStorageService } from './localstorage.service';
 
 @Injectable({
@@ -13,21 +13,21 @@ import { LocalStorageService } from './localstorage.service';
 })
 export class AuthService {
 
+  @Select(SignUpUserRequestState)
+  signUpUserRequestState$!: Observable<IRequest<User>>;
+  @Select(AuthGetterState.authUser)
+  currentUser$!: Observable<User>;
+  @Select(LogInUserRequestState)
+  logInUserRequestState$!: Observable<IRequest<User>>;
+  @Select(GetUserByTokenRequestState)
+  getUserByTokenRequestState$!: Observable<IRequest<User>>;
+
   constructor(
     private store: Store,
     private localStorageService: LocalStorageService,
   ) {
     this.getUserByToken();
   }
-
-  @Select(SignUpUserRequestState)
-  signUpUserRequestState$!: Observable<IRequest<User>>;
-
-  @Select(AuthGetterState.authUser)
-  currentUser$!: Observable<User>;
-
-  @Select(LogInUserRequestState)
-  logInUserRequestState$!: Observable<IRequest<User>>
 
   signUpUser(user: User) {
     this.store.dispatch(new SignUpUser(user));
