@@ -1,0 +1,13 @@
+.header-main {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 5%;
+
+  .header__logo {
+    text-decoration: none;
+    color: black;
+  }
+  .header__button {}
+}
