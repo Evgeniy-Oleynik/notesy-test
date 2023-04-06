@@ -1,12 +1,19 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { filter, map, Observable, Subject, tap } from 'rxjs';
+import { switchMap, take, withLatestFrom } from 'rxjs/operators';
 import { NotesService } from '../../core/services/notes.service';
 import { TopicsService } from '../../core/services/topics.service';
-import { switchMap, withLatestFrom } from 'rxjs/operators';
-import { filter, map, Observable, Subject } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
-import { ActivatedRoute } from '@angular/router';
 import { Note } from '../../core/interfaces/note';
+
+interface NoteForm {
+  id: FormControl<number | null>,
+  topicId: FormControl<number | null>,
+  title: FormControl<string | null>,
+  text: FormControl<string | null>
+}
 
 @Component({
   selector: 'app-note-edit',
@@ -19,7 +26,7 @@ export class NoteEditComponent implements OnInit {
   isEditMode$!: Observable<boolean>;
   submitFormSubject$: Subject<void> = new Subject<void>();
 
-  noteEditorFormGroup = new FormGroup<any>({ // TODO: change any
+  noteEditorFormGroup = new FormGroup<NoteForm>({
     id: new FormControl(null),
     topicId: new FormControl(null, [Validators.required]),
     title: new FormControl('', [Validators.required]),
@@ -31,12 +38,12 @@ export class NoteEditComponent implements OnInit {
     private topicsService: TopicsService,
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
+    private router: Router,
   ) {
   }
 
   ngOnInit(): void {
     this.currentNote$ = this.notesService.getNoteById$(this.activatedRoute.snapshot.params['id']);
-    // this.currentNote$.subscribe(note => this.noteEditorFormGroup.patchValue(note));
     this.isEditMode$ = this.activatedRoute.params.pipe(
       map(params => !!parseInt(params['id']))
     );
@@ -61,16 +68,30 @@ export class NoteEditComponent implements OnInit {
     );
   }
 
-  // patchNote() {
-  //   this.notesService.patchNote(this.noteEditorFormGroup.value);
-  // }
-  //
-  // postNote() {
-  //   this.notesService.postNote(this.noteEditorFormGroup.value);
-  // }
-
   submitForm() {
     this.submitFormSubject$.next();
+    this.notesService.postNoteRequestState$.pipe(
+      tap(res => {
+        if (res.status === 'success') {
+          this.router.navigate(['notes']);
+        }
+      }),
+      filter(res => res.loaded),
+      take(1)
+    ).subscribe();
+  }
+
+  deleteNote() {
+    this.notesService.deleteNote(this.activatedRoute.snapshot.params['id']);
+    this.notesService.deleteNoteByIdRequestState$.pipe(
+      tap(res => {
+        if (res.status === 'success') {
+          this.router.navigate(['notes']);
+        }
+      }),
+      filter(res => res.loaded),
+      take(1)
+    ).subscribe()
   }
 
 }
