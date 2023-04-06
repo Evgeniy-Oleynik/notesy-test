@@ -1,4 +1,6 @@
-.dashboard {
+@import "../shared/styles/indents";
+
+.notes-main {
   display: flex;
   flex-flow: column;
   align-items: center;
@@ -6,6 +8,18 @@
   .notes-list {
     display: flex;
     flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: center;
     gap: 30px;
+  }
+
+  .notes__button-new {
+    width: 100px;
+    height: 100px;
+    font-size: 80px;
+    padding: 20px;
+    background: gray;
+    color: white;
+    border-radius: 15px;
   }
 }

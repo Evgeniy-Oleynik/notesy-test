@@ -22,10 +22,6 @@ export class NotesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  logOut() {
-    this.authService.logOutUser();
-  }
-
   newNote() {
     this.router.navigate(['/notes/new']);
   }
