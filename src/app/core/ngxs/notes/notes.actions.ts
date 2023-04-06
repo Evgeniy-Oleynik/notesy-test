@@ -81,7 +81,7 @@ export class DeleteNoteById {
 
 export class DeleteNoteByIdSuccess {
   static type = ActionTypes.DELETE_NOTE_BY_ID_SUCCESS;
-  constructor(public payload: {}) {}
+  constructor(public payload: number, public metadata: number) {}
 }
 
 export class DeleteNoteByIdFailed {

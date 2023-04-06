@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Action, State, StateContext } from '@ngxs/store';
 import { HttpClient } from '@angular/common/http';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
@@ -59,14 +59,13 @@ export interface NotesStateModel {
 export class NotesState {
   constructor(
     private httpClient: HttpClient,
-    private router: Router,
   ) {}
 
   @Action(GetNotes)
   getAllNotes({dispatch}: StateContext<NotesStateModel>, {payload}: GetNotes) {
     const request = this.httpClient.get(`api/notes?userId=${payload.userId}`);
 
-    dispatch(createRequestAction({
+    return dispatch(createRequestAction({
       state: GetNotesRequestState,
       request,
       successAction: GetNotesSuccess,
@@ -90,7 +89,7 @@ export class NotesState {
   postNote({dispatch}: StateContext<NotesStateModel>, {payload}: PostNote) {
     const request = this.httpClient.post('api/notes', {'title': payload.title, 'text': payload.text, 'topicId': payload.topicId });
 
-    dispatch(createRequestAction({
+    return dispatch(createRequestAction({
       state: PostNoteRequestState,
       request,
       successAction: PostNoteSuccess,
@@ -114,7 +113,7 @@ export class NotesState {
   getNoteById({dispatch}: StateContext<NotesStateModel>, {payload}: GetNoteById) {
     const request = this.httpClient.get(`api/notes/${payload}`);
 
-    dispatch(createRequestAction({
+    return dispatch(createRequestAction({
       state: GetNoteByIdRequestState,
       request,
       successAction: GetNoteByIdSuccess,
@@ -138,7 +137,7 @@ export class NotesState {
   patchNoteById({dispatch}: StateContext<NotesStateModel>, {payload}: PatchNoteById) {
     const request = this.httpClient.patch(`api/notes/${payload.id}`, payload);
 
-    dispatch(createRequestAction({
+    return dispatch(createRequestAction({
       state: PatchNoteByIdRequestState,
       request,
       successAction: PatchNoteByIdSuccess,
@@ -162,17 +161,20 @@ export class NotesState {
   deleteNoteById({dispatch}: StateContext<NotesStateModel>, {payload}: DeleteNoteById) {
     const request = this.httpClient.delete(`api/notes/${payload}`);
 
-    dispatch(createRequestAction({
+    return dispatch(createRequestAction({
       state: DeleteNoteByIdRequestState,
       request,
       successAction: DeleteNoteByIdSuccess,
-      failAction: DeleteNoteByIdFailed
+      failAction: DeleteNoteByIdFailed,
+      metadata: payload
     }))
   }
 
   @Action(DeleteNoteByIdSuccess)
-  deleteNoteByIdSuccess() {
-    console.log('deleteNoteById success');
+  deleteNoteByIdSuccess(ctx: StateContext<NotesStateModel>, {metadata}: DeleteNoteByIdSuccess) {
+    console.log(metadata, 'deleteNoteById success');
+    const state = ctx.getState();
+    ctx.patchState({ids: state.ids.filter(id => id !== +metadata)})
   }
 
   @Action(DeleteNoteByIdFailed)
