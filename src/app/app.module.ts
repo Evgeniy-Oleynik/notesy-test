@@ -5,10 +5,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
+import { HeaderModule } from './components/header/header.module';
 
 @NgModule({
   declarations: [
@@ -19,10 +16,7 @@ import { MatInputModule } from '@angular/material/input';
     BrowserAnimationsModule,
     AppRoutingModule,
     CoreModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatInputModule
+    HeaderModule,
   ],
   providers: [],
   exports: [
