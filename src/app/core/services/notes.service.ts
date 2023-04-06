@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { IRequest } from 'ngxs-requests-plugin';
 import { Note } from '../interfaces/note';
 import { NotesGetterState } from '../ngxs/notes/notes-getter.state';
-import { GetNoteByIdRequestState, GetNotesRequestState } from '../ngxs/notes/notes.state';
-import { GetNoteById, GetNotes, PatchNoteById, PostNote } from '../ngxs/notes/notes.actions';
+import { DeleteNoteByIdRequestState, GetNoteByIdRequestState, GetNotesRequestState, PostNoteRequestState } from '../ngxs/notes/notes.state';
+import { DeleteNoteById, GetNoteById, GetNotes, PatchNoteById, PostNote } from '../ngxs/notes/notes.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,10 @@ export class NotesService {
   getNotesRequestState$!: Observable<IRequest<Note[]>>;
   @Select(GetNoteByIdRequestState)
   getNoteByIdRequestState$!: Observable<IRequest<Note[]>>;
+  @Select(PostNoteRequestState)
+  postNoteRequestState$!: Observable<IRequest>;
+  @Select(DeleteNoteByIdRequestState)
+  deleteNoteByIdRequestState$!: Observable<IRequest>;
 
   constructor(
     private store: Store,
@@ -41,5 +45,9 @@ export class NotesService {
 
   patchNote(note: Partial<Note>) {
     this.store.dispatch(new PatchNoteById(note));
+  }
+
+  deleteNote(id: number) {
+    this.store.dispatch(new DeleteNoteById(id));
   }
 }
