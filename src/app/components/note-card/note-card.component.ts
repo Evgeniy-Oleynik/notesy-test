@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Note } from '../../core/interfaces/note';
+import { Note } from '../../shared/interfaces/note';
 
 @Component({
   selector: 'app-note-card',
