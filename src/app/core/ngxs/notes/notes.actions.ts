@@ -1,4 +1,4 @@
-import { Note } from '../../interfaces/note';
+import { Note } from '../../../shared/interfaces/note';
 
 const ActionTypes = {
   GET_NOTES: '[Notes] Get Notes',
