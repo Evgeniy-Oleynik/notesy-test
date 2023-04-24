@@ -1,4 +1,4 @@
-import { User } from '../../interfaces/user';
+import { User } from '../../../shared/interfaces/user';
 
 const ActionTypes = {
   SIGNUP_USER: '[Auth] Sign Up User',

@@ -1,6 +1,7 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Action, State, StateContext } from '@ngxs/store';
-import { User } from '../../interfaces/user';
+import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
 import {
   GetUserByToken, GetUserByTokenFailed, GetUserByTokenSuccess,
   LogInUser,
@@ -12,10 +13,9 @@ import {
   SignUpUserFailed,
   SignUpUserSuccess
 } from './auth.actions';
-import { HttpClient } from '@angular/common/http';
-import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
-import { LocalStorageService } from '../../services/localstorage.service';
-import { Router } from '@angular/router';
+import { LocalStorageService } from '../../services/local-storage.service';
+import { RawHttpClient } from '../../../shared/utility/raw-http-client.module';
+import { User } from '../../../shared/interfaces/user';
 
 @RequestState('signUpUser')
 @Injectable()
@@ -59,9 +59,8 @@ const emptyUser: User = {
 export class AuthState {
   constructor(
     private httpClient: HttpClient,
+    private rawHttpClient: RawHttpClient,
     private localStorageService: LocalStorageService,
-    private router: Router,
-    private zone: NgZone,
   ) {
   }
 
@@ -87,7 +86,6 @@ export class AuthState {
     console.log('signup success');
     patchState({user: payload});
     if (payload.token) this.localStorageService.setItem('authToken', payload.token);
-    this.router.navigate(['/']);
   }
 
   @Action(LogInUser)
@@ -112,7 +110,6 @@ export class AuthState {
     console.log('login success');
     patchState({user: payload});
     if (payload.token) this.localStorageService.setItem('authToken', payload.token);
-    this.router.navigate(['/']);
   }
 
   @Action(LogOutUser)
@@ -132,7 +129,6 @@ export class AuthState {
     console.log('logout success');
     patchState({user: emptyUser});
     this.localStorageService.removeItem('authToken');
-    this.zone.run(() => this.router.navigate(['/login']))
   }
 
   @Action(LogOutUserFailed)
@@ -148,8 +144,9 @@ export class AuthState {
 
   @Action(GetUserByToken)
   getUserByToken({patchState, dispatch}: StateContext<AuthStateModel>, {payload}: GetUserByToken) {
+    console.log('getUserByToken:', payload);
     patchState({user: {token: payload}});
-    const request = this.httpClient.get('api/users/,');
+    const request = this.rawHttpClient.get('http://localhost:3000/users/,', { headers: {'Authorization': `Bearer ${payload}`} });
 
     return dispatch(createRequestAction({
       state: GetUserByTokenRequestState,
