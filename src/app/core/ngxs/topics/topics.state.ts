@@ -12,7 +12,7 @@ export class GetTopicsRequestState {
 }
 
 export interface TopicsStateModel {
-  entities: {[id: number]: Topic};
+  entities: {[key: number]: Topic};
   ids: number[];
 }
 
@@ -52,6 +52,8 @@ export class TopicsState {
   getTopicsSuccess(ctx: StateContext<TopicsStateModel>, {payload}: GetTopicsSuccess) {
     console.log('getTopics success');
     const state = ctx.getState();
-    ctx.patchState(createEntitiesIds(state, payload, 'id'));
+    const {ids, entities} = createEntitiesIds(state, payload, 'id');
+
+    ctx.patchState({ids, entities});
   }
 }

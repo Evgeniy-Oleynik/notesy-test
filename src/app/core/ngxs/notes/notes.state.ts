@@ -76,7 +76,9 @@ export class NotesState {
   getNotesSuccess(ctx: StateContext<NotesStateModel>, {payload}: GetNotesSuccess) {
     console.log('getNotes success');
     const state = ctx.getState();
-    ctx.patchState(createEntitiesIds(state, payload, 'id'));
+    const {ids, entities} = createEntitiesIds(state, payload, 'id');
+
+    ctx.patchState({ids, entities});
   }
 
   @Action(GetNotesFailed)
@@ -100,7 +102,9 @@ export class NotesState {
   postNoteSuccess(ctx: StateContext<NotesStateModel>, {payload}: PostNoteSuccess) {
     console.log('postNote success');
     const state = ctx.getState();
-    ctx.patchState(createEntitiesIds(state, [payload], 'id'));
+    const {ids, entities} = createEntitiesIds(state, [payload], 'id');
+
+    ctx.patchState({ids, entities});
   }
 
   @Action(PostNoteFailed)
@@ -124,7 +128,9 @@ export class NotesState {
   getNoteByIdSuccess(ctx: StateContext<NotesStateModel>, {payload}: GetNoteByIdSuccess) {
     console.log('getNoteById success');
     const state = ctx.getState();
-    ctx.patchState(createEntitiesIds(state, [payload], 'id'));
+    const {ids, entities} = createEntitiesIds(state, [payload], 'id');
+
+    ctx.patchState({ids, entities});
   }
 
   @Action(GetNoteByIdFailed)
@@ -150,7 +156,7 @@ export class NotesState {
     const state = ctx.getState();
     const {ids, entities} = createEntitiesIds(state, [payload], 'id');
 
-    ctx.patchState({ids, entities} );
+    ctx.patchState({ids, entities});
   }
 
   @Action(PatchNoteByIdFailed)

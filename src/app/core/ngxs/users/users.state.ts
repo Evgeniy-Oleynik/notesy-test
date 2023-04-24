@@ -49,10 +49,12 @@ export class UsersState {
   }
 
   @Action(GetAllUsersSuccess)
-  getAllUsersSuccess(ctx:StateContext<UsersState>, {payload}: GetAllUsersSuccess) {
+  getAllUsersSuccess(ctx:StateContext<UsersStateModel>, {payload}: GetAllUsersSuccess) {
     console.log('getAllUsers success');
     const state = ctx.getState();
-    ctx.patchState(createEntitiesIds(state, payload, 'id'));
+    const {ids, entities} = createEntitiesIds(state, payload, 'id');
+
+    ctx.patchState({ids, entities});
   }
 
   @Action(GetAllUsersFailed)
@@ -63,6 +65,7 @@ export class UsersState {
   @Action(GetUserById)
   getUserById({dispatch}: StateContext<UsersStateModel>, {payload}: GetUserById) {
     const request = this.httpClient.get(`api/users/${payload}`);
+
     dispatch(createRequestAction({
       state: GetUserByIdRequestState,
       request,
@@ -76,7 +79,9 @@ export class UsersState {
     console.log('getUserById success');
     console.log(payload);
     const state = ctx.getState();
-    ctx.patchState(createEntitiesIds(state, [payload], 'id'));
+    const {ids, entities} = createEntitiesIds(state, [payload], 'id')
+
+    ctx.patchState({ids, entities});
   }
 
   @Action(GetUserByIdFailed)
