@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { first, map, Observable } from 'rxjs';
-import { User } from '../interfaces/user';
+import { Observable } from 'rxjs';
 import { IRequest } from 'ngxs-requests-plugin';
 import { UsersGetterState } from '../ngxs/users/users-getter.state';
 import { GetAllUsersRequestState, GetUserByIdRequestState } from '../ngxs/users/users.state';
-import { take } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
-import { GetUserById, GetUserByIdSuccess } from '../ngxs/users/users.actions';
+import { GetUserById } from '../ngxs/users/users.actions';
+import { User } from '../../shared/interfaces/user';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +14,6 @@ export class UsersService {
 
   constructor(
     private store: Store,
-    private httpClient: HttpClient,
   ) { }
 
   @Select(UsersGetterState.getAllUsers)

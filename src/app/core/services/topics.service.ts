@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { IRequest } from 'ngxs-requests-plugin';
 import { TopicsGetterState } from '../ngxs/topics/topics-getter.state';
 import { GetTopicsRequestState } from '../ngxs/topics/topics.state';
-import { Topic } from '../interfaces/topic';
 import { GetTopics } from '../ngxs/topics/topics.actions';
+import { Topic } from '../../shared/interfaces/topic';
 
 @Injectable({
   providedIn: 'root'
