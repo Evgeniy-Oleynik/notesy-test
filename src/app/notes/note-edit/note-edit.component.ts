@@ -3,10 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { filter, map, Observable, Subject, tap } from 'rxjs';
 import { switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { RequestStatus } from 'ngxs-requests-plugin';
 import { NotesService } from '../../core/services/notes.service';
 import { TopicsService } from '../../core/services/topics.service';
 import { AuthService } from '../../core/services/auth.service';
-import { Note } from '../../core/interfaces/note';
+import { Note } from '../../shared/interfaces/note';
 
 interface NoteForm {
   id: FormControl<number | null>,
@@ -72,7 +73,7 @@ export class NoteEditComponent implements OnInit {
     this.submitFormSubject$.next();
     this.notesService.postNoteRequestState$.pipe(
       tap(res => {
-        if (res.status === 'success') {
+        if (res.status === RequestStatus.Success) {
           this.router.navigate(['notes']);
         }
       }),
