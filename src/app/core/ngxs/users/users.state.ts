@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Action, State, StateContext } from '@ngxs/store';
-import { User } from '../../interfaces/user';
 import { HttpClient } from '@angular/common/http';
-import { map, tap } from 'rxjs';
+import { Action, State, StateContext } from '@ngxs/store';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
-import { RequestsState } from 'ngxs-requests-plugin/lib/requests.state';
-import { LocalStorageService } from '../../services/localstorage.service';
+import { User } from '../../../shared/interfaces/user';
+import { createEntitiesIds } from '../../../shared/utility/create-entities-ids';
 import { GetAllUsers, GetAllUsersFailed, GetAllUsersSuccess, GetUserById, GetUserByIdFailed, GetUserByIdSuccess } from './users.actions';
-import { UsersService } from '../../services/users.service';
-import { createEntitiesIds } from '../../utility/create-entities-ids';
 
 @RequestState('getAllUsers')
 @Injectable()
@@ -21,7 +17,7 @@ export class GetUserByIdRequestState {
 }
 
 export interface UsersStateModel {
-  entities: {[id: number]: User}[];
+  entities: {[key: number]: User};
   ids: number[];
 
 }
@@ -29,7 +25,7 @@ export interface UsersStateModel {
 @State<UsersStateModel>({
   name: 'users',
   defaults: {
-    entities: [],
+    entities: {},
     ids: [],
   }
 })
