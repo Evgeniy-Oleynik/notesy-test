@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Action, State, StateContext } from '@ngxs/store';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map, tap } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
-import { RequestsState } from 'ngxs-requests-plugin/lib/requests.state';
-import { GetTopics, GetTopicsFailed, GetTopicsSuccess, ShowTopics } from './topics.actions';
-import { Topic } from '../../interfaces/topic';
-import { createEntitiesIds } from '../../utility/create-entities-ids';
+import { Topic } from '../../../shared/interfaces/topic';
+import { createEntitiesIds } from '../../../shared/utility/create-entities-ids';
+import { GetTopics, GetTopicsFailed, GetTopicsSuccess } from './topics.actions';
 
 @RequestState('getTopics')
 @Injectable()
@@ -14,14 +12,14 @@ export class GetTopicsRequestState {
 }
 
 export interface TopicsStateModel {
-  entities: {[id: number]: Topic}[];
+  entities: {[id: number]: Topic};
   ids: number[];
 }
 
 @State<TopicsStateModel>({
   name: 'topics',
   defaults: {
-    entities: [],
+    entities: {},
     ids: []
   }
 })

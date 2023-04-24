@@ -1,3 +1,5 @@
+import { Topic } from '../../../shared/interfaces/topic';
+
 const ActionTypes = {
   GET_TOPICS: '[Topics] Get Topics',
   GET_TOPICS_SUCCESS: '[Topics] Get Topics Success',
@@ -12,7 +14,7 @@ export class GetTopics {
 export class GetTopicsSuccess {
   static type = ActionTypes.GET_TOPICS_SUCCESS
 
-  constructor(public payload: {id: number, type: string}[]) {}
+  constructor(public payload: Topic[]) {}
 }
 
 export class GetTopicsFailed {
