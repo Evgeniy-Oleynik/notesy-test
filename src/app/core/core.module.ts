@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxsStateModule } from './ngxs/ngxs.module';
 import { INTERCEPTORS } from './interceptors/interceptors';
+import { RawHttpClientModule } from '../shared/utility/raw-http-client.module';
 
 @NgModule({
   declarations: [],
@@ -10,6 +11,7 @@ import { INTERCEPTORS } from './interceptors/interceptors';
     CommonModule,
     NgxsStateModule,
     HttpClientModule,
+    RawHttpClientModule,
   ],
   providers: [
     INTERCEPTORS
