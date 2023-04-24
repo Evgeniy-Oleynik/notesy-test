@@ -12,6 +12,8 @@ export class ApiInterceptor implements HttpInterceptor {
    if (requestUrl.indexOf('api') !== -1) {
      requestUrl = requestUrl.replace('api', 'http://localhost:3000');
    }
+
+   // TODO 'http://localhost:3000' move to environments
    req = req.clone({
      url: requestUrl,
    });
