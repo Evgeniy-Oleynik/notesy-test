@@ -22,4 +22,16 @@
     color: white;
     border-radius: 15px;
   }
+
+  .notes-table {
+    width: 100%;
+
+    .notes-table__row {
+      cursor: pointer;
+
+      &:hover {
+        background: #FAFAFA;
+      }
+    }
+  }
 }

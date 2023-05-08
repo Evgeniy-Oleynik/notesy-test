@@ -3,10 +3,54 @@
 
   <div class="notes-list">
     <button mat-button (click)="newNote()" class="notes__button-new">+</button>
-    <app-note-card
-      *ngFor="let note of notes$ | async"
-      [noteCard]="note"
-    ></app-note-card>
+<!--    <app-note-card-->
+<!--      *ngFor="let note of notes$ | async"-->
+<!--      [noteCard]="note"-->
+<!--    ></app-note-card>-->
   </div>
+
+  <table mat-table [dataSource]="notesList$" class="notes-table">
+    <ng-container matColumnDef="number">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let note">{{note.id}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="topic">
+      <th mat-header-cell *matHeaderCellDef>Topic</th>
+<!--      <td mat-cell *matCellDef="let note">{{topics$[note.topicId].type | async}}</td>-->
+      <td mat-cell *matCellDef="let note">{{note.topicType}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef>Title</th>
+      <td mat-cell *matCellDef="let note">{{note.title}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="marker">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                      [checked]="selectedRows.hasValue() && isAllSelected()"
+                      [indeterminate]="selectedRows.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox
+          (click)="$event.stopPropagation()"
+          (change)="$event ? selectedRows.toggle(row) : null"
+          [checked]="selectedRows.isSelected(row)"
+        ></mat-checkbox>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="tableColumnsList"></tr>
+    <tr
+      mat-row
+      (click)="redirectTo(row.id)"
+      *matRowDef="let row; columns: tableColumnsList;"
+      class="notes-table__row"
+    ></tr>
+  </table>
+
+  <button mat-button (click)="showSelected()">TEST</button>
 
 </div>

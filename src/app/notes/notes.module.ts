@@ -6,6 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { NoteCardModule } from '../components/note-card/note-card.module';
 import { NotesComponent } from './notes.component';
 import { NotesRoutingModule } from './notes-routing.module';
+import { MatTableModule } from '@angular/material/table';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   imports: [
@@ -14,6 +16,8 @@ import { NotesRoutingModule } from './notes-routing.module';
     ReactiveFormsModule,
     MatButtonModule,
     NoteCardModule,
+    MatTableModule,
+    MatCheckboxModule,
   ],
   declarations: [
     NotesComponent
