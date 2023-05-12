@@ -3,6 +3,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterLinkWithHref } from '@angular/router';
 import { HeaderComponent } from './header.component';
 import { SharedModule } from '../../shared/shared.module';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -12,6 +14,8 @@ import { SharedModule } from '../../shared/shared.module';
     SharedModule,
     MatButtonModule,
     RouterLinkWithHref,
+    MatMenuModule,
+    MatIconModule,
   ],
   exports: [
     HeaderComponent,
