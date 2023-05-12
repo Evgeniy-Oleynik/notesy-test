@@ -3,9 +3,10 @@ import { NoteEditRoutingModule } from './note-edit-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { NoteEditComponent } from './note-edit.component';
+import { NoteEditComponent, NoteEditDialog } from './note-edit.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -14,10 +15,12 @@ import { MatSelectModule } from '@angular/material/select';
     ReactiveFormsModule,
     MatInputModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDialogModule
   ],
   declarations: [
-    NoteEditComponent
+    NoteEditComponent,
+    NoteEditDialog,
   ],
 })
 

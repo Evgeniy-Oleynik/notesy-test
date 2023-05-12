@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { filter, map, Observable, Subject, tap } from 'rxjs';
@@ -8,6 +8,7 @@ import { NotesService } from '../../core/services/notes.service';
 import { TopicsService } from '../../core/services/topics.service';
 import { AuthService } from '../../core/services/auth.service';
 import { Note } from '../../shared/interfaces/note';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 interface NoteForm {
   id: FormControl<number | null>,
@@ -22,10 +23,14 @@ interface NoteForm {
   styleUrls: ['./note-edit.component.scss']
 })
 export class NoteEditComponent implements OnInit {
+  @Input() dialogId?: number;
+
   topics$ = this.topicsService.topics$;
   currentNote$!: Observable<Note>;
+  currentNoteId!: number;
   isEditMode$!: Observable<boolean>;
   submitFormSubject$: Subject<void> = new Subject<void>();
+  isFormInvalid!: boolean;
 
   noteEditorFormGroup = new FormGroup<NoteForm>({
     id: new FormControl(null),
@@ -44,22 +49,34 @@ export class NoteEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentNote$ = this.notesService.getNoteById$(this.activatedRoute.snapshot.params['id']);
-    this.isEditMode$ = this.activatedRoute.params.pipe(
-      map(params => !!parseInt(params['id']))
-    );
+    if(this.dialogId) {
+      this.currentNote$ = this.notesService.getNoteById$(this.dialogId);
+      this.currentNote$.subscribe(note => this.noteEditorFormGroup.patchValue(note));
+    } else {
+      this.currentNote$ = this.notesService.getNoteById$(this.activatedRoute.snapshot.params['id']);
+      this.activatedRoute.params.pipe(
+        map(params => params['id']),
+        filter(id => id),
+        switchMap(id => this.notesService.getNoteById$(id))
+      ).subscribe(note => this.noteEditorFormGroup.patchValue(note));
+    }
 
-    this.activatedRoute.params.pipe(
-      map(params => params['id']),
-      filter(id => id),
-      switchMap(id => this.notesService.getNoteById$(id))
-    ).subscribe(note => this.noteEditorFormGroup.patchValue(note));
+    this.isFormInvalid = !this.noteEditorFormGroup.valid;
+    this.noteEditorFormGroup.statusChanges.subscribe(() => this.isFormInvalid = !this.noteEditorFormGroup.valid);
+
+    this.isEditMode$ = this.currentNote$.pipe(
+      map(note => {
+        if (note?.id) this.currentNoteId = note.id;
+        return !!this.currentNoteId;
+      })
+    );
 
     this.submitFormSubject$.pipe(
       withLatestFrom(this.isEditMode$),
       filter(() => this.noteEditorFormGroup.valid)
     ).subscribe(
       ([_, isEditMode]) => {
+        console.log(this.noteEditorFormGroup.value);
         if (isEditMode) {
           this.notesService.patchNote(this.noteEditorFormGroup.value);
         } else {
@@ -83,7 +100,7 @@ export class NoteEditComponent implements OnInit {
   }
 
   deleteNote() {
-    this.notesService.deleteNote(this.activatedRoute.snapshot.params['id']);
+    this.notesService.deleteNote(this.currentNoteId);
     this.notesService.deleteNoteByIdRequestState$.pipe(
       tap(res => {
         if (res.status === 'success') {
@@ -95,4 +112,13 @@ export class NoteEditComponent implements OnInit {
     ).subscribe()
   }
 
+}
+
+@Component({
+  selector: 'app-note-edit-dialog',
+  templateUrl: './note-edit-dialog.html',
+  styleUrls: ['./note-edit.component.scss']
+})
+export class NoteEditDialog {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
 }
