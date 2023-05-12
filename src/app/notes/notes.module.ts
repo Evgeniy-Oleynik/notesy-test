@@ -8,6 +8,7 @@ import { NotesComponent } from './notes.component';
 import { NotesRoutingModule } from './notes-routing.module';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     NoteCardModule,
     MatTableModule,
     MatCheckboxModule,
+    MatDialogModule,
   ],
   declarations: [
     NotesComponent
