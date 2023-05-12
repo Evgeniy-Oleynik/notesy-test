@@ -76,6 +76,13 @@ export class NotesState {
   getNotesSuccess(ctx: StateContext<NotesStateModel>, {payload}: GetNotesSuccess) {
     console.log('getNotes success');
     const state = ctx.getState();
+    payload.sort((a, b) => {
+      if (a.id && b.id) {
+        return a.id - b.id;
+      } else { // @ts-ignore
+        return a - b;
+      }
+    })
     const {ids, entities} = createEntitiesIds(state, payload, 'id');
 
     ctx.patchState({ids, entities});
@@ -141,6 +148,7 @@ export class NotesState {
   @Action(PatchNoteById)
   patchNoteById({dispatch}: StateContext<NotesStateModel>, {payload}: PatchNoteById) {
     const request = this.httpClient.patch(`api/notes/${payload.id}`, payload);
+    console.log(payload);
 
     return dispatch(createRequestAction({
       state: PatchNoteByIdRequestState,
@@ -153,6 +161,8 @@ export class NotesState {
   @Action(PatchNoteByIdSuccess)
   patchNoteByIdSuccess(ctx: StateContext<NotesStateModel>, {payload}: PatchNoteByIdSuccess) {
     console.log('patchNoteById success');
+    console.log(payload);
+
     const state = ctx.getState();
     const {ids, entities} = createEntitiesIds(state, [payload], 'id');
 
