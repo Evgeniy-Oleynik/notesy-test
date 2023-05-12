@@ -3,12 +3,12 @@ import { Router } from '@angular/router';
 import { AuthService } from '../core/services/auth.service';
 import { NotesService } from '../core/services/notes.service';
 import { TopicsService } from '../core/services/topics.service';
-import { Topic } from '../shared/interfaces/topic';
-import { combineLatest, map } from 'rxjs';
+import { map, ReplaySubject } from 'rxjs';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Note } from '../shared/interfaces/note';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { take } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { NoteEditDialog } from './note-edit/note-edit.component';
 
 @Component({
   selector: 'app-notes',
@@ -19,39 +19,42 @@ export class NotesComponent implements OnInit {
 
   @ViewChild(MatTable) table?: MatTable<any>;
 
-  notes$ = this.notesService.notes$;
-  topics$ = this.topicsService.topics$;
+  notes$ = this.notesService.notesWithTopics$;
   tableColumnsList = ['marker', 'number', 'topic', 'title'];
   selectedRows = new SelectionModel<Note>(true, []);
   notesListLength = 0;
-  notesList$ = combineLatest(this.notes$, this.topics$).pipe(
-    map(([notes, topics]: [Note[], Topic[]]) => {
-      this.notesListLength = notes.length;
-      return notes.map(note => {
-        if (note.topicId) note = {...note, 'topicType': topics[note.topicId].type};
-        return note;
-      });
-    })
-  );
-
+  notesList$ = new ReplaySubject<MatTableDataSource<Note>>(1);
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private notesService: NotesService,
     private topicsService: TopicsService,
+    private dialog: MatDialog,
   ) {
   }
 
   ngOnInit(): void {
+    this.notes$.pipe(
+      map(notes => {
+        this.notesListLength = notes.length;
+        console.log('notes:', notes);
+        return new MatTableDataSource<any>(notes);
+      })
+    ).subscribe(this.notesList$);
+
   }
 
   newNote() {
     this.router.navigate(['notes', 'new']);
   }
 
-  redirectTo(id: any) {
-    this.router.navigate(['notes', id]);
+  openDialog(id: number) {
+    this.dialog.open(NoteEditDialog, {
+      data: {
+        id: id,
+      }
+    });
   }
 
   showSelected() {
@@ -60,7 +63,7 @@ export class NotesComponent implements OnInit {
 
   isAllSelected() {
     const numSelected = this.selectedRows.selected.length;
-    return numSelected === this.notesListLength;
+    return numSelected >= this.notesListLength;
   }
 
   toggleAllRows() {
@@ -69,14 +72,9 @@ export class NotesComponent implements OnInit {
       return;
     }
     this.notesList$.subscribe(notes => {
-      notes.forEach(note => {
-        if (!this.selectedRows.selected.includes(note)) {
-          this.selectedRows.select(note);
-          this.selectedRows.isSelected(note);
-        }
+      notes.data.forEach(note => {
+        this.selectedRows.select(note);
       })
-      // this.selectedRows.select(...notes)
-    });
-    this.table?.renderRows();
+    })
   }
 }

@@ -2,55 +2,49 @@
   <h1>NOTESY main page</h1>
 
   <div class="notes-list">
-    <button mat-button (click)="newNote()" class="notes__button-new">+</button>
-<!--    <app-note-card-->
-<!--      *ngFor="let note of notes$ | async"-->
-<!--      [noteCard]="note"-->
-<!--    ></app-note-card>-->
+    <button (click)="newNote()" class="notes__button-new" mat-button>+</button>
   </div>
 
-  <table mat-table [dataSource]="notesList$" class="notes-table">
+  <button (click)="showSelected()" mat-button>show selected</button>
+
+  <table *ngIf="notesList$ | async as notesList" [dataSource]="notesList" class="notes-table" mat-table>
     <ng-container matColumnDef="number">
-      <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td mat-cell *matCellDef="let note">{{note.id}}</td>
+      <th *matHeaderCellDef mat-header-cell>ID</th>
+      <td *matCellDef="let note" mat-cell>{{note.id}}</td>
     </ng-container>
 
     <ng-container matColumnDef="topic">
-      <th mat-header-cell *matHeaderCellDef>Topic</th>
-<!--      <td mat-cell *matCellDef="let note">{{topics$[note.topicId].type | async}}</td>-->
-      <td mat-cell *matCellDef="let note">{{note.topicType}}</td>
+      <th *matHeaderCellDef mat-header-cell>Topic</th>
+      <td *matCellDef="let note" mat-cell>{{note.topicType}}</td>
     </ng-container>
 
     <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef>Title</th>
-      <td mat-cell *matCellDef="let note">{{note.title}}</td>
+      <th *matHeaderCellDef mat-header-cell>Title</th>
+      <td *matCellDef="let note" mat-cell>{{note.title}}</td>
     </ng-container>
 
     <ng-container matColumnDef="marker">
-      <th mat-header-cell *matHeaderCellDef>
+      <th *matHeaderCellDef mat-header-cell>
         <mat-checkbox (change)="$event ? toggleAllRows() : null"
                       [checked]="selectedRows.hasValue() && isAllSelected()"
                       [indeterminate]="selectedRows.hasValue() && !isAllSelected()">
         </mat-checkbox>
       </th>
-      <td mat-cell *matCellDef="let row">
+      <td *matCellDef="let row" mat-cell>
         <mat-checkbox
-          (click)="$event.stopPropagation()"
           (change)="$event ? selectedRows.toggle(row) : null"
+          (click)="$event.stopPropagation()"
           [checked]="selectedRows.isSelected(row)"
         ></mat-checkbox>
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="tableColumnsList"></tr>
+    <tr *matHeaderRowDef="tableColumnsList" mat-header-row></tr>
     <tr
-      mat-row
-      (click)="redirectTo(row.id)"
+      (click)="openDialog(row.id)"
       *matRowDef="let row; columns: tableColumnsList;"
       class="notes-table__row"
+      mat-row
     ></tr>
   </table>
-
-  <button mat-button (click)="showSelected()">TEST</button>
-
 </div>
