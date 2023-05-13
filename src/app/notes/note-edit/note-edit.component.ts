@@ -8,7 +8,7 @@ import { NotesService } from '../../core/services/notes.service';
 import { TopicsService } from '../../core/services/topics.service';
 import { AuthService } from '../../core/services/auth.service';
 import { Note } from '../../shared/interfaces/note';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 
 interface NoteForm {
   id: FormControl<number | null>,
@@ -45,6 +45,7 @@ export class NoteEditComponent implements OnInit {
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private dialog: MatDialog,
   ) {
   }
 
@@ -91,7 +92,8 @@ export class NoteEditComponent implements OnInit {
     this.notesService.postNoteRequestState$.pipe(
       tap(res => {
         if (res.status === RequestStatus.Success) {
-          this.router.navigate(['notes']);
+          if (this.dialogId) this.dialog.closeAll();
+          else this.router.navigate(['notes']);
         }
       }),
       filter(res => res.loaded),
@@ -104,7 +106,8 @@ export class NoteEditComponent implements OnInit {
     this.notesService.deleteNoteByIdRequestState$.pipe(
       tap(res => {
         if (res.status === 'success') {
-          this.router.navigate(['notes']);
+          if (this.dialogId) this.dialog.closeAll();
+          else this.router.navigate(['notes']);
         }
       }),
       filter(res => res.loaded),
