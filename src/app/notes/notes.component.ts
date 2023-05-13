@@ -3,12 +3,13 @@ import { Router } from '@angular/router';
 import { AuthService } from '../core/services/auth.service';
 import { NotesService } from '../core/services/notes.service';
 import { TopicsService } from '../core/services/topics.service';
-import { map, ReplaySubject } from 'rxjs';
+import { map, Observable, shareReplay, Subject } from 'rxjs';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Note } from '../shared/interfaces/note';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { NoteEditDialog } from './note-edit/note-edit.component';
+import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'app-notes',
@@ -23,7 +24,8 @@ export class NotesComponent implements OnInit {
   tableColumnsList = ['marker', 'number', 'topic', 'title'];
   selectedRows = new SelectionModel<Note>(true, []);
   notesListLength = 0;
-  notesList$ = new ReplaySubject<MatTableDataSource<Note>>(1);
+  notesList$!: Observable<MatTableDataSource<Note>>;
+  selectAllNotes$ = new Subject<void>();
 
   constructor(
     private authService: AuthService,
@@ -35,14 +37,21 @@ export class NotesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.notes$.pipe(
+    this.notesList$ = this.notes$.pipe(
       map(notes => {
         this.notesListLength = notes.length;
-        console.log('notes:', notes);
-        return new MatTableDataSource<any>(notes);
-      })
-    ).subscribe(this.notesList$);
+        return new MatTableDataSource<Note>(notes);
+      }),
+      shareReplay()
+    );
 
+    this.selectAllNotes$.pipe(
+      withLatestFrom(this.notesList$)
+    ).subscribe(([_, notes]) => {
+      notes.data.forEach((note: Note) => {
+        this.selectedRows.select(note);
+      })
+    })
   }
 
   newNote() {
@@ -71,10 +80,6 @@ export class NotesComponent implements OnInit {
       this.selectedRows.clear();
       return;
     }
-    this.notesList$.subscribe(notes => {
-      notes.data.forEach(note => {
-        this.selectedRows.select(note);
-      })
-    })
+    this.selectAllNotes$.next();
   }
 }
