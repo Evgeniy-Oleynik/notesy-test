@@ -15,9 +15,6 @@ export class NotesService {
   @Select(NotesGetterState.getNotes)
   notes$!: Observable<Note[]>;
 
-  @Select(NotesGetterState.getNotesWithTopics)
-  notesWithTopics$!: Observable<Note[]>;
-
   @Select(GetNotesRequestState)
   getNotesRequestState$!: Observable<IRequest<Note[]>>;
 
