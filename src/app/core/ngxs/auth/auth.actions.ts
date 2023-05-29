@@ -13,63 +13,75 @@ const ActionTypes = {
   SET_TOKEN: '[Auth] Set Token To Local Storage',
   GET_USER_BY_TOKEN: '[Auth] Get User By Token',
   GET_USER_BY_TOKEN_SUCCESS: '[Auth] Get User By Token Success',
-  GET_USER_BY_TOKEN_FAILED: '[Auth] Get User By Token Failed'
+  GET_USER_BY_TOKEN_FAILED: '[Auth] Get User By Token Failed',
+  RESET_AUTH_STATE: '[Auth] Reset Auth State',
 }
 
 export class SignUpUser {
   static type = ActionTypes.SIGNUP_USER;
+
   constructor(public payload: Partial<User>) {}
 }
 
 export class SignUpUserSuccess {
-  static type = ActionTypes.SIGNUP_USER_SUCCESS
+  static type = ActionTypes.SIGNUP_USER_SUCCESS;
+
   constructor(public payload: User) {}
 }
 
 export class SignUpUserFailed {
-  static type = ActionTypes.SIGNUP_USER_FAILED
+  static type = ActionTypes.SIGNUP_USER_FAILED;
 }
 
 export class LogInUser {
-  static type = ActionTypes.LOGIN_USER
+  static type = ActionTypes.LOGIN_USER;
+
   constructor(public payload: Partial<User>) {}
 }
 
 export class LogInUserSuccess {
-  static type = ActionTypes.LOGIN_USER_SUCCESS
+  static type = ActionTypes.LOGIN_USER_SUCCESS;
+
   constructor(public payload: Partial<User>) {}
 }
 
 export class LogInUserFailed {
-  static type = ActionTypes.LOGIN_USER_FAILED
+  static type = ActionTypes.LOGIN_USER_FAILED;
 }
 export class LogOutUser {
-  static type = ActionTypes.LOG_OUT_USER
+  static type = ActionTypes.LOG_OUT_USER;
 }
 
 export class LogOutUserSuccess {
-  static type = ActionTypes.LOG_OUT_USER_SUCCESS
+  static type = ActionTypes.LOG_OUT_USER_SUCCESS;
 }
 
 export class LogOutUserFailed {
-  static type = ActionTypes.LOG_OUT_USER_FAILED
+  static type = ActionTypes.LOG_OUT_USER_FAILED;
 }
 
 export class SetToken {
-  static type = ActionTypes.SET_TOKEN
+  static type = ActionTypes.SET_TOKEN;
+
   constructor(public payload: string) {}
 }
 
 export class GetUserByToken {
-  static type = ActionTypes.GET_USER_BY_TOKEN
+  static type = ActionTypes.GET_USER_BY_TOKEN;
+
   constructor(public payload: string) {}
 }
 
 export class GetUserByTokenSuccess {
-  static type = ActionTypes.GET_USER_BY_TOKEN_SUCCESS
+  static type = ActionTypes.GET_USER_BY_TOKEN_SUCCESS;
+
   constructor(public payload: User) {}
 }
 
 export class GetUserByTokenFailed {
-  static type = ActionTypes.GET_USER_BY_TOKEN_FAILED
+  static type = ActionTypes.GET_USER_BY_TOKEN_FAILED;
+}
+
+export class ResetAuthState {
+  static type = ActionTypes.RESET_AUTH_STATE;
 }

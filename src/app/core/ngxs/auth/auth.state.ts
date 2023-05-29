@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Action, State, StateContext } from '@ngxs/store';
+import { Action, State, StateContext, Store } from '@ngxs/store';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
 import {
   GetUserByToken, GetUserByTokenFailed, GetUserByTokenSuccess,
   LogInUser,
   LogInUserFailed,
   LogInUserSuccess,
-  LogOutUser, LogOutUserFailed, LogOutUserSuccess,
+  LogOutUser, LogOutUserFailed, LogOutUserSuccess, ResetAuthState,
   SetToken,
   SignUpUser,
   SignUpUserFailed,
@@ -61,6 +61,7 @@ export class AuthState {
     private httpClient: HttpClient,
     private rawHttpClient: RawHttpClient,
     private localStorageService: LocalStorageService,
+    private store: Store,
   ) {
   }
 
@@ -128,7 +129,6 @@ export class AuthState {
   logOutUserSuccess({patchState}: StateContext<AuthStateModel>) {
     console.log('logout success');
     patchState({user: emptyUser});
-    this.localStorageService.removeItem('authToken');
   }
 
   @Action(LogOutUserFailed)
@@ -165,5 +165,11 @@ export class AuthState {
   @Action(GetUserByTokenFailed)
   getUserByTokenFailed() {
     console.log('getUserByToken failed');
+  }
+
+  @Action(ResetAuthState)
+  resetAuthState() {
+    this.localStorageService.removeItem('authToken');
+    this.store.reset(AuthState);
   }
 }
