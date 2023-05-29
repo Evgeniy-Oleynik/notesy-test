@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Action, State, StateContext } from '@ngxs/store';
+import { Action, State, StateContext, Store } from '@ngxs/store';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
-import { createEntitiesIds } from '../../../shared/utility/create-entities-ids';
-import { Note } from '../../../shared/interfaces/note';
 import {
   DeleteNoteById, DeleteNoteByIdFailed, DeleteNoteByIdSuccess,
   GetNoteById, GetNoteByIdFailed,
@@ -13,8 +11,10 @@ import {
   GetNotesSuccess, PatchNoteById, PatchNoteByIdFailed, PatchNoteByIdSuccess,
   PostNote,
   PostNoteFailed,
-  PostNoteSuccess
+  PostNoteSuccess, ResetNotesState
 } from './notes.actions';
+import { createEntitiesIds } from '../../../shared/utility/create-entities-ids';
+import { Note } from '../../../shared/interfaces/note';
 
 @RequestState('getNotes')
 @Injectable()
@@ -58,6 +58,7 @@ export interface NotesStateModel {
 export class NotesState {
   constructor(
     private httpClient: HttpClient,
+    private store: Store,
   ) {}
 
   @Action(GetNotes)
@@ -73,19 +74,11 @@ export class NotesState {
   }
 
   @Action(GetNotesSuccess)
-  getNotesSuccess(ctx: StateContext<NotesStateModel>, {payload}: GetNotesSuccess) {
+  getNotesSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload}: GetNotesSuccess) {
     console.log('getNotes success');
-    const state = ctx.getState();
-    payload.sort((a, b) => {
-      if (a.id && b.id) {
-        return a.id - b.id;
-      } else { // @ts-ignore
-        return a - b;
-      }
-    })
-    const {ids, entities} = createEntitiesIds(state, payload, 'id');
+    const {ids, entities} = createEntitiesIds(getState(), payload);
 
-    ctx.patchState({ids, entities});
+    patchState({ids, entities});
   }
 
   @Action(GetNotesFailed)
@@ -95,7 +88,7 @@ export class NotesState {
 
   @Action(PostNote)
   postNote({dispatch}: StateContext<NotesStateModel>, {payload}: PostNote) {
-    const request = this.httpClient.post('api/notes', {'title': payload.title, 'text': payload.text, 'topicId': payload.topicId });
+    const request = this.httpClient.post('api/notes', payload);
 
     return dispatch(createRequestAction({
       state: PostNoteRequestState,
@@ -106,12 +99,11 @@ export class NotesState {
   }
 
   @Action(PostNoteSuccess)
-  postNoteSuccess(ctx: StateContext<NotesStateModel>, {payload}: PostNoteSuccess) {
+  postNoteSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload}: PostNoteSuccess) {
     console.log('postNote success');
-    const state = ctx.getState();
-    const {ids, entities} = createEntitiesIds(state, [payload], 'id');
+    const {ids, entities} = createEntitiesIds(getState(), [payload]);
 
-    ctx.patchState({ids, entities});
+    patchState({ids, entities});
   }
 
   @Action(PostNoteFailed)
@@ -132,12 +124,11 @@ export class NotesState {
   }
 
   @Action(GetNoteByIdSuccess)
-  getNoteByIdSuccess(ctx: StateContext<NotesStateModel>, {payload}: GetNoteByIdSuccess) {
+  getNoteByIdSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload}: GetNoteByIdSuccess) {
     console.log('getNoteById success');
-    const state = ctx.getState();
-    const {ids, entities} = createEntitiesIds(state, [payload], 'id');
+    const {ids, entities} = createEntitiesIds(getState(), [payload]);
 
-    ctx.patchState({ids, entities});
+    patchState({ids, entities});
   }
 
   @Action(GetNoteByIdFailed)
@@ -159,14 +150,13 @@ export class NotesState {
   }
 
   @Action(PatchNoteByIdSuccess)
-  patchNoteByIdSuccess(ctx: StateContext<NotesStateModel>, {payload}: PatchNoteByIdSuccess) {
+  patchNoteByIdSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload}: PatchNoteByIdSuccess) {
     console.log('patchNoteById success');
     console.log(payload);
 
-    const state = ctx.getState();
-    const {ids, entities} = createEntitiesIds(state, [payload], 'id');
+    const {ids, entities} = createEntitiesIds(getState(), [payload]);
 
-    ctx.patchState({ids, entities});
+    patchState({ids, entities});
   }
 
   @Action(PatchNoteByIdFailed)
@@ -188,16 +178,20 @@ export class NotesState {
   }
 
   @Action(DeleteNoteByIdSuccess)
-  deleteNoteByIdSuccess(ctx: StateContext<NotesStateModel>, {metadata}: DeleteNoteByIdSuccess) {
-    console.log(metadata, 'deleteNoteById success');
-    const state = ctx.getState();
-    const ids = state.ids.filter(id => id !== +metadata);
+  deleteNoteByIdSuccess({getState, patchState}: StateContext<NotesStateModel>, {noteId}: DeleteNoteByIdSuccess) {
+    console.log(noteId, 'deleteNoteById success');
+    const ids = getState().ids.filter(id => id !== +noteId);
 
-    ctx.patchState({ids})
+    patchState({ids})
   }
 
   @Action(DeleteNoteByIdFailed)
   deleteNoteByIdFailed() {
     console.log('deleteNoteById failed');
+  }
+
+  @Action(ResetNotesState)
+  resetNotesState() {
+    this.store.reset(NotesState);
   }
 }

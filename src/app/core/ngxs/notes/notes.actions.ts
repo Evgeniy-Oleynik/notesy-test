@@ -16,15 +16,18 @@ const ActionTypes = {
   DELETE_NOTE_BY_ID: '[Notes] Delete Note By ID',
   DELETE_NOTE_BY_ID_SUCCESS: '[Notes] Delete Note By ID Success',
   DELETE_NOTE_BY_ID_FAILED: '[Notes] Delete Note By ID Failed',
+  RESET_NOTES_STATE: '[Notes] Reset Notes State'
 }
 
 export class GetNotes {
   static type = ActionTypes.GET_NOTES;
+
   constructor(public payload: {userId: number}) {}
 }
 
 export class GetNotesSuccess {
   static type = ActionTypes.GET_NOTES_SUCCESS;
+
   constructor(public payload: Note[]) {}
 }
 
@@ -34,11 +37,13 @@ export class GetNotesFailed {
 
 export class PostNote {
   static type = ActionTypes.POST_NOTE;
+
   constructor(public payload: Partial<Note>) {}
 }
 
 export class PostNoteSuccess {
   static type = ActionTypes.POST_NOTE_SUCCESS;
+
   constructor(public payload: Note) {}
 }
 
@@ -48,11 +53,13 @@ export class PostNoteFailed {
 
 export class GetNoteById {
   static type = ActionTypes.GET_NOTE_BY_ID;
+
   constructor(public payload: number) {}
 }
 
 export class GetNoteByIdSuccess {
   static type = ActionTypes.GET_NOTE_BY_ID_SUCCESS;
+
   constructor(public payload: Note) {}
 }
 
@@ -62,11 +69,13 @@ export class GetNoteByIdFailed {
 
 export class PatchNoteById {
   static type = ActionTypes.PATCH_NOTE_BY_ID;
+
   constructor(public payload: Partial<Note>) {}
 }
 
 export class PatchNoteByIdSuccess {
   static type = ActionTypes.PATCH_NOTE_BY_ID_SUCCESS;
+
   constructor(public payload: Note) {}
 }
 
@@ -76,14 +85,20 @@ export class PatchNoteByIdFailed {
 
 export class DeleteNoteById {
   static type = ActionTypes.DELETE_NOTE_BY_ID;
+
   constructor(public payload: number) {}
 }
 
 export class DeleteNoteByIdSuccess {
   static type = ActionTypes.DELETE_NOTE_BY_ID_SUCCESS;
-  constructor(public payload: number, public metadata: number) {}
+
+  constructor(public payload: number, public noteId: number) {}
 }
 
 export class DeleteNoteByIdFailed {
   static type = ActionTypes.DELETE_NOTE_BY_ID_FAILED;
+}
+
+export class ResetNotesState {
+  static type = ActionTypes.RESET_NOTES_STATE;
 }

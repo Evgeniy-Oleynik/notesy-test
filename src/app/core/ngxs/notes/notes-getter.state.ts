@@ -3,20 +3,11 @@ import { NotesState, NotesStateModel } from './notes.state';
 import { TopicsState, TopicsStateModel } from '../topics/topics.state';
 
 export class NotesGetterState {
-  @Selector([NotesState])
-  static getNotes(state: NotesStateModel) {
-    return state.ids.map(id => state.entities[id]);
-  }
-
-  static getNote(id: number) {
-    return createSelector([NotesState], (state: NotesStateModel) => {
-      return state.entities[id];
-    })
-  }
-
   @Selector([NotesState, TopicsState])
-  static getNotesWithTopics(notesState: NotesStateModel, topicsState: TopicsStateModel) {
-    const notes = this.getNotes(notesState);
+  static getNotes(notesState: NotesStateModel, topicsState: TopicsStateModel) {
+    const notes = notesState.ids.map(id => {
+      return notesState.entities[id]
+    }).sort((a,b) => a.id && b.id ? a.id - b.id : -1);
     const topics = topicsState.ids.map(id => topicsState.entities[id]);
     return notes.map(note => {
       if (note.topicId) {
@@ -27,4 +18,17 @@ export class NotesGetterState {
       return note;
     })
   }
+
+  // @Selector([NotesState])
+  // static getNotes(state: NotesStateModel) {
+  //   return state.ids.map(id => state.entities[id]);
+  // }
+
+  static getNote(id: number) {
+    return createSelector([NotesState], (state: NotesStateModel) => {
+      return state.entities[id];
+    })
+  }
+
+
 }
