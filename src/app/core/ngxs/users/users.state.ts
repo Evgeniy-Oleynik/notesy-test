@@ -1,10 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Action, State, StateContext } from '@ngxs/store';
+import { Action, State, StateContext, Store } from '@ngxs/store';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
 import { User } from '../../../shared/interfaces/user';
 import { createEntitiesIds } from '../../../shared/utility/create-entities-ids';
-import { GetAllUsers, GetAllUsersFailed, GetAllUsersSuccess, GetUserById, GetUserByIdFailed, GetUserByIdSuccess } from './users.actions';
+import {
+  GetAllUsers,
+  GetAllUsersFailed,
+  GetAllUsersSuccess,
+  GetUserById,
+  GetUserByIdFailed,
+  GetUserByIdSuccess,
+  ResetUsersState
+} from './users.actions';
 
 @RequestState('getAllUsers')
 @Injectable()
@@ -34,6 +42,7 @@ export interface UsersStateModel {
 export class UsersState {
   constructor(
     private httpClient: HttpClient,
+    private store: Store,
   ) {}
 
   @Action(GetAllUsers)
@@ -49,12 +58,11 @@ export class UsersState {
   }
 
   @Action(GetAllUsersSuccess)
-  getAllUsersSuccess(ctx:StateContext<UsersStateModel>, {payload}: GetAllUsersSuccess) {
+  getAllUsersSuccess({getState, patchState}:StateContext<UsersStateModel>, {payload}: GetAllUsersSuccess) {
     console.log('getAllUsers success');
-    const state = ctx.getState();
-    const {ids, entities} = createEntitiesIds(state, payload, 'id');
+    const {ids, entities} = createEntitiesIds(getState(), payload, 'id');
 
-    ctx.patchState({ids, entities});
+    patchState({ids, entities});
   }
 
   @Action(GetAllUsersFailed)
@@ -75,17 +83,21 @@ export class UsersState {
   }
 
   @Action(GetUserByIdSuccess)
-  getUserByIdSuccess(ctx: StateContext<UsersStateModel>, {payload}: GetUserByIdSuccess) {
+  getUserByIdSuccess({getState, patchState}: StateContext<UsersStateModel>, {payload}: GetUserByIdSuccess) {
     console.log('getUserById success');
     console.log(payload);
-    const state = ctx.getState();
-    const {ids, entities} = createEntitiesIds(state, [payload], 'id')
+    const {ids, entities} = createEntitiesIds(getState(), [payload], 'id')
 
-    ctx.patchState({ids, entities});
+    patchState({ids, entities});
   }
 
   @Action(GetUserByIdFailed)
   getUserByIdFailed() {
     console.log('getUserById failed');
+  }
+
+  @Action(ResetUsersState)
+  resetUsersState() {
+    this.store.reset(UsersState);
   }
 }
