@@ -1,34 +1,5 @@
 <div class="note-block">
-  <div class="note">
-    <form (ngSubmit)="submitForm()" [formGroup]="noteEditorFormGroup" class="note-form">
-      <mat-form-field>
-        <mat-label>Topic</mat-label>
-        <mat-select formControlName="topicId" id="topicId">
-          <mat-option *ngFor="let topic of topics$ | async" [value]="topic.id">{{topic.type}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Title</mat-label>
-        <input formControlName="title" id="title" matInput type="text">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Text</mat-label>
-        <textarea formControlName="text" id="text" matInput type="text"></textarea>
-      </mat-form-field>
-      <div class="note-form__actions">
-        <button *ngIf="!dialogId" mat-button routerLink="/notes">Go Back</button>
-        <ng-template [ngIfElse]="createNote" [ngIf]="isEditMode$ | async">
-          <button mat-button type="submit" [disabled]="isFormInvalid">Update Note</button>
-          <button (click)="deleteNote()" mat-button>Delete Note</button>
-        </ng-template>
-      </div>
-    </form>
-
-    {{currentNote$ | async | json}}
-
-  </div>
+  <app-note-form></app-note-form>
 </div>
 
-<ng-template #createNote>
-  <button mat-button type="submit" [disabled]="isFormInvalid">Save Note</button>
-</ng-template>
+

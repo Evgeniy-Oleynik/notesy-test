@@ -4,24 +4,24 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { NoteEditComponent } from './note-edit.component';
-import { NoteEditRoutingModule } from './note-edit-routing.module';
+import { MatDialogModule } from '@angular/material/dialog';
+
+import { NoteEditDialogComponent } from './note-edit-dialog.component';
 import { NoteFormModule } from '../components/note-form/note-form.module';
 
 @NgModule({
   imports: [
     CommonModule,
-    NoteEditRoutingModule,
     ReactiveFormsModule,
+    NoteFormModule,
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
-    NoteFormModule
+    MatDialogModule,
   ],
-  exports: [NoteEditComponent],
   declarations: [
-    NoteEditComponent,
+    NoteEditDialogComponent,
   ],
 })
 
-export class NoteEditModule {}
+export class NoteEditDialogModule {}
