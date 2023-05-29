@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { map, Observable, shareReplay, Subject } from 'rxjs';
+import { withLatestFrom } from 'rxjs/operators';
+import { NoteEditDialogComponent } from './note-edit-dialog/note-edit-dialog.component';
 import { AuthService } from '../core/services/auth.service';
 import { NotesService } from '../core/services/notes.service';
 import { TopicsService } from '../core/services/topics.service';
-import { map, Observable, shareReplay, Subject } from 'rxjs';
-import { SelectionModel } from '@angular/cdk/collections';
 import { Note } from '../shared/interfaces/note';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
-import { NoteEditDialog } from './note-edit/note-edit.component';
-import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'app-notes',
@@ -20,7 +20,7 @@ export class NotesComponent implements OnInit {
 
   @ViewChild(MatTable) table?: MatTable<any>;
 
-  notes$ = this.notesService.notesWithTopics$;
+  notes$ = this.notesService.notes$;
   tableColumnsList = ['marker', 'number', 'topic', 'title'];
   selectedRows = new SelectionModel<Note>(true, []);
   notesListLength = 0;
@@ -59,7 +59,7 @@ export class NotesComponent implements OnInit {
   }
 
   openDialog(id: number) {
-    this.dialog.open(NoteEditDialog, {
+    this.dialog.open(NoteEditDialogComponent, {
       data: {
         id: id,
       }
