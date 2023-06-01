@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Note } from '../../shared/interfaces/note';
 
 @Component({
   selector: 'app-note-edit-dialog',
@@ -10,6 +10,6 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class NoteEditDialogComponent {
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: Partial<Note>,
   ) {}
 }

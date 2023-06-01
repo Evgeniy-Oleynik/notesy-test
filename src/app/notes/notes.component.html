@@ -41,7 +41,7 @@
 
     <tr *matHeaderRowDef="tableColumnsList" mat-header-row></tr>
     <tr
-      (click)="openDialog(row.id)"
+      (click)="openDialog(row)"
       *matRowDef="let row; columns: tableColumnsList;"
       class="notes-table__row"
       mat-row

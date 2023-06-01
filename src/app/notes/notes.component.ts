@@ -58,10 +58,11 @@ export class NotesComponent implements OnInit {
     this.router.navigate(['notes', 'new']);
   }
 
-  openDialog(id: number) {
+  openDialog(note: Note) {
+    this.notesService.currentNote$.next(note);
     this.dialog.open(NoteEditDialogComponent, {
       data: {
-        id: id,
+        ...note
       }
     });
   }
