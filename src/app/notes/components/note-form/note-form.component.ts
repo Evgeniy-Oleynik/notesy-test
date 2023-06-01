@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { filter, map, Observable, Subject, tap } from 'rxjs';
+import { filter, map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { switchMap, take, withLatestFrom } from 'rxjs/operators';
 import { RequestStatus } from 'ngxs-requests-plugin';
 import { NotesService } from '../../../core/services/notes.service';
@@ -21,15 +21,19 @@ interface NoteForm {
   templateUrl: './note-form.component.html',
   styleUrls: ['./note-form.component.scss']
 })
-export class NoteFormComponent implements OnInit {
-  @Input() currentNote$?: Observable<Note>;
+export class NoteFormComponent implements OnInit, OnDestroy {
+  @Input() currentNote?: Note;
   @Input() dialogId!: number;
 
+  currentNote$ = this.notesService.currentNote$;
+  topics$ = this.topicsService.topics$;
   currentNoteId!: number;
   isEditMode$!: Observable<boolean>;
   isFormInvalid!: boolean;
+  isDialogOpenedSubject: Subject<boolean> = new Subject<boolean>();
   submitFormSubject$: Subject<void> = new Subject<void>();
-  topics$ = this.topicsService.topics$;
+  deleteNoteSubject$: Subject<void> = new Subject<void>();
+  componentDestroyed$: Subject<boolean> = new Subject<boolean>();
 
 
   noteEditorFormGroup = new FormGroup<NoteForm>({
@@ -49,17 +53,26 @@ export class NoteFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.currentNote$ = this.notesService.getNoteById$(this.activatedRoute.snapshot.params['id']);
-    this.activatedRoute.params.pipe(
+    if (this.currentNote) this.noteEditorFormGroup.patchValue(this.currentNote)
+    else this.activatedRoute.params.pipe(
       map(params => params['id']),
       filter(id => id),
       switchMap(id => this.notesService.getNoteById$(id))
-    ).subscribe(note => this.noteEditorFormGroup.patchValue(note));
+    ).subscribe(note => {
+      this.noteEditorFormGroup.patchValue(note)
+    });
+
+    this.notesService.currentNote$.pipe(
+      takeUntil(this.componentDestroyed$)
+    ).subscribe(note => console.log(note));
+    this.isDialogOpenedSubject.subscribe();
+    this.dialog.afterOpened.subscribe(() => this.isDialogOpenedSubject.next(true));
+    this.dialog.afterAllClosed.subscribe(() => this.isDialogOpenedSubject.next(false));
 
     this.isFormInvalid = !this.noteEditorFormGroup.valid;
     this.noteEditorFormGroup.statusChanges.subscribe(() => this.isFormInvalid = !this.noteEditorFormGroup.valid);
 
-    this.isEditMode$ = this.currentNote$.pipe(
+    this.isEditMode$ = this.notesService.currentNote$.pipe(
       map(note => {
         if (note?.id) {
           this.currentNoteId = note.id;
@@ -70,10 +83,10 @@ export class NoteFormComponent implements OnInit {
 
     this.submitFormSubject$.pipe(
       withLatestFrom(this.isEditMode$),
-      filter(() => this.noteEditorFormGroup.valid)
+      filter(() => this.noteEditorFormGroup.valid),
     ).subscribe(
       ([_, isEditMode]) => {
-        console.log(this.noteEditorFormGroup.value);
+        console.log('submit value:', this.noteEditorFormGroup.value);
         if (isEditMode) {
           this.notesService.patchNote(this.noteEditorFormGroup.value);
         } else {
@@ -81,39 +94,46 @@ export class NoteFormComponent implements OnInit {
         }
       }
     );
+
+    this.deleteNoteSubject$.pipe(
+      withLatestFrom(this.currentNote$),
+    ).subscribe(([_,note]) => {
+      if (note.id) this.notesService.deleteNote(note.id);
+    })
   }
 
   submitForm() {
     this.submitFormSubject$.next();
-    this.notesService.postNoteRequestState$.pipe(
-      tap(res => {
+    this.notesService.patchNoteByIdRequestState$.pipe(
+      filter(res => {
+        console.log(res);
+        return res.loaded
+      }),
+      withLatestFrom(this.isDialogOpenedSubject),
+      map(([res, isDialogOpened]) => {
+        console.log(res);
         if (res.status === RequestStatus.Success) {
-          if (this.dialogId) {
-            this.dialog.closeAll();
-          } else {
-            this.router.navigate(['notes']);
-          }
+          isDialogOpened ? this.dialog.closeAll() : this.router.navigate(['notes']);
         }
       }),
-      filter(res => res.loaded),
-      take(1)
     ).subscribe();
   }
 
   deleteNote() {
-    this.notesService.deleteNote(this.currentNoteId);
     this.notesService.deleteNoteByIdRequestState$.pipe(
-      tap(res => {
+      filter(res => res.loaded),
+      withLatestFrom(this.isDialogOpenedSubject),
+      map(([res, isDialogOpened]) => {
         if (res.status === 'success') {
-          if (this.dialogId) {
-            this.dialog.closeAll();
-          } else {
-            this.router.navigate(['notes']);
-          }
+          isDialogOpened ? this.dialog.closeAll() : this.router.navigate(['notes']);
         }
       }),
-      filter(res => res.loaded),
-      take(1)
     ).subscribe()
+    this.deleteNoteSubject$.next();
+  }
+
+  ngOnDestroy() {
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
   }
 }
