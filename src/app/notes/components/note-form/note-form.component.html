@@ -15,7 +15,6 @@
       <textarea formControlName="text" id="text" matInput type="text"></textarea>
     </mat-form-field>
     <div class="note-form__actions">
-      <button *ngIf="!dialogId" mat-button routerLink="/notes">Go Back</button>
       <ng-template [ngIfElse]="createNote" [ngIf]="isEditMode$ | async">
         <button mat-button type="submit" [disabled]="isFormInvalid">Update Note</button>
         <button (click)="deleteNote()" mat-button>Delete Note</button>
