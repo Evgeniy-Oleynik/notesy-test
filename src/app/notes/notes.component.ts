@@ -20,6 +20,7 @@ export class NotesComponent implements OnInit {
 
   @ViewChild(MatTable) table?: MatTable<any>;
 
+  emptyNote: Note = {};
   notes$ = this.notesService.notes$;
   tableColumnsList = ['marker', 'number', 'topic', 'title'];
   selectedRows = new SelectionModel<Note>(true, []);
@@ -55,16 +56,14 @@ export class NotesComponent implements OnInit {
   }
 
   newNote() {
-    this.router.navigate(['notes', 'new']);
+    this.notesService.currentNote$.next(this.emptyNote);
+    this.dialog.open(NoteEditDialogComponent);
   }
 
   openDialog(note: Note) {
     this.notesService.currentNote$.next(note);
-    this.dialog.open(NoteEditDialogComponent, {
-      data: {
-        ...note
-      }
-    });
+    this.dialog.open(NoteEditDialogComponent);
+    console.log('current note:', note);
   }
 
   showSelected() {
