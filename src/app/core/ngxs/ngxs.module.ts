@@ -12,7 +12,7 @@ import {
   GetNoteByIdRequestState,
   GetNotesRequestState,
   NotesState,
-  PatchNoteByIdRequestState,
+  PatchNoteRequestState,
   PostNoteRequestState
 } from './notes/notes.state';
 
@@ -41,7 +41,7 @@ import {
       GetNotesRequestState,
       PostNoteRequestState,
       GetNoteByIdRequestState,
-      PatchNoteByIdRequestState,
+      PatchNoteRequestState,
       DeleteNoteByIdRequestState,
     ]),
 

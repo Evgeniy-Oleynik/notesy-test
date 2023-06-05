@@ -8,7 +8,7 @@ import {
   GetNoteByIdSuccess,
   GetNotes,
   GetNotesFailed,
-  GetNotesSuccess, PatchNoteById, PatchNoteByIdFailed, PatchNoteByIdSuccess,
+  GetNotesSuccess, PatchNote, PatchNoteFailed, PatchNoteSuccess,
   PostNote,
   PostNoteFailed,
   PostNoteSuccess, ResetNotesState
@@ -33,7 +33,7 @@ export class GetNoteByIdRequestState {
 
 @RequestState('patchNoteById')
 @Injectable()
-export class PatchNoteByIdRequestState {
+export class PatchNoteRequestState {
 }
 
 @RequestState('deleteNoteById')
@@ -136,21 +136,21 @@ export class NotesState {
     console.log('getNoteById failed');
   }
 
-  @Action(PatchNoteById)
-  patchNoteById({dispatch}: StateContext<NotesStateModel>, {payload}: PatchNoteById) {
+  @Action(PatchNote)
+  patchNoteById({dispatch}: StateContext<NotesStateModel>, {payload}: PatchNote) {
     const request = this.httpClient.patch(`api/notes/${payload.id}`, payload);
     console.log(payload);
 
     return dispatch(createRequestAction({
-      state: PatchNoteByIdRequestState,
+      state: PatchNoteRequestState,
       request,
-      successAction: PatchNoteByIdSuccess,
-      failAction: PatchNoteByIdFailed
+      successAction: PatchNoteSuccess,
+      failAction: PatchNoteFailed
     }))
   }
 
-  @Action(PatchNoteByIdSuccess)
-  patchNoteByIdSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload}: PatchNoteByIdSuccess) {
+  @Action(PatchNoteSuccess)
+  patchNoteByIdSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload}: PatchNoteSuccess) {
     console.log('patchNoteById success');
     console.log(payload);
 
@@ -159,7 +159,7 @@ export class NotesState {
     patchState({ids, entities});
   }
 
-  @Action(PatchNoteByIdFailed)
+  @Action(PatchNoteFailed)
   patchNoteByIdFailed() {
     console.log('patchNoteById failed');
   }

@@ -10,9 +10,9 @@ const ActionTypes = {
   GET_NOTE_BY_ID: '[Notes] Get Note By ID',
   GET_NOTE_BY_ID_SUCCESS: '[Notes] Get Note By ID Success',
   GET_NOTE_BY_ID_FAILED: '[Notes] Get Note By ID Failed',
-  PATCH_NOTE_BY_ID: '[Notes] Patch Note By ID',
-  PATCH_NOTE_BY_ID_SUCCESS: '[Notes] Patch Note By ID Success',
-  PATCH_NOTE_BY_ID_FAILED: '[Notes] Patch Note By ID Failed',
+  PATCH_NOTE: '[Notes] Patch Note By ID',
+  PATCH_NOTE_SUCCESS: '[Notes] Patch Note By ID Success',
+  PATCH_NOTE_FAILED: '[Notes] Patch Note By ID Failed',
   DELETE_NOTE_BY_ID: '[Notes] Delete Note By ID',
   DELETE_NOTE_BY_ID_SUCCESS: '[Notes] Delete Note By ID Success',
   DELETE_NOTE_BY_ID_FAILED: '[Notes] Delete Note By ID Failed',
@@ -67,20 +67,20 @@ export class GetNoteByIdFailed {
   static type = ActionTypes.GET_NOTE_BY_ID_FAILED;
 }
 
-export class PatchNoteById {
-  static type = ActionTypes.PATCH_NOTE_BY_ID;
+export class PatchNote {
+  static type = ActionTypes.PATCH_NOTE;
 
   constructor(public payload: Partial<Note>) {}
 }
 
-export class PatchNoteByIdSuccess {
-  static type = ActionTypes.PATCH_NOTE_BY_ID_SUCCESS;
+export class PatchNoteSuccess {
+  static type = ActionTypes.PATCH_NOTE_SUCCESS;
 
   constructor(public payload: Note) {}
 }
 
-export class PatchNoteByIdFailed {
-  static type = ActionTypes.PATCH_NOTE_BY_ID_FAILED;
+export class PatchNoteFailed {
+  static type = ActionTypes.PATCH_NOTE_FAILED;
 }
 
 export class DeleteNoteById {
