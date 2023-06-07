@@ -1,15 +1,19 @@
 import { Note } from '../../../shared/interfaces/note';
 
 const ActionTypes = {
-  GET_NOTES: '[Notes] Get Notes',
-  GET_NOTES_SUCCESS: '[Notes] Get Notes Success',
-  GET_NOTES_FAILED: '[Notes] Get Notes Failed',
-  POST_NOTE: '[Notes] Post Note',
-  POST_NOTE_SUCCESS: '[Notes] Post Note Success',
-  POST_NOTE_FAILED: '[Notes] Post Note Failed',
+  GET_ALL_NOTES: '[Notes] Get All Notes',
+  GET_ALL_NOTES_SUCCESS: '[Notes] Get All Notes Success',
+  GET_ALL_NOTES_FAILED: '[Notes] Get All Notes Failed',
+  GET_USER_NOTES: '[Notes] Get User Notes',
+  GET_USER_NOTES_SUCCESS: '[Notes] Get User Notes Success',
+  GET_USER_NOTES_FAILED: '[Notes] Get User Notes Failed',
   GET_NOTE_BY_ID: '[Notes] Get Note By ID',
   GET_NOTE_BY_ID_SUCCESS: '[Notes] Get Note By ID Success',
   GET_NOTE_BY_ID_FAILED: '[Notes] Get Note By ID Failed',
+  SET_CURRENT_NOTE_ID: '[Notes] Set Current Note ID',
+  POST_NOTE: '[Notes] Post Note',
+  POST_NOTE_SUCCESS: '[Notes] Post Note Success',
+  POST_NOTE_FAILED: '[Notes] Post Note Failed',
   PATCH_NOTE: '[Notes] Patch Note By ID',
   PATCH_NOTE_SUCCESS: '[Notes] Patch Note By ID Success',
   PATCH_NOTE_FAILED: '[Notes] Patch Note By ID Failed',
@@ -19,36 +23,34 @@ const ActionTypes = {
   RESET_NOTES_STATE: '[Notes] Reset Notes State'
 }
 
-export class GetNotes {
-  static type = ActionTypes.GET_NOTES;
-
-  constructor(public payload: {userId: number}) {}
+export class GetAllNotes {
+  static type = ActionTypes.GET_ALL_NOTES;
 }
 
-export class GetNotesSuccess {
-  static type = ActionTypes.GET_NOTES_SUCCESS;
+export class GetAllNotesSuccess {
+  static type = ActionTypes.GET_ALL_NOTES_SUCCESS;
 
   constructor(public payload: Note[]) {}
 }
 
-export class GetNotesFailed {
-  static type = ActionTypes.GET_NOTES_FAILED;
+export class GetAllNotesFailed {
+  static type = ActionTypes.GET_ALL_NOTES_FAILED;
 }
 
-export class PostNote {
-  static type = ActionTypes.POST_NOTE;
+export class GetUserNotes {
+  static type = ActionTypes.GET_USER_NOTES;
 
-  constructor(public payload: Partial<Note>) {}
+  constructor(public payload: number) {}
 }
 
-export class PostNoteSuccess {
-  static type = ActionTypes.POST_NOTE_SUCCESS;
+export class GetUserNotesSuccess {
+  static type = ActionTypes.GET_USER_NOTES_SUCCESS;
 
-  constructor(public payload: Note) {}
+  constructor(public payload: Note[]) {}
 }
 
-export class PostNoteFailed {
-  static type = ActionTypes.POST_NOTE_FAILED;
+export class GetUserNotesFailed {
+  static type = ActionTypes.GET_USER_NOTES_FAILED;
 }
 
 export class GetNoteById {
@@ -65,6 +67,28 @@ export class GetNoteByIdSuccess {
 
 export class GetNoteByIdFailed {
   static type = ActionTypes.GET_NOTE_BY_ID_FAILED;
+}
+
+export class SetCurrentNoteId {
+  static type = ActionTypes.SET_CURRENT_NOTE_ID;
+
+  constructor(public payload: number | null) {}
+}
+
+export class PostNote {
+  static type = ActionTypes.POST_NOTE;
+
+  constructor(public payload: Partial<Note>) {}
+}
+
+export class PostNoteSuccess {
+  static type = ActionTypes.POST_NOTE_SUCCESS;
+
+  constructor(public payload: Note) {}
+}
+
+export class PostNoteFailed {
+  static type = ActionTypes.POST_NOTE_FAILED;
 }
 
 export class PatchNote {

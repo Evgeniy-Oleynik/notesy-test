@@ -1,24 +1,29 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Action, State, StateContext, Store } from '@ngxs/store';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
 import {
   DeleteNoteById, DeleteNoteByIdFailed, DeleteNoteByIdSuccess,
   GetNoteById, GetNoteByIdFailed,
   GetNoteByIdSuccess,
-  GetNotes,
-  GetNotesFailed,
-  GetNotesSuccess, PatchNote, PatchNoteFailed, PatchNoteSuccess,
+  GetAllNotes,
+  GetAllNotesFailed,
+  GetAllNotesSuccess, PatchNote, PatchNoteFailed, PatchNoteSuccess,
   PostNote,
   PostNoteFailed,
-  PostNoteSuccess, ResetNotesState
+  PostNoteSuccess, ResetNotesState, SetCurrentNoteId, GetUserNotes, GetUserNotesSuccess, GetUserNotesFailed
 } from './notes.actions';
 import { createEntitiesIds } from '../../../shared/utility/create-entities-ids';
 import { Note } from '../../../shared/interfaces/note';
 
 @RequestState('getNotes')
 @Injectable()
-export class GetNotesRequestState {
+export class GetAllNotesRequestState {
+}
+
+@RequestState('getUserNotes')
+@Injectable()
+export class GetUserNotesRequestState{
 }
 
 @RequestState('postNote')
@@ -44,13 +49,15 @@ export class DeleteNoteByIdRequestState {
 export interface NotesStateModel {
   entities: {[key: number]: Note};
   ids: number[];
+  currentNoteId: number | null;
 }
 
 @State<NotesStateModel>({
   name: 'notes',
   defaults: {
     entities: {},
-    ids: []
+    ids: [],
+    currentNoteId: null,
   }
 })
 
@@ -61,54 +68,55 @@ export class NotesState {
     private store: Store,
   ) {}
 
-  @Action(GetNotes)
-  getAllNotes({dispatch}: StateContext<NotesStateModel>, {payload}: GetNotes) {
-    const request = this.httpClient.get(`api/notes?userId=${payload.userId}`);
+  @Action(GetAllNotes)
+  getAllNotes({dispatch}: StateContext<NotesStateModel>) {
+    const request = this.httpClient.get(`api/notes`);
 
     return dispatch(createRequestAction({
-      state: GetNotesRequestState,
+      state: GetAllNotesRequestState,
       request,
-      successAction: GetNotesSuccess,
-      failAction: GetNotesFailed
+      successAction: GetAllNotesSuccess,
+      failAction: GetAllNotesFailed
     }))
   }
 
-  @Action(GetNotesSuccess)
-  getNotesSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload}: GetNotesSuccess) {
+  @Action(GetAllNotesSuccess)
+  getAllNotesSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload}: GetAllNotesSuccess) {
     console.log('getNotes success');
     const {ids, entities} = createEntitiesIds(getState(), payload);
 
     patchState({ids, entities});
   }
 
-  @Action(GetNotesFailed)
-  getNotesFailed() {
+  @Action(GetAllNotesFailed)
+  getAllNotesFailed() {
     console.log('getNotes failed');
   }
 
-  @Action(PostNote)
-  postNote({dispatch}: StateContext<NotesStateModel>, {payload}: PostNote) {
-    const request = this.httpClient.post('api/notes', payload);
+  @Action(GetUserNotes)
+  getUserNotes({dispatch}: StateContext<NotesStateModel>, {payload}: GetUserNotes) {
+    let queryParams = new HttpParams().append('userId', payload);
+    const request = this.httpClient.get(`api/notes`, {params: queryParams});
 
     return dispatch(createRequestAction({
-      state: PostNoteRequestState,
+      state: GetUserNotesRequestState,
       request,
-      successAction: PostNoteSuccess,
-      failAction: PostNoteFailed
+      successAction: GetUserNotesSuccess,
+      failAction: GetUserNotesFailed
     }))
   }
 
-  @Action(PostNoteSuccess)
-  postNoteSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload}: PostNoteSuccess) {
-    console.log('postNote success');
-    const {ids, entities} = createEntitiesIds(getState(), [payload]);
+  @Action(GetUserNotesSuccess)
+  getUserNotesSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload}: GetUserNotesSuccess) {
+    console.log('getUserNotes success');
+    const {ids, entities} = createEntitiesIds(getState(), payload);
 
     patchState({ids, entities});
   }
 
-  @Action(PostNoteFailed)
-  postNoteFailed() {
-    console.log('postNote failed');
+  @Action(GetUserNotesFailed)
+  getUserNotesFailed() {
+    console.log('getUserNotes failed');
   }
 
   @Action(GetNoteById)
@@ -134,6 +142,39 @@ export class NotesState {
   @Action(GetNoteByIdFailed)
   getNoteByIdFailed() {
     console.log('getNoteById failed');
+  }
+
+  @Action(SetCurrentNoteId)
+  setCurrentNoteId({patchState}: StateContext<NotesStateModel>, {payload}: SetCurrentNoteId) {
+    console.log('currentNoteId:', payload);
+    const currentNoteId = payload;
+
+    patchState({currentNoteId});
+  }
+
+  @Action(PostNote)
+  postNote({dispatch}: StateContext<NotesStateModel>, {payload}: PostNote) {
+    const request = this.httpClient.post('api/notes', payload);
+
+    return dispatch(createRequestAction({
+      state: PostNoteRequestState,
+      request,
+      successAction: PostNoteSuccess,
+      failAction: PostNoteFailed
+    }))
+  }
+
+  @Action(PostNoteSuccess)
+  postNoteSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload}: PostNoteSuccess) {
+    console.log('postNote success');
+    const {ids, entities} = createEntitiesIds(getState(), [payload]);
+
+    patchState({ids, entities});
+  }
+
+  @Action(PostNoteFailed)
+  postNoteFailed() {
+    console.log('postNote failed');
   }
 
   @Action(PatchNote)

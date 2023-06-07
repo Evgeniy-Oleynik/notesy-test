@@ -1,6 +1,7 @@
-import { createSelector, Selector } from '@ngxs/store';
+import { Selector } from '@ngxs/store';
 import { NotesState, NotesStateModel } from './notes.state';
 import { TopicsState, TopicsStateModel } from '../topics/topics.state';
+import { AuthState, AuthStateModel } from '../auth/auth.state';
 
 export class NotesGetterState {
   @Selector([NotesState, TopicsState])
@@ -19,16 +20,13 @@ export class NotesGetterState {
     })
   }
 
-  // @Selector([NotesState])
-  // static getNotes(state: NotesStateModel) {
-  //   return state.ids.map(id => state.entities[id]);
-  // }
-
-  static getNote(id: number) {
-    return createSelector([NotesState], (state: NotesStateModel) => {
-      return state.entities[id];
-    })
+  @Selector([NotesState])
+  static getCurrentNote(notesState: NotesStateModel) {
+    return notesState.entities[notesState.currentNoteId as number];
   }
 
-
+  @Selector([NotesState, TopicsState, AuthState])
+  static getUserNotes(notesState: NotesStateModel, topicsState: TopicsStateModel, authState: AuthStateModel) {
+    return this.getNotes(notesState, topicsState).filter(note => note.userId === authState.user.id)
+  }
 }
