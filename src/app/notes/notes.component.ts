@@ -20,13 +20,15 @@ export class NotesComponent implements OnInit {
 
   @ViewChild(MatTable) table?: MatTable<any>;
 
-  emptyNote: Note = {};
+  selectAllNotes$ = new Subject<void>();
+
+  notesList$!: Observable<MatTableDataSource<Note>>;
+
   notes$ = this.notesService.notes$;
+  userNotes$ = this.notesService.userNotes$;
   tableColumnsList = ['marker', 'number', 'topic', 'title'];
   selectedRows = new SelectionModel<Note>(true, []);
   notesListLength = 0;
-  notesList$!: Observable<MatTableDataSource<Note>>;
-  selectAllNotes$ = new Subject<void>();
 
   constructor(
     private authService: AuthService,
@@ -40,10 +42,9 @@ export class NotesComponent implements OnInit {
   ngOnInit(): void {
     this.notesList$ = this.notes$.pipe(
       map(notes => {
-        this.notesListLength = notes.length;
         return new MatTableDataSource<Note>(notes);
       }),
-      shareReplay()
+      shareReplay({refCount: true, bufferSize: 1})
     );
 
     this.selectAllNotes$.pipe(
@@ -56,18 +57,42 @@ export class NotesComponent implements OnInit {
   }
 
   newNote() {
-    this.notesService.currentNote$.next(this.emptyNote);
+    this.notesService.setCurrentNoteId(null);
     this.dialog.open(NoteEditDialogComponent);
   }
 
   openDialog(note: Note) {
-    this.notesService.currentNote$.next(note);
+    if (note.id) this.notesService.setCurrentNoteId(note.id);
     this.dialog.open(NoteEditDialogComponent);
     console.log('current note:', note);
   }
 
   showSelected() {
     console.log(this.selectedRows.selected);
+  }
+
+  showAllNotes() {
+    this.notesService.getAllNotes();
+    this.notesList$ = this.notes$.pipe(
+      map(notes => {
+        return new MatTableDataSource<Note>(notes);
+      }),
+      shareReplay({refCount: true, bufferSize: 1})
+    );
+  }
+
+  showMyNotes() {
+    this.authService.currentUser$.pipe(
+      map(user => {
+        if (user.id) this.notesService.getUserNotes(user.id)
+      })
+    ).subscribe()
+    this.notesList$ = this.userNotes$.pipe(
+      map(notes => {
+        return new MatTableDataSource<Note>(notes);
+      }),
+      shareReplay({refCount: true, bufferSize: 1})
+    );
   }
 
   isAllSelected() {

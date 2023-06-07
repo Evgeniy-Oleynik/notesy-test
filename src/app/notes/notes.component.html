@@ -7,6 +7,11 @@
 
   <button (click)="showSelected()" mat-button>show selected</button>
 
+  <div>
+    <button (click)="showAllNotes()" mat-button>All notes</button>
+    <button (click)="showMyNotes()" mat-button>My notes</button>
+  </div>
+
   <table *ngIf="notesList$ | async as notesList" [dataSource]="notesList" class="notes-table" mat-table>
     <ng-container matColumnDef="number">
       <th *matHeaderCellDef mat-header-cell>ID</th>
