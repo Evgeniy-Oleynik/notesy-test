@@ -1,6 +1,6 @@
 <div class="auth">
   <h1>Sign Up</h1>
-  <form (ngSubmit)="signUp()" [formGroup]="signUpForm" class="auth-form">
+  <form [formGroup]="signUpForm" class="auth-form">
     <mat-form-field>
       <mat-label for="signup-name">Name:</mat-label>
       <input formControlName="name" id="signup-name" matInput required type="name">
@@ -15,7 +15,7 @@
     </mat-form-field>
     <div class="auth-form__actions">
       <button (click)="logIn()" mat-button>Log In</button>
-      <button type="submit" mat-button>Sign Up</button>
+      <button (click)="signUp()" mat-button>Sign Up</button>
     </div>
   </form>
 </div>
