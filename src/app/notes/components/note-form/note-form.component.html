@@ -16,7 +16,7 @@
     </mat-form-field>
     <div class="note-form__actions">
       <ng-template [ngIfElse]="createNote" [ngIf]="isEditMode$ | async">
-        <button mat-button type="submit" [disabled]="isFormInvalid">Update Note</button>
+        <button mat-button type="submit" [disabled]="!noteEditorFormGroup.valid">Update Note</button>
         <button (click)="deleteNote()" mat-button>Delete Note</button>
       </ng-template>
     </div>
@@ -24,5 +24,5 @@
 </div>
 
 <ng-template #createNote>
-  <button mat-button type="submit" [disabled]="isFormInvalid">Save Note</button>
+  <button mat-button type="submit" [disabled]="!noteEditorFormGroup.valid">Save Note</button>
 </ng-template>

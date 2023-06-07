@@ -23,7 +23,6 @@ interface NoteForm {
 export class NoteFormComponent implements OnInit, OnDestroy {
   topics$ = this.topicsService.topics$;
   isEditMode$!: Observable<boolean>;
-  isFormInvalid!: boolean;
   patchFormSubject$: Subject<void> = new Subject<void>();
   submitFormSubject$: Subject<void> = new Subject<void>();
   deleteNoteSubject$: Subject<void> = new Subject<void>();
@@ -47,8 +46,11 @@ export class NoteFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.isEditMode$ = this.notesService.currentNote$.pipe(
+      map(note => note ? !!note.id : false)
+    );
+
     this.noteFormSubscriptions.push(
-      this.noteEditorFormGroup.statusChanges.subscribe(() => this.isFormInvalid = !this.noteEditorFormGroup.valid),
 
       this.patchFormSubject$.pipe(
         withLatestFrom(this.notesService.currentNote$),
@@ -58,14 +60,11 @@ export class NoteFormComponent implements OnInit, OnDestroy {
 
       this.submitFormSubject$.pipe(
         filter(() => {
-          console.log('filter 1');
           return this.noteEditorFormGroup.valid;
         }),
         withLatestFrom(this.isEditMode$),
         switchMap(([_, isEditMode]) => {
-          console.log('switchMap', isEditMode);
           return isEditMode ? this.notesService.patchNote(this.noteEditorFormGroup.value) : this.notesService.postNote(this.noteEditorFormGroup.value);
-          // return isEditMode ? this.notesService.patchNoteByIdRequestState$ : this.notesService.postNoteRequestState$;
         }),
       ).subscribe(res => {
         if (res.status === RequestStatus.Success) {
@@ -89,12 +88,6 @@ export class NoteFormComponent implements OnInit, OnDestroy {
     );
 
     this.patchFormSubject$.next();
-
-    this.isFormInvalid = !this.noteEditorFormGroup.valid;
-
-    this.isEditMode$ = this.notesService.currentNote$.pipe(
-      map(note => !!note.id)
-    );
   }
 
   submitForm() {
