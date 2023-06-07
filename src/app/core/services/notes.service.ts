@@ -1,28 +1,33 @@
 import { Injectable } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { BehaviorSubject, filter, Observable } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import { IRequest } from 'ngxs-requests-plugin';
 import { Note } from '../../shared/interfaces/note';
 import { NotesGetterState } from '../ngxs/notes/notes-getter.state';
 import {
   DeleteNoteByIdRequestState,
   GetNoteByIdRequestState,
-  GetNotesRequestState,
+  GetAllNotesRequestState,
   PatchNoteRequestState,
   PostNoteRequestState
 } from '../ngxs/notes/notes.state';
-import { DeleteNoteById, GetNoteById, GetNotes, PatchNote, PostNote } from '../ngxs/notes/notes.actions';
+import { DeleteNoteById, GetNoteById, GetAllNotes, PatchNote, PostNote, SetCurrentNoteId, GetUserNotes } from '../ngxs/notes/notes.actions';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotesService {
-  currentNote$: BehaviorSubject<Note> = new BehaviorSubject<Note>({});
 
   @Select(NotesGetterState.getNotes)
   notes$!: Observable<Note[]>;
 
-  @Select(GetNotesRequestState)
+  @Select(NotesGetterState.getUserNotes)
+  userNotes$!: Observable<Note[]>;
+
+  @Select(NotesGetterState.getCurrentNote)
+  currentNote$!: Observable<Note>;
+
+  @Select(GetAllNotesRequestState)
   getNotesRequestState$!: Observable<IRequest<Note[]>>;
 
   @Select(GetNoteByIdRequestState)
@@ -41,8 +46,12 @@ export class NotesService {
     private store: Store,
   ) {}
 
+  getAllNotes() {
+    this.store.dispatch(new GetAllNotes());
+  }
+
   getUserNotes(userId: number) {
-    this.store.dispatch(new GetNotes({userId}));
+    this.store.dispatch(new GetUserNotes(userId));
   }
 
   getNoteById(id: number) {
@@ -50,8 +59,8 @@ export class NotesService {
     return this.getNoteByIdRequestState$;
   }
 
-  getNoteById$(id: number) {
-    return this.store.select(NotesGetterState.getNote(id));
+  setCurrentNoteId(id: number | null) {
+    this.store.dispatch(new SetCurrentNoteId(id));
   }
 
   postNote(note: Partial<Note>) {
