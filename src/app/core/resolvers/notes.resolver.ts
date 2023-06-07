@@ -15,13 +15,11 @@ export class NotesResolver implements Resolve<IRequest> {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
-    return this.authService.currentUser$.subscribe(user => {
-      if (user.id) this.notesService.getUserNotes(user.id);
-      return this.notesService.getNotesRequestState$.pipe(
-        filter(res => res.loaded),
-        take(1)
-      )
-    })
+    this.notesService.getAllNotes();
+    return this.notesService.getNotesRequestState$.pipe(
+      filter(res => res.loaded),
+      take(1)
+    )
   }
 }
 
