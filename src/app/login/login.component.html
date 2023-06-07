@@ -1,6 +1,6 @@
 <div class="auth">
   <h1>Log In</h1>
-  <form (ngSubmit)="logIn()" [formGroup]="logInForm" class="auth-form">
+  <form [formGroup]="logInForm" class="auth-form">
     <mat-form-field>
       <mat-label for="login-email">Email:</mat-label>
       <input formControlName="email" id="login-email" matInput required type="email">
@@ -10,7 +10,7 @@
       <input formControlName="password" id="login-password" matInput required type="password">
     </mat-form-field>
     <div class="auth-form__actions">
-      <button mat-button type="submit">Log In</button>
+      <button (click)="logIn()" mat-button>Log In</button>
       <button (click)="signUp()" mat-button>Sign Up</button>
     </div>
   </form>
