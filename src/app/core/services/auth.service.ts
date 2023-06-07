@@ -90,7 +90,6 @@ export class AuthService {
 
   logInUser(user: Partial<User>) {
     this.store.dispatch(new LogInUser(user));
-    // this.navigateAfterSuccess(this.logInUserRequestState$, 'notes');
     this.navigateAfterSuccess$.next([this.logInUserRequestState$, 'notes']);
 
   }
@@ -98,7 +97,6 @@ export class AuthService {
   logOutUser() {
     this.store.dispatch(new LogOutUser());
     this.navigateAfterSuccess$.next([this.logOutUserRequestState$, 'login']);
-    // this.navigateAfterSuccess(this.logOutUserRequestState$, 'login');
     this.store.dispatch(new ResetNotesState());
     this.store.dispatch(new ResetTopicsState());
     this.store.dispatch(new ResetUsersState());
@@ -112,15 +110,4 @@ export class AuthService {
       this.store.dispatch(new GetUserByToken(token));
     }
   }
-
-  // isAuthorized(): boolean {
-  //   let token: string | undefined;
-  //   this.currentUser$.pipe(
-  //     filter(user => !!user.token),
-  //     take(1),
-  //     map(user => token = user.token)
-  //   ).subscribe();
-  //   console.log('isAuthorized:', !!token);
-  //   return !!token;
-  // }
 }
