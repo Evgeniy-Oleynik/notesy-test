@@ -7,11 +7,11 @@ import { NotesGetterState } from '../ngxs/notes/notes-getter.state';
 import {
   DeleteNoteByIdRequestState,
   GetNoteByIdRequestState,
-  GetAllNotesRequestState,
+  GetNotesRequestState,
   PatchNoteRequestState,
   PostNoteRequestState
 } from '../ngxs/notes/notes.state';
-import { DeleteNoteById, GetNoteById, GetAllNotes, PatchNote, PostNote, SetCurrentNoteId, GetUserNotes } from '../ngxs/notes/notes.actions';
+import { DeleteNoteById, GetNoteById, GetNotes, PatchNote, PostNote, SetCurrentNoteId, GetUserNotes } from '../ngxs/notes/notes.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class NotesService {
   @Select(NotesGetterState.getCurrentNote)
   currentNote$!: Observable<Note>;
 
-  @Select(GetAllNotesRequestState)
+  @Select(GetNotesRequestState)
   getNotesRequestState$!: Observable<IRequest<Note[]>>;
 
   @Select(GetNoteByIdRequestState)
@@ -46,8 +46,9 @@ export class NotesService {
     private store: Store,
   ) {}
 
-  getAllNotes() {
-    this.store.dispatch(new GetAllNotes());
+  getNotes(params: {userId?: number, topicId?: number}) {
+    this.store.dispatch(new GetNotes(params));
+    return this.getNotesRequestState$;
   }
 
   getUserNotes(userId: number) {
