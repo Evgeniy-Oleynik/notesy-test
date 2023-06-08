@@ -10,7 +10,7 @@ import { GetAllUsersRequestState, GetUserByIdRequestState, UsersState } from './
 import {
   DeleteNoteByIdRequestState,
   GetNoteByIdRequestState,
-  GetAllNotesRequestState,
+  GetNotesRequestState,
   NotesState,
   PatchNoteRequestState,
   PostNoteRequestState
@@ -38,7 +38,7 @@ import {
       GetTopicsRequestState,
       GetAllUsersRequestState,
       GetUserByIdRequestState,
-      GetAllNotesRequestState,
+      GetNotesRequestState,
       PostNoteRequestState,
       GetNoteByIdRequestState,
       PatchNoteRequestState,

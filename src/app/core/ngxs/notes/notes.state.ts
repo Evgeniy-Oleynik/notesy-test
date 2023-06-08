@@ -4,21 +4,20 @@ import { Action, State, StateContext, Store } from '@ngxs/store';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
 import {
   DeleteNoteById, DeleteNoteByIdFailed, DeleteNoteByIdSuccess,
-  GetNoteById, GetNoteByIdFailed,
-  GetNoteByIdSuccess,
-  GetAllNotes,
-  GetAllNotesFailed,
-  GetAllNotesSuccess, PatchNote, PatchNoteFailed, PatchNoteSuccess,
-  PostNote,
-  PostNoteFailed,
-  PostNoteSuccess, ResetNotesState, SetCurrentNoteId, GetUserNotes, GetUserNotesSuccess, GetUserNotesFailed
+  GetNoteById, GetNoteByIdFailed, GetNoteByIdSuccess,
+  GetNotes, GetNotesFailed, GetNotesSuccess,
+  PatchNote, PatchNoteFailed, PatchNoteSuccess,
+  PostNote, PostNoteFailed, PostNoteSuccess,
+  ResetNotesState,
+  SetCurrentNoteId,
+  GetUserNotes, GetUserNotesSuccess, GetUserNotesFailed
 } from './notes.actions';
 import { createEntitiesIds } from '../../../shared/utility/create-entities-ids';
 import { Note } from '../../../shared/interfaces/note';
 
 @RequestState('getNotes')
 @Injectable()
-export class GetAllNotesRequestState {
+export class GetNotesRequestState {
 }
 
 @RequestState('getUserNotes')
@@ -68,28 +67,29 @@ export class NotesState {
     private store: Store,
   ) {}
 
-  @Action(GetAllNotes)
-  getAllNotes({dispatch}: StateContext<NotesStateModel>) {
-    const request = this.httpClient.get(`api/notes`);
+  @Action(GetNotes)
+  getNotes({dispatch}: StateContext<NotesStateModel>, {payload: params}: GetNotes) {
+    const request = this.httpClient.get(`api/notes`, {params});
 
     return dispatch(createRequestAction({
-      state: GetAllNotesRequestState,
+      state: GetNotesRequestState,
       request,
-      successAction: GetAllNotesSuccess,
-      failAction: GetAllNotesFailed
+      successAction: GetNotesSuccess,
+      failAction: GetNotesFailed
     }))
   }
 
-  @Action(GetAllNotesSuccess)
-  getAllNotesSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload}: GetAllNotesSuccess) {
+  @Action(GetNotesSuccess)
+  getNotesSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload}: GetNotesSuccess) {
     console.log('getNotes success');
-    const {ids, entities} = createEntitiesIds(getState(), payload);
+    const state = getState();
+    const {ids, entities} = createEntitiesIds(state, payload);
 
     patchState({ids, entities});
   }
 
-  @Action(GetAllNotesFailed)
-  getAllNotesFailed() {
+  @Action(GetNotesFailed)
+  getNotesFailed() {
     console.log('getNotes failed');
   }
 

@@ -1,9 +1,9 @@
 import { Note } from '../../../shared/interfaces/note';
 
 const ActionTypes = {
-  GET_ALL_NOTES: '[Notes] Get All Notes',
-  GET_ALL_NOTES_SUCCESS: '[Notes] Get All Notes Success',
-  GET_ALL_NOTES_FAILED: '[Notes] Get All Notes Failed',
+  GET_NOTES: '[Notes] Get All Notes',
+  GET_NOTES_SUCCESS: '[Notes] Get All Notes Success',
+  GET_NOTES_FAILED: '[Notes] Get All Notes Failed',
   GET_USER_NOTES: '[Notes] Get User Notes',
   GET_USER_NOTES_SUCCESS: '[Notes] Get User Notes Success',
   GET_USER_NOTES_FAILED: '[Notes] Get User Notes Failed',
@@ -23,18 +23,20 @@ const ActionTypes = {
   RESET_NOTES_STATE: '[Notes] Reset Notes State'
 }
 
-export class GetAllNotes {
-  static type = ActionTypes.GET_ALL_NOTES;
+export class GetNotes {
+  static type = ActionTypes.GET_NOTES;
+
+  constructor(public payload: { userId?: number, topicId?: number }) {}
 }
 
-export class GetAllNotesSuccess {
-  static type = ActionTypes.GET_ALL_NOTES_SUCCESS;
+export class GetNotesSuccess {
+  static type = ActionTypes.GET_NOTES_SUCCESS;
 
   constructor(public payload: Note[]) {}
 }
 
-export class GetAllNotesFailed {
-  static type = ActionTypes.GET_ALL_NOTES_FAILED;
+export class GetNotesFailed {
+  static type = ActionTypes.GET_NOTES_FAILED;
 }
 
 export class GetUserNotes {
