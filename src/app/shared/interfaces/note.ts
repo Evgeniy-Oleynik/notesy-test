@@ -1,6 +1,7 @@
 export interface Note {
   id: number | null;
   userId: number | null;
+  userName?: string | null;
   topicId: number | null;
   topicType?: string | null;
   title: string | null;

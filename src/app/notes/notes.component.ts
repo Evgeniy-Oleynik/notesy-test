@@ -26,7 +26,7 @@ export class NotesComponent implements OnInit {
 
   notes$ = this.notesService.notes$;
   userNotes$ = this.notesService.userNotes$;
-  tableColumnsList = ['marker', 'number', 'topic', 'title'];
+  tableColumnsList = ['marker', 'topic', 'title', 'author'];
   selectedRows = new SelectionModel<Note>(true, []);
   notesListLength = 0;
 
