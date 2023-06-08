@@ -9,6 +9,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { NotesComponent } from './notes.component';
 import { NotesRoutingModule } from './notes-routing.module';
 import { NoteEditDialogModule } from './note-edit-dialog/note-edit-dialog.module';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   imports: [
@@ -20,6 +23,9 @@ import { NoteEditDialogModule } from './note-edit-dialog/note-edit-dialog.module
     MatCheckboxModule,
     MatDialogModule,
     NoteEditDialogModule,
+    MatMenuModule,
+    MatOptionModule,
+    MatSelectModule
   ],
   declarations: [
     NotesComponent

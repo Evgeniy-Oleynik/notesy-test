@@ -8,8 +8,24 @@
   <button (click)="showSelected()" mat-button>show selected</button>
 
   <div>
-    <button (click)="showAllNotes()" mat-button>All notes</button>
-    <button (click)="showMyNotes()" mat-button>My notes</button>
+
+    <mat-select [formControl]="userIdFormControl">
+      <mat-option [value]="null" >
+        ALL
+      </mat-option>
+      <mat-option *ngFor="let user of users$ | async" [value]="user.id">
+        {{user.name}}
+      </mat-option>
+    </mat-select>
+
+    <mat-select [formControl]="topicIdFormControl">
+      <mat-option [value]="null" >
+        ALL
+      </mat-option>
+      <mat-option *ngFor="let topic of topics$ | async" [value]="topic.id">
+        {{topic.type}}
+      </mat-option>
+    </mat-select>
   </div>
 
   <table *ngIf="notesList$ | async as notesList" [dataSource]="notesList" class="notes-table" mat-table>
