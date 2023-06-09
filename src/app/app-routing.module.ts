@@ -20,7 +20,7 @@ const routes: Routes = [
     resolve: [NotesResolver],
     loadChildren: () => import('./notes/notes.module').then(mod => mod.NotesModule)
   },
-  {path: '404', loadChildren: () => import('./notfound/notfound.module').then(mod => mod.NotfoundModule)},
+  {path: '404', loadChildren: () => import('./shared/components/notfound/notfound.module').then(mod => mod.NotfoundModule)},
   {path: '**', redirectTo: '404'}
 ];
 
