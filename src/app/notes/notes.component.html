@@ -10,7 +10,7 @@
   <div>
 
     <mat-select [formControl]="userIdFormControl">
-      <mat-option [value]="null" >
+      <mat-option [value]="null" ngDefaultControl>
         ALL
       </mat-option>
       <mat-option *ngFor="let user of users$ | async" [value]="user.id">
@@ -19,7 +19,7 @@
     </mat-select>
 
     <mat-select [formControl]="topicIdFormControl">
-      <mat-option [value]="null" >
+      <mat-option [value]="null" ngDefaultControl>
         ALL
       </mat-option>
       <mat-option *ngFor="let topic of topics$ | async" [value]="topic.id">
