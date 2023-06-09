@@ -1,14 +1,9 @@
 <div class="notes-main base-wrapper">
   <h1>NOTESY main page</h1>
 
-  <div class="notes-list">
-    <button (click)="newNote()" class="notes__button-new" mat-button>+</button>
-  </div>
-
   <button (click)="showSelected()" mat-button>show selected</button>
 
   <div>
-
     <mat-select [formControl]="userIdFormControl">
       <mat-option [value]="null" ngDefaultControl>
         ALL
@@ -29,6 +24,10 @@
   </div>
 
   <table *ngIf="notesList$ | async as notesList" [dataSource]="notesList" class="notes-table" mat-table>
+    <ng-container matColumnDef="createNewNote">
+      <th *matHeaderCellDef mat-header-cell [attr.colspan]="tableColumnsList.length">Create New Note</th>
+    </ng-container>
+
     <ng-container matColumnDef="topic">
       <th *matHeaderCellDef mat-header-cell>Topic</th>
       <td *matCellDef="let note" mat-cell>{{note.topicType}}</td>
@@ -61,6 +60,11 @@
     </ng-container>
 
     <tr *matHeaderRowDef="tableColumnsList" mat-header-row></tr>
+    <tr
+      (click)="newNote()"
+      *matHeaderRowDef="newNoteRow"
+      mat-header-row
+    ></tr>
     <tr
       (click)="openDialog(row)"
       *matRowDef="let row; columns: tableColumnsList;"

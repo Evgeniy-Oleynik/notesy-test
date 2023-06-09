@@ -13,6 +13,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { User } from '../shared/interfaces/user';
 import { UsersService } from '../core/services/users.service';
 import { Topic } from '../shared/interfaces/topic';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-notes',
@@ -31,6 +32,7 @@ export class NotesComponent implements OnInit {
 
   notes$ = this.notesService.notes$;
   tableColumnsList = ['marker', 'topic', 'title', 'author'];
+  newNoteRow = ['createNewNote'];
   selectedRows = new SelectionModel<Note>(true, []);
   notesListLength = 0;
   formGroup?: FormGroup;
@@ -43,9 +45,7 @@ export class NotesComponent implements OnInit {
     private usersService: UsersService,
     private dialog: MatDialog,
     private route: ActivatedRoute,
-  ) {
-    this.createFormGroup();
-  }
+  ) {}
 
   get userIdFormControl() {
     return this.formGroup?.get('userId') as FormControl;
@@ -59,9 +59,13 @@ export class NotesComponent implements OnInit {
     this.users$ = this.usersService.users$;
     this.topics$ = this.topicsService.topics$;
 
-    this.formGroup?.patchValue(this.route.snapshot.queryParams);
-    console.log(this.route.snapshot.queryParams);
-    console.log(this.formGroup?.value);
+    this.route.queryParams.pipe(
+      take(1)
+    ).subscribe(params => {
+      const userId = parseInt(params['userId']) || null;
+      const topicId = parseInt(params['topicId']) || null;
+      this.createFormGroup(userId, topicId);
+    })
 
     this.formGroup?.valueChanges.pipe(
       switchMap((formData: {userId: number, topicId: number}) => {
@@ -122,10 +126,10 @@ export class NotesComponent implements OnInit {
     this.selectAllNotes$.next();
   }
 
-  private createFormGroup() {
+  private createFormGroup(userId: number | null, topicId: number | null) {
     this.formGroup = new FormGroup({
-      userId: new FormControl(null),
-      topicId: new FormControl(null),
+      userId: new FormControl(userId),
+      topicId: new FormControl(topicId),
     });
   }
 }
