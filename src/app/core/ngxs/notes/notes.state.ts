@@ -4,6 +4,7 @@ import { Action, State, StateContext, Store } from '@ngxs/store';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
 
 import { createEntitiesIds } from '../../../shared/utility/create-entities-ids';
+import { updateEntitiesIds } from '../../../shared/utility/update-entities-ids';
 import { Note } from '../../../shared/interfaces/note';
 
 import {
@@ -139,7 +140,7 @@ export class NotesState {
   postNoteSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload: note}: PostNoteSuccess) {
     console.log('postNote success');
     const state = getState();
-    const {ids, entities} = createEntitiesIds(state, [note]);
+    const {ids, entities} = updateEntitiesIds(state, [note]);
 
     patchState({ids, entities});
   }
@@ -165,7 +166,7 @@ export class NotesState {
   patchNoteByIdSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload: note}: PatchNoteSuccess) {
     console.log('patchNoteById success');
     const state = getState();
-    const {ids, entities} = createEntitiesIds(state, [note]);
+    const {ids, entities} = updateEntitiesIds(state, [note]);
 
     patchState({ids, entities});
   }
