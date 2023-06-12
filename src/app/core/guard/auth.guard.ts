@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { map, Observable, switchMap, tap } from 'rxjs';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+
+import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,14 +21,10 @@ export class AuthGuard {
   ): boolean {
     this.authService.isAuthorized$.next();
     console.log('Authorized:', this.authService.isAuthorized);
-    if (!this.authService.isAuthorized) this.router.navigate(['/login']);
+    if (!this.authService.isAuthorized) {
+      this.router.navigate(['/login']);
+    }
     return this.authService.isAuthorized;
-
-    // if (!this.authService.isAuthorized()) {
-    //   this.router.navigate(['/login']);
-    //   return false;
-    // }
-    // return true;
   }
 
 

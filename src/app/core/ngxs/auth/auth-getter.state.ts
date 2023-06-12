@@ -1,4 +1,5 @@
-import { createSelector, Selector } from '@ngxs/store';
+import { Selector } from '@ngxs/store';
+
 import { AuthState, AuthStateModel } from './auth.state';
 
 export class AuthGetterState {

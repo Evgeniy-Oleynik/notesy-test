@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from './core/guard/auth.guard';
-import { NotesResolver } from './core/resolvers/notes.resolver';
+import { NotesResolver } from './core/resolvers/notes-resolver.service';
 
 const routes: Routes = [
   {path: '', redirectTo: 'notes', pathMatch: 'full'},

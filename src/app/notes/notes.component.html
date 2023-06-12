@@ -4,7 +4,7 @@
   <button (click)="showSelected()" mat-button>show selected</button>
 
   <div>
-    <mat-select [formControl]="userIdFormControl">
+    <mat-select [formControl]="userIdFormControl" placeholder="ALL">
       <mat-option [value]="null" ngDefaultControl>
         ALL
       </mat-option>
@@ -13,7 +13,7 @@
       </mat-option>
     </mat-select>
 
-    <mat-select [formControl]="topicIdFormControl">
+    <mat-select [formControl]="topicIdFormControl" placeholder="ALL">
       <mat-option [value]="null" ngDefaultControl>
         ALL
       </mat-option>

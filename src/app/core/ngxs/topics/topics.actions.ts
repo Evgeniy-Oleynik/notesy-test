@@ -5,7 +5,7 @@ const ActionTypes = {
   GET_TOPICS_SUCCESS: '[Topics] Get Topics Success',
   GET_TOPICS_FAILED: '[Topics] Get Topics Failed',
   RESET_TOPICS_STATE: '[Topics] Reset Topics State',
-}
+};
 
 export class GetTopics {
   static type = ActionTypes.GET_TOPICS;
@@ -14,7 +14,8 @@ export class GetTopics {
 export class GetTopicsSuccess {
   static type = ActionTypes.GET_TOPICS_SUCCESS;
 
-  constructor(public payload: Topic[]) {}
+  constructor(public payload: Topic[]) {
+  }
 }
 
 export class GetTopicsFailed {

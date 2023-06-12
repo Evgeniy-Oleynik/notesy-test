@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { Action, State, StateContext, Store } from '@ngxs/store';
 import { HttpClient } from '@angular/common/http';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
+
 import { Topic } from '../../../shared/interfaces/topic';
 import { createEntitiesIds } from '../../../shared/utility/create-entities-ids';
+
 import { GetTopics, GetTopicsFailed, GetTopicsSuccess, ResetTopicsState } from './topics.actions';
 
 @RequestState('getTopics')
@@ -12,7 +14,7 @@ export class GetTopicsRequestState {
 }
 
 export interface TopicsStateModel {
-  entities: {[key: number]: Topic};
+  entities: { [key: number]: Topic };
   ids: number[];
 }
 
@@ -41,7 +43,7 @@ export class TopicsState {
       request,
       failAction: GetTopicsFailed,
       successAction: GetTopicsSuccess
-    }))
+    }));
   }
 
   @Action(GetTopicsFailed)
@@ -50,9 +52,10 @@ export class TopicsState {
   }
 
   @Action(GetTopicsSuccess)
-  getTopicsSuccess({getState, patchState}: StateContext<TopicsStateModel>, {payload}: GetTopicsSuccess) {
+  getTopicsSuccess({getState, patchState}: StateContext<TopicsStateModel>, {payload: topics}: GetTopicsSuccess) {
     console.log('getTopics success');
-    const {ids, entities} = createEntitiesIds(getState(), payload, 'id');
+    const state = getState();
+    const {ids, entities} = createEntitiesIds(state, topics);
 
     patchState({ids, entities});
   }

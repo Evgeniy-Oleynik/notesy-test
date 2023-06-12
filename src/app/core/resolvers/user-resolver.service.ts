@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { filter, Observable } from 'rxjs';
+import { filter, take, Observable } from 'rxjs';
 import { IRequest } from 'ngxs-requests-plugin';
-import { take } from 'rxjs/operators';
+
 import { AuthService } from '../services/auth.service';
 
 @Injectable({providedIn: 'root'})
@@ -13,7 +13,7 @@ export class UserResolver implements Resolve<IRequest> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IRequest> {
     this.authService.getUserByToken();
     return this.authService.getUserByTokenRequestState$.pipe(
-      filter(res => res.loaded),
+      filter(res => res.loaded && !res.loading),
       take(1)
     );
   }

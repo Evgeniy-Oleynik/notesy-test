@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { AuthService } from '../core/services/auth.service';
 
 @Component({
@@ -14,12 +15,13 @@ export class SignupComponent implements OnInit {
     name: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required])
-  })
+  });
 
   constructor(
     private authService: AuthService,
     private router: Router,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
   }

@@ -8,10 +8,7 @@ const APP_PREFIX = 'notesy_';
 
 export class LocalStorageService {
 
-  constructor() {}
-
-  private addPrefix(key: string) {
-    return APP_PREFIX.concat(key);
+  constructor() {
   }
 
   setItem(key: string, value: string) {
@@ -24,5 +21,9 @@ export class LocalStorageService {
 
   removeItem(key: string) {
     return localStorage.removeItem(this.addPrefix(key));
+  }
+
+  private addPrefix(key: string) {
+    return APP_PREFIX.concat(key);
   }
 }

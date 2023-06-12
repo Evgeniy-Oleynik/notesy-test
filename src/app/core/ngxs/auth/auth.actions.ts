@@ -15,18 +15,20 @@ const ActionTypes = {
   GET_USER_BY_TOKEN_SUCCESS: '[Auth] Get User By Token Success',
   GET_USER_BY_TOKEN_FAILED: '[Auth] Get User By Token Failed',
   RESET_AUTH_STATE: '[Auth] Reset Auth State',
-}
+};
 
 export class SignUpUser {
   static type = ActionTypes.SIGNUP_USER;
 
-  constructor(public payload: Partial<User>) {}
+  constructor(public payload: Partial<User>) {
+  }
 }
 
 export class SignUpUserSuccess {
   static type = ActionTypes.SIGNUP_USER_SUCCESS;
 
-  constructor(public payload: User) {}
+  constructor(public payload: User) {
+  }
 }
 
 export class SignUpUserFailed {
@@ -36,18 +38,21 @@ export class SignUpUserFailed {
 export class LogInUser {
   static type = ActionTypes.LOGIN_USER;
 
-  constructor(public payload: Partial<User>) {}
+  constructor(public payload: Partial<User>) {
+  }
 }
 
 export class LogInUserSuccess {
   static type = ActionTypes.LOGIN_USER_SUCCESS;
 
-  constructor(public payload: Partial<User>) {}
+  constructor(public payload: Partial<User>) {
+  }
 }
 
 export class LogInUserFailed {
   static type = ActionTypes.LOGIN_USER_FAILED;
 }
+
 export class LogOutUser {
   static type = ActionTypes.LOG_OUT_USER;
 }
@@ -63,19 +68,22 @@ export class LogOutUserFailed {
 export class SetToken {
   static type = ActionTypes.SET_TOKEN;
 
-  constructor(public payload: string) {}
+  constructor(public payload: string) {
+  }
 }
 
 export class GetUserByToken {
   static type = ActionTypes.GET_USER_BY_TOKEN;
 
-  constructor(public payload: string) {}
+  constructor(public payload: string) {
+  }
 }
 
 export class GetUserByTokenSuccess {
   static type = ActionTypes.GET_USER_BY_TOKEN_SUCCESS;
 
-  constructor(public payload: User) {}
+  constructor(public payload: User) {
+  }
 }
 
 export class GetUserByTokenFailed {

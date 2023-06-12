@@ -1,4 +1,5 @@
 import { createSelector, Selector } from '@ngxs/store';
+
 import { UsersState, UsersStateModel } from './users.state';
 
 export class UsersGetterState {
@@ -10,6 +11,6 @@ export class UsersGetterState {
   static getUser(id: number) {
     return createSelector([UsersState], (state: UsersStateModel) => {
       return state.entities[id];
-    })
+    });
   }
 }

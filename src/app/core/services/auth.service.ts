@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
-import { filter, map, Observable, Subject } from 'rxjs';
-import { withLatestFrom } from 'rxjs/operators';
+import { filter, Observable, Subject, withLatestFrom } from 'rxjs';
 import { IRequest, RequestStatus } from 'ngxs-requests-plugin';
-import { LocalStorageService } from './local-storage.service';
+
 import { GetUserByTokenRequestState, LogInUserRequestState, LogOutUserRequestState, SignUpUserRequestState } from '../ngxs/auth/auth.state';
 import { AuthGetterState } from '../ngxs/auth/auth-getter.state';
 import { GetUserByToken, LogInUser, LogOutUser, ResetAuthState, SignUpUser } from '../ngxs/auth/auth.actions';
@@ -12,6 +11,8 @@ import { ResetNotesState } from '../ngxs/notes/notes.actions';
 import { ResetTopicsState } from '../ngxs/topics/topics.actions';
 import { ResetUsersState } from '../ngxs/users/users.actions';
 import { User } from '../../shared/interfaces/user';
+
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -50,42 +51,22 @@ export class AuthService {
     });
 
     this.navigateAfterSuccess$.subscribe(([request, navigateTo]) => {
-      console.log(111);
       request.pipe(
         filter(res => {
           console.log(res);
           return res.loaded;
         }),
       ).subscribe(res => {
-        console.log(222);
         if (res.status === RequestStatus.Success) {
-          console.log(333);
           this.router.navigate([navigateTo]);
         }
-      })
-    })
-  }
-
-  navigateAfterSuccess(request: Observable<IRequest>, navigateTo: string) {
-    console.log(111);
-    request.pipe(
-      filter(res => {
-        console.log(res);
-        return res.loaded;
-      }),
-      map(res => {
-        console.log(222);
-        if (res.status === RequestStatus.Success) {
-          console.log(333);
-          this.router.navigate([navigateTo]);
-        }
-      })
-    ).subscribe();
+      });
+    });
   }
 
   signUpUser(user: User) {
     this.store.dispatch(new SignUpUser(user));
-    this.navigateAfterSuccess(this.signUpUserRequestState$, 'notes');
+    this.navigateAfterSuccess$.next([this.signUpUserRequestState$, 'notes']);
   }
 
   logInUser(user: Partial<User>) {
@@ -106,7 +87,7 @@ export class AuthService {
   getUserByToken() {
     const token = localStorage.getItem('notesy_authToken');
     if (token) {
-      console.log('local token');
+      console.log('local token found');
       this.store.dispatch(new GetUserByToken(token));
     }
   }

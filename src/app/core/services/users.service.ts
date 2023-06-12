@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { IRequest } from 'ngxs-requests-plugin';
+
 import { UsersGetterState } from '../ngxs/users/users-getter.state';
 import { GetAllUsersRequestState, GetUserByIdRequestState } from '../ngxs/users/users.state';
 import { GetAllUsers, GetUserById } from '../ngxs/users/users.actions';
@@ -12,10 +13,6 @@ import { User } from '../../shared/interfaces/user';
 })
 export class UsersService {
 
-  constructor(
-    private store: Store,
-  ) { }
-
   @Select(UsersGetterState.getAllUsers)
   users$!: Observable<User[]>;
 
@@ -25,8 +22,13 @@ export class UsersService {
   @Select(GetUserByIdRequestState)
   getUserByIdRequestState$!: Observable<IRequest<User>>;
 
+  constructor(
+    private store: Store,
+  ) {
+  }
+
   getUserById(id: number) {
-    this.store.dispatch(new GetUserById(id))
+    this.store.dispatch(new GetUserById(id));
   }
 
   getUserById$(id: number) {
@@ -34,6 +36,6 @@ export class UsersService {
   }
 
   getAllUsers() {
-    this.store.dispatch(new GetAllUsers())
+    this.store.dispatch(new GetAllUsers());
   }
 }

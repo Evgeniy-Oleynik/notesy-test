@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LogInUserRequestState, SignUpUserRequestState, AuthState } from './auth/auth.state';
-import { environment } from '../../../environments/environment';
-import { NgxsRequestsPluginModule } from 'ngxs-requests-plugin';
-import { NgxsModule } from '@ngxs/store';
-import { GetTopicsRequestState, TopicsState } from './topics/topics.state';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { NgxsModule } from '@ngxs/store';
+import { NgxsRequestsPluginModule } from 'ngxs-requests-plugin';
+
+import { environment } from '../../../environments/environment';
+
+import { AuthState, LogInUserRequestState, SignUpUserRequestState } from './auth/auth.state';
+import { GetTopicsRequestState, TopicsState } from './topics/topics.state';
 import { GetAllUsersRequestState, GetUserByIdRequestState, UsersState } from './users/users.state';
 import {
   DeleteNoteByIdRequestState,
@@ -47,4 +49,5 @@ import {
 
   ]
 })
-export class NgxsStateModule { }
+export class NgxsStateModule {
+}

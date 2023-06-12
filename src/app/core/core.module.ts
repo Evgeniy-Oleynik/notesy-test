@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { NgxsStateModule } from './ngxs/ngxs.module';
-import { INTERCEPTORS } from './interceptors/interceptors';
+
 import { RawHttpClientModule } from '../shared/utility/raw-http-client.module';
+
+import { INTERCEPTORS } from './interceptors/interceptors';
+import { NgxsStateModule } from './ngxs/ngxs.module';
 
 @NgModule({
   declarations: [],
@@ -17,4 +19,6 @@ import { RawHttpClientModule } from '../shared/utility/raw-http-client.module';
     INTERCEPTORS
   ]
 })
-export class CoreModule { }
+
+export class CoreModule {
+}

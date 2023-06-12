@@ -1,19 +1,19 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { filter, map, Observable, shareReplay, Subject, switchMap } from 'rxjs';
-import { NoteEditDialogComponent } from './note-edit-dialog/note-edit-dialog.component';
-import { AuthService } from '../core/services/auth.service';
+import { Observable, Subject, filter, map, take, shareReplay, switchMap } from 'rxjs';
+
 import { NotesService } from '../core/services/notes.service';
 import { TopicsService } from '../core/services/topics.service';
-import { Note } from '../shared/interfaces/note';
-import { FormControl, FormGroup } from '@angular/forms';
-import { User } from '../shared/interfaces/user';
 import { UsersService } from '../core/services/users.service';
+import { Note } from '../shared/interfaces/note';
+import { User } from '../shared/interfaces/user';
 import { Topic } from '../shared/interfaces/topic';
-import { take } from 'rxjs/operators';
+
+import { NoteEditDialogComponent } from './note-edit-dialog/note-edit-dialog.component';
 
 @Component({
   selector: 'app-notes',
@@ -38,7 +38,6 @@ export class NotesComponent implements OnInit {
   formGroup?: FormGroup;
 
   constructor(
-    private authService: AuthService,
     private router: Router,
     private notesService: NotesService,
     private topicsService: TopicsService,
@@ -90,15 +89,11 @@ export class NotesComponent implements OnInit {
   }
 
   newNote() {
-    this.notesService.setCurrentNoteId(null);
-    this.dialog.open(NoteEditDialogComponent);
+    this.dialog.open(NoteEditDialogComponent, {data: null});
   }
 
   openDialog(note: Note) {
-    if (note.id) {
-      this.notesService.setCurrentNoteId(note.id);
-    }
-    this.dialog.open(NoteEditDialogComponent);
+    this.dialog.open(NoteEditDialogComponent, {data: note.id});
     console.log('current note:', note);
   }
 

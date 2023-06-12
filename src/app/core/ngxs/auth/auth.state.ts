@@ -2,20 +2,27 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Action, State, StateContext, Store } from '@ngxs/store';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
+
+import { LocalStorageService } from '../../services/local-storage.service';
+import { RawHttpClient } from '../../../shared/utility/raw-http-client.module';
+import { User } from '../../../shared/interfaces/user';
+
 import {
-  GetUserByToken, GetUserByTokenFailed, GetUserByTokenSuccess,
+  GetUserByToken,
+  GetUserByTokenFailed,
+  GetUserByTokenSuccess,
   LogInUser,
   LogInUserFailed,
   LogInUserSuccess,
-  LogOutUser, LogOutUserFailed, LogOutUserSuccess, ResetAuthState,
+  LogOutUser,
+  LogOutUserFailed,
+  LogOutUserSuccess,
+  ResetAuthState,
   SetToken,
   SignUpUser,
   SignUpUserFailed,
   SignUpUserSuccess
 } from './auth.actions';
-import { LocalStorageService } from '../../services/local-storage.service';
-import { RawHttpClient } from '../../../shared/utility/raw-http-client.module';
-import { User } from '../../../shared/interfaces/user';
 
 @RequestState('signUpUser')
 @Injectable()
@@ -46,7 +53,7 @@ const emptyUser: User = {
   name: '',
   email: '',
   token: ''
-}
+};
 
 @State<AuthStateModel>({
   name: 'currentUser',
@@ -66,15 +73,15 @@ export class AuthState {
   }
 
   @Action(SignUpUser)
-  signUpUser({dispatch}: StateContext<AuthStateModel>, {payload}: SignUpUser) {
-    const request = this.httpClient.post('api/signup', payload);
+  signUpUser({dispatch}: StateContext<AuthStateModel>, {payload: userData}: SignUpUser) {
+    const request = this.httpClient.post('api/signup', userData);
 
     return dispatch(createRequestAction({
       state: SignUpUserRequestState,
       request,
       failAction: SignUpUserFailed,
       successAction: SignUpUserSuccess
-    }))
+    }));
   }
 
   @Action(SignUpUserFailed)
@@ -83,22 +90,24 @@ export class AuthState {
   }
 
   @Action(SignUpUserSuccess)
-  signUpUserSuccess({patchState}: StateContext<AuthStateModel>, {payload}: SignUpUserSuccess) {
+  signUpUserSuccess({patchState}: StateContext<AuthStateModel>, {payload: userData}: SignUpUserSuccess) {
     console.log('signup success');
-    patchState({user: payload});
-    if (payload.token) this.localStorageService.setItem('authToken', payload.token);
+    patchState({user: userData});
+    if (userData.token) {
+      this.localStorageService.setItem('authToken', userData.token);
+    }
   }
 
   @Action(LogInUser)
-  logInUser({dispatch}: StateContext<AuthStateModel>, {payload}: LogInUser) {
-    const request = this.httpClient.post('api/login', payload);
+  logInUser({dispatch}: StateContext<AuthStateModel>, {payload: userData}: LogInUser) {
+    const request = this.httpClient.post('api/login', userData);
 
     return dispatch(createRequestAction({
       state: LogInUserRequestState,
       request,
       failAction: LogInUserFailed,
       successAction: LogInUserSuccess
-    }))
+    }));
   }
 
   @Action(LogInUserFailed)
@@ -107,10 +116,12 @@ export class AuthState {
   }
 
   @Action(LogInUserSuccess)
-  logInUserSuccess({patchState}: StateContext<AuthStateModel>, {payload}: LogInUserSuccess) {
+  logInUserSuccess({patchState}: StateContext<AuthStateModel>, {payload: userData}: LogInUserSuccess) {
     console.log('login success');
-    patchState({user: payload});
-    if (payload.token) this.localStorageService.setItem('authToken', payload.token);
+    patchState({user: userData});
+    if (userData.token) {
+      this.localStorageService.setItem('authToken', userData.token);
+    }
   }
 
   @Action(LogOutUser)
@@ -122,7 +133,7 @@ export class AuthState {
       request,
       failAction: LogOutUserFailed,
       successAction: LogOutUserSuccess
-    }))
+    }));
   }
 
   @Action(LogOutUserSuccess)
@@ -137,29 +148,29 @@ export class AuthState {
   }
 
   @Action(SetToken)
-  setToken({patchState}: StateContext<AuthStateModel>, {payload}: SetToken) {
-    console.log('set token', payload);
-    patchState({user: {token: payload}});
+  setToken({patchState}: StateContext<AuthStateModel>, {payload: authToken}: SetToken) {
+    console.log('set token', authToken);
+    patchState({user: {token: authToken}});
   }
 
   @Action(GetUserByToken)
-  getUserByToken({patchState, dispatch}: StateContext<AuthStateModel>, {payload}: GetUserByToken) {
-    console.log('getUserByToken:', payload);
-    patchState({user: {token: payload}});
-    const request = this.rawHttpClient.get('http://localhost:3000/users/,', { headers: {'Authorization': `Bearer ${payload}`} });
+  getUserByToken({patchState, dispatch}: StateContext<AuthStateModel>, {payload: localAuthToken}: GetUserByToken) {
+    console.log('getUserByToken:', localAuthToken);
+    patchState({user: {token: localAuthToken}});
+    const request = this.rawHttpClient.get('http://localhost:3000/users/,', {headers: {'Authorization': `Bearer ${localAuthToken}`}});
 
     return dispatch(createRequestAction({
       state: GetUserByTokenRequestState,
       request,
       failAction: GetUserByTokenFailed,
       successAction: GetUserByTokenSuccess
-    }))
+    }));
   }
 
   @Action(GetUserByTokenSuccess)
-  getUserByTokenSuccess({patchState}: StateContext<AuthStateModel>, {payload}: GetUserByTokenSuccess) {
+  getUserByTokenSuccess({patchState}: StateContext<AuthStateModel>, {payload: userData}: GetUserByTokenSuccess) {
     console.log('getUserByToken success');
-    patchState({user: payload});
+    patchState({user: userData});
   }
 
   @Action(GetUserByTokenFailed)

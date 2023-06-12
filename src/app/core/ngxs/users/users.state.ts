@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Action, State, StateContext, Store } from '@ngxs/store';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
+
 import { User } from '../../../shared/interfaces/user';
 import { createEntitiesIds } from '../../../shared/utility/create-entities-ids';
+
 import {
   GetAllUsers,
   GetAllUsersFailed,
@@ -25,9 +27,8 @@ export class GetUserByIdRequestState {
 }
 
 export interface UsersStateModel {
-  entities: {[key: number]: User};
+  entities: { [key: number]: User };
   ids: number[];
-
 }
 
 @State<UsersStateModel>({
@@ -43,7 +44,8 @@ export class UsersState {
   constructor(
     private httpClient: HttpClient,
     private store: Store,
-  ) {}
+  ) {
+  }
 
   @Action(GetAllUsers)
   getAllUsers({dispatch}: StateContext<UsersStateModel>) {
@@ -54,13 +56,14 @@ export class UsersState {
       request,
       successAction: GetAllUsersSuccess,
       failAction: GetAllUsersFailed
-    }))
+    }));
   }
 
   @Action(GetAllUsersSuccess)
-  getAllUsersSuccess({getState, patchState}:StateContext<UsersStateModel>, {payload}: GetAllUsersSuccess) {
+  getAllUsersSuccess({getState, patchState}: StateContext<UsersStateModel>, {payload: users}: GetAllUsersSuccess) {
     console.log('getAllUsers success');
-    const {ids, entities} = createEntitiesIds(getState(), payload, 'id');
+    const state = getState();
+    const {ids, entities} = createEntitiesIds(state, users);
 
     patchState({ids, entities});
   }
@@ -71,22 +74,22 @@ export class UsersState {
   }
 
   @Action(GetUserById)
-  getUserById({dispatch}: StateContext<UsersStateModel>, {payload}: GetUserById) {
-    const request = this.httpClient.get(`api/users/${payload}`);
+  getUserById({dispatch}: StateContext<UsersStateModel>, {payload: userId}: GetUserById) {
+    const request = this.httpClient.get(`api/users/${userId}`);
 
     dispatch(createRequestAction({
       state: GetUserByIdRequestState,
       request,
       successAction: GetUserByIdSuccess,
       failAction: GetUserByIdFailed
-    }))
+    }));
   }
 
   @Action(GetUserByIdSuccess)
-  getUserByIdSuccess({getState, patchState}: StateContext<UsersStateModel>, {payload}: GetUserByIdSuccess) {
+  getUserByIdSuccess({getState, patchState}: StateContext<UsersStateModel>, {payload: user}: GetUserByIdSuccess) {
     console.log('getUserById success');
-    console.log(payload);
-    const {ids, entities} = createEntitiesIds(getState(), [payload], 'id')
+    const state = getState();
+    const {ids, entities} = createEntitiesIds(state, [user]);
 
     patchState({ids, entities});
   }
