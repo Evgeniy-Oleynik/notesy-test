@@ -49,7 +49,7 @@ export class UsersState {
 
   @Action(GetAllUsers)
   getAllUsers({dispatch}: StateContext<UsersStateModel>) {
-    const request = this.httpClient.get('api/users');
+    const request = this.httpClient.get('users');
 
     dispatch(createRequestAction({
       state: GetAllUsersRequestState,
@@ -75,7 +75,7 @@ export class UsersState {
 
   @Action(GetUserById)
   getUserById({dispatch}: StateContext<UsersStateModel>, {payload: userId}: GetUserById) {
-    const request = this.httpClient.get(`api/users/${userId}`);
+    const request = this.httpClient.get(`users/${userId}`);
 
     dispatch(createRequestAction({
       state: GetUserByIdRequestState,

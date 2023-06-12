@@ -36,7 +36,7 @@ export class TopicsState {
 
   @Action(GetTopics)
   getTopics({dispatch}: StateContext<TopicsStateModel>) {
-    const request = this.httpClient.get('api/topics');
+    const request = this.httpClient.get('topics');
 
     return dispatch(createRequestAction({
       state: GetTopicsRequestState,

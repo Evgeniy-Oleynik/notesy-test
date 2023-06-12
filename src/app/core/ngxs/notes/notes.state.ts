@@ -74,7 +74,7 @@ export class NotesState {
 
   @Action(GetNotes)
   getNotes({dispatch}: StateContext<NotesStateModel>, {payload: params}: GetNotes) {
-    const request = this.httpClient.get(`api/notes`, {params});
+    const request = this.httpClient.get(`notes`, {params});
 
     return dispatch(createRequestAction({
       state: GetNotesRequestState,
@@ -100,7 +100,7 @@ export class NotesState {
 
   @Action(GetNoteById)
   getNoteById({dispatch}: StateContext<NotesStateModel>, {payload: noteId}: GetNoteById) {
-    const request = this.httpClient.get(`api/notes/${noteId}`);
+    const request = this.httpClient.get(`notes/${noteId}`);
 
     return dispatch(createRequestAction({
       state: GetNoteByIdRequestState,
@@ -126,7 +126,7 @@ export class NotesState {
 
   @Action(PostNote)
   postNote({dispatch}: StateContext<NotesStateModel>, {payload: note}: PostNote) {
-    const request = this.httpClient.post('api/notes', note);
+    const request = this.httpClient.post('notes', note);
 
     return dispatch(createRequestAction({
       state: PostNoteRequestState,
@@ -152,7 +152,7 @@ export class NotesState {
 
   @Action(PatchNote)
   patchNoteById({dispatch}: StateContext<NotesStateModel>, {payload: note}: PatchNote) {
-    const request = this.httpClient.patch(`api/notes/${note.id}`, note);
+    const request = this.httpClient.patch(`notes/${note.id}`, note);
 
     return dispatch(createRequestAction({
       state: PatchNoteRequestState,
@@ -178,7 +178,7 @@ export class NotesState {
 
   @Action(DeleteNoteById)
   deleteNoteById({dispatch}: StateContext<NotesStateModel>, {payload: noteId}: DeleteNoteById) {
-    const request = this.httpClient.delete(`api/notes/${noteId}`);
+    const request = this.httpClient.delete(`notes/${noteId}`);
 
     return dispatch(createRequestAction({
       state: DeleteNoteByIdRequestState,

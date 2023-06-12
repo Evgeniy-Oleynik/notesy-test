@@ -74,7 +74,7 @@ export class AuthState {
 
   @Action(SignUpUser)
   signUpUser({dispatch}: StateContext<AuthStateModel>, {payload: userData}: SignUpUser) {
-    const request = this.httpClient.post('api/signup', userData);
+    const request = this.httpClient.post('signup', userData);
 
     return dispatch(createRequestAction({
       state: SignUpUserRequestState,
@@ -100,7 +100,7 @@ export class AuthState {
 
   @Action(LogInUser)
   logInUser({dispatch}: StateContext<AuthStateModel>, {payload: userData}: LogInUser) {
-    const request = this.httpClient.post('api/login', userData);
+    const request = this.httpClient.post('login', userData);
 
     return dispatch(createRequestAction({
       state: LogInUserRequestState,
@@ -126,7 +126,7 @@ export class AuthState {
 
   @Action(LogOutUser)
   logOutUser({dispatch}: StateContext<AuthStateModel>) {
-    const request = this.httpClient.post('api/logout', '');
+    const request = this.httpClient.post('logout', '');
 
     return dispatch(createRequestAction({
       state: LogOutUserRequestState,
