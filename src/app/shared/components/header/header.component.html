@@ -1,8 +1,11 @@
 <div class="header-main">
   <a routerLink="/" class="header__logo">NOTESY</a>
-  <button mat-button [matMenuTriggerFor]="menu" class="header__button">
-    <mat-icon>person</mat-icon>
-  </button>
+  <div>
+    <button mat-button [matMenuTriggerFor]="menu" class="header__button">
+      Hi, {{currentUser.name}}
+      <mat-icon>person</mat-icon>
+    </button>
+  </div>
 </div>
 <mat-menu #menu="matMenu">
   <button mat-button (click)="logOut()"><mat-icon>clear</mat-icon> Log Out</button>
