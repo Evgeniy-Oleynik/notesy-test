@@ -15,8 +15,7 @@ export class NotesResolver implements Resolve<IRequest> {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
-    this.notesService.getNotes(route.queryParams);
-    return this.notesService.getNotesRequestState$.pipe(
+    return this.notesService.getNotes(route.queryParams).pipe(
       filter(res => res.loaded && !res.loading),
       take(1)
     );
