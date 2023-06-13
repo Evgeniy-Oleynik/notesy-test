@@ -23,9 +23,6 @@ export class GetAllUsersSuccess {
 
 export class GetAllUsersFailed {
   static type = ActionTypes.GET_ALL_USERS_FAILED;
-
-  constructor() {
-  }
 }
 
 export class GetUserById {
