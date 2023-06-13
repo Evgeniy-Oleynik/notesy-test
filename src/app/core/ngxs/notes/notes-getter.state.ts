@@ -10,7 +10,7 @@ export class NotesGetterState {
   static getNotes(notesState: NotesStateModel, topicsState: TopicsStateModel, usersState: UsersStateModel) {
     const notes = notesState.ids.map(id => {
       return notesState.entities[id];
-    }).sort((a, b) => a.id && b.id ? a.id - b.id : -1);
+    }).sort((a, b) => a.updatedAt > b.updatedAt ? -1 : 1);
     const topics = topicsState.ids.map(id => topicsState.entities[id]);
     const users = usersState.ids.map(id => usersState.entities[id]);
     return notes.map(note => {
