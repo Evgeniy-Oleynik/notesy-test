@@ -89,7 +89,7 @@ export class NotesComponent implements OnInit {
   }
 
   newNote() {
-    this.dialog.open(NoteEditDialogComponent, {data: null});
+    this.dialog.open(NoteEditDialogComponent);
   }
 
   openDialog(note: Note) {

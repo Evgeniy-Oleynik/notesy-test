@@ -52,26 +52,26 @@ export class NoteFormComponent implements OnInit, OnDestroy {
     this.currentNote$ = this.notesService.getNoteById(this.noteId);
 
     this.isEditMode$ = this.currentNote$.pipe(
-      map(note => note ? !!note.id : false)
+      map(note => !!note.id)
     );
 
-
     this.patchFormSubject$.pipe(
-      takeUntil(this.componentDestroyed$),
       withLatestFrom(this.currentNote$),
+      takeUntil(this.componentDestroyed$),
     ).subscribe(([_, note]) => {
       this.noteEditorFormGroup.patchValue(note);
     });
 
     this.submitFormSubject$.pipe(
-      takeUntil(this.componentDestroyed$),
       filter(() => {
         return this.noteEditorFormGroup.valid;
       }),
       withLatestFrom(this.isEditMode$),
       switchMap(([_, isEditMode]) => {
-        return isEditMode ? this.notesService.patchNote(this.noteEditorFormGroup.value) : this.notesService.postNote(this.noteEditorFormGroup.value);
+        const formValue = this.noteEditorFormGroup.value;
+        return isEditMode ? this.notesService.patchNote(formValue) : this.notesService.postNote(formValue);
       }),
+      takeUntil(this.componentDestroyed$),
     ).subscribe(res => {
       if (res.status === RequestStatus.Success) {
         this.dialog.closeAll();
@@ -79,14 +79,9 @@ export class NoteFormComponent implements OnInit, OnDestroy {
     });
 
     this.deleteNoteSubject$.pipe(
-      takeUntil(this.componentDestroyed$),
       withLatestFrom(this.currentNote$),
-      switchMap(([_, note]) => {
-        if (note.id) {
-          return this.notesService.deleteNote(note.id);
-        }
-        return this.notesService.deleteNoteByIdRequestState$;
-      })
+      switchMap(([_, note]) => this.notesService.deleteNote(note.id)),
+      takeUntil(this.componentDestroyed$),
     ).subscribe(res => {
       if (res.status === RequestStatus.Success) {
         this.dialog.closeAll();
