@@ -18,7 +18,7 @@ import { LocalStorageService } from './local-storage.service';
   providedIn: 'root'
 })
 export class AuthService {
-  isAuthorized$: Subject<void> = new Subject<void>();
+  isAuthorizedSubject$: Subject<void> = new Subject<void>();
   isAuthorized!: boolean;
   navigateAfterSuccess$: Subject<[request: Observable<IRequest>, navigateTo: string]> = new Subject<[request: Observable<IRequest>, navigateTo: string]>();
 

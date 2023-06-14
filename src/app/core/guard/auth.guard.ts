@@ -19,7 +19,7 @@ export class AuthGuard {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    this.authService.isAuthorized$.next();
+    this.authService.isAuthorizedSubject$.next();
     console.log('Authorized:', this.authService.isAuthorized);
     if (!this.authService.isAuthorized) {
       this.router.navigate(['/login']);
