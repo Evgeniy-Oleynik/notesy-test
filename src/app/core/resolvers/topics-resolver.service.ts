@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { filter, take, Observable } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import { IRequest } from 'ngxs-requests-plugin';
 
 import { TopicsService } from '../services/topics.service';
@@ -11,10 +11,8 @@ export class TopicsResolver implements Resolve<IRequest> {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IRequest> {
-    this.topicsService.getAllTopics();
-    return this.topicsService.getTopicsRequestState$.pipe(
+    return this.topicsService.getAllTopics().pipe(
       filter(res => res.loaded && !res.loading),
-      take(1)
     );
   }
 }
