@@ -1,12 +1,24 @@
 <div class="header-main">
-  <a routerLink="/" class="header__logo">NOTESY</a>
+  <a class="header__logo" routerLink="/">NOTESY</a>
   <div>
-    <button mat-button [matMenuTriggerFor]="menu" class="header__button">
-      Hi, {{currentUser.name}}
+    <button [matMenuTriggerFor]="menu" class="header__button" mat-button>
+      <div *ngIf="currentUser.token">Hi, {{currentUser.name}}</div>
       <mat-icon>person</mat-icon>
     </button>
   </div>
 </div>
 <mat-menu #menu="matMenu">
-  <button mat-button (click)="logOut()"><mat-icon>clear</mat-icon> Log Out</button>
+  <ng-template [ngIfElse]="login" [ngIf]="currentUser.token">
+    <button (click)="logOut()" mat-button>
+      <mat-icon>logout</mat-icon>
+      Log Out
+    </button>
+  </ng-template>
 </mat-menu>
+
+<ng-template #login>
+  <button (click)="logIn()" mat-button>
+    <mat-icon>login</mat-icon>
+    Log In
+  </button>
+</ng-template>
