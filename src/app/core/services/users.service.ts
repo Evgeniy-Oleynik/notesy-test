@@ -37,5 +37,6 @@ export class UsersService {
 
   getAllUsers() {
     this.store.dispatch(new GetAllUsers());
+    return this.getAllUsersRequestState$;
   }
 }

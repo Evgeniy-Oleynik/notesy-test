@@ -25,6 +25,7 @@ export class TopicsService {
 
   getAllTopics() {
     this.store.dispatch(new GetTopics());
+    return this.getTopicsRequestState$;
   }
 
 }
