@@ -20,7 +20,6 @@ import { LocalStorageService } from './local-storage.service';
 export class AuthService {
   isAuthorizedSubject$: Subject<void> = new Subject<void>();
   isAuthorized!: boolean;
-  navigateAfterSuccess$: Subject<[request: Observable<IRequest>, navigateTo: string]> = new Subject<[request: Observable<IRequest>, navigateTo: string]>();
 
   @Select(SignUpUserRequestState)
   signUpUserRequestState$!: Observable<IRequest<User>>;
@@ -44,44 +43,45 @@ export class AuthService {
   ) {
     this.getUserByToken();
 
-    this.isAuthorized$.pipe(
+    this.isAuthorizedSubject$.pipe(
       withLatestFrom(this.currentUser$),
     ).subscribe(([_, user]) => {
       this.isAuthorized = !!user.token;
-    });
-
-    this.navigateAfterSuccess$.subscribe(([request, navigateTo]) => {
-      request.pipe(
-        filter(res => {
-          console.log(res);
-          return res.loaded;
-        }),
-      ).subscribe(res => {
-        if (res.status === RequestStatus.Success) {
-          this.router.navigate([navigateTo]);
-        }
-      });
     });
   }
 
   signUpUser(user: User) {
     this.store.dispatch(new SignUpUser(user));
-    this.navigateAfterSuccess$.next([this.signUpUserRequestState$, 'notes']);
+    this.signUpUserRequestState$.pipe(
+      filter(res => {
+        return res?.loaded && !res?.loading && res?.status === RequestStatus.Success
+      }),
+    ).subscribe(() => {
+      this.router.navigate(['notes'])
+    });
   }
 
   logInUser(user: Partial<User>) {
     this.store.dispatch(new LogInUser(user));
-    this.navigateAfterSuccess$.next([this.logInUserRequestState$, 'notes']);
-
+    this.logInUserRequestState$.pipe(
+      filter(res => {
+        return res?.loaded && !res?.loading && res?.status === RequestStatus.Success
+      }),
+    ).subscribe(() => {
+      this.router.navigate(['notes'])
+    });
   }
 
   logOutUser() {
-    this.store.dispatch(new LogOutUser());
-    this.navigateAfterSuccess$.next([this.logOutUserRequestState$, 'login']);
-    this.store.dispatch(new ResetNotesState());
-    this.store.dispatch(new ResetTopicsState());
-    this.store.dispatch(new ResetUsersState());
-    this.store.dispatch(new ResetAuthState());
+    this.store.dispatch(new LogOutUser()).pipe(
+      filter(res => res?.requests.logOutUser.loaded && !res?.requests.logOutUser.loading && res?.requests.logOutUser.status === RequestStatus.Success)
+    ).subscribe(() => {
+      this.router.navigate(['/login']);
+      this.store.dispatch(new ResetNotesState());
+      this.store.dispatch(new ResetTopicsState());
+      this.store.dispatch(new ResetUsersState());
+      this.store.dispatch(new ResetAuthState());
+    });
   }
 
   getUserByToken() {
@@ -90,5 +90,6 @@ export class AuthService {
       console.log('local token found');
       this.store.dispatch(new GetUserByToken(token));
     }
+    return this.getUserByTokenRequestState$;
   }
 }
