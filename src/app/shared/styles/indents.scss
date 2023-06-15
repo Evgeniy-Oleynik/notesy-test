@@ -1,3 +1,40 @@
+//resolutions
+$desktop: 1920px;
+$laptop: 1440px;
+$tabletH: 1024px;
+$tabletV: 768px;
+$phone: 425px;
+
+@mixin desktop {
+  @media screen and (min-width: $desktop) {
+    @content;
+  }
+}
+
+@mixin laptop {
+  @media screen and (min-width: $laptop) {
+    @content;
+  }
+}
+
+@mixin tabletH {
+  @media screen and (min-width: $tabletH) {
+    @content;
+  }
+}
+
+@mixin tabletV {
+  @media screen and (min-width: $tabletV) {
+    @content;
+  }
+}
+
+@mixin phone {
+  @media screen and (min-width: $phone) {
+    @content;
+  }
+}
+
 .base-wrapper {
   margin: 0 5%;
 }
