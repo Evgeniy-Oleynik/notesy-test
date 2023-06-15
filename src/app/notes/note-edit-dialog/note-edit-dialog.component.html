@@ -1,34 +1,90 @@
-<h1 mat-dialog-title>NOTE EDIT</h1>
-<div mat-dialog-content>
-  <div class="note">
-    <form (ngSubmit)="submitForm()" [formGroup]="noteEditorFormGroup" class="note-form">
-      <mat-form-field>
-        <mat-label>Topic</mat-label>
-        <mat-select formControlName="topicId" id="topicId">
-          <mat-option *ngFor="let topic of topics$ | async" [value]="topic.id">{{topic.type}}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Title</mat-label>
-        <input formControlName="title" id="title" matInput type="text">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Text</mat-label>
-        <textarea formControlName="text" id="text" matInput type="text"></textarea>
-      </mat-form-field>
-      <div class="note-form__actions">
-        <ng-template [ngIfElse]="createNote" [ngIf]="isEditMode$ | async">
-          <button [disabled]="!noteEditorFormGroup.valid" mat-button type="submit">Update Note</button>
-          <button (click)="deleteNote()" mat-button>Delete Note</button>
-        </ng-template>
-      </div>
-    </form>
+<div class="note-dialog">
+  <ng-template [ngIfElse]="newNoteTitle" [ngIf]="isEditMode$ | async">
+    <h1 class="note-dialog__title" mat-dialog-title>NOTE EDIT</h1>
+  </ng-template>
+  <mat-dialog-actions>
+    <button aria-label="close" class="note-dialog__close-button" mat-dialog-close="" mat-mini-fab matTooltip="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-dialog-actions>
+  <div mat-dialog-content>
+    <div class="note-dialog__content">
+      <form #formElement="ngForm" [formGroup]="noteEditorFormGroup" class="note-dialog__form">
+        <mat-form-field class="form__input form__input--topic">
+          <mat-label>Topic</mat-label>
+          <mat-select [formControl]="topicId">
+            <mat-option *ngFor="let topic of topics$ | async" [value]="topic.id">{{topic.type}}</mat-option>
+          </mat-select>
+          <app-form-errors
+            [control]="topicId"
+            [errors]="{required: 'Topic is required'}"
+            [submitted]="formElement.submitted"
+          ></app-form-errors>
+        </mat-form-field>
+        <mat-form-field class="form__input form__input--title">
+          <mat-label>Title</mat-label>
+          <input [formControl]="title" matInput type="text">
+          <app-form-errors
+            [control]="title"
+            [errors]="{
+            required: 'Title is required',
+            minlength: 'Title must be at least 3 characters',
+            maxlength: 'Title must be less than 50 characters'
+          }"
+            [submitted]="formElement.submitted"
+          ></app-form-errors>
+        </mat-form-field>
+        <mat-form-field class="form__input form__input--text">
+          <mat-label>Text</mat-label>
+          <textarea [formControl]="text" class="textarea-autosize" matInput type="text"></textarea>
+          <app-form-errors
+            [control]="text"
+            [errors]="{
+            required: 'Text is required',
+            minlength: 'Text must be at least 3 characters',
+            maxlength: 'Text must be less than 250 characters'
+          }"
+            [submitted]="formElement.submitted"
+          ></app-form-errors>
+        </mat-form-field>
+        <div class="note-dialog__actions">
+          <ng-template [ngIfElse]="createNote" [ngIf]="isEditMode$ | async">
+            <button (click)="submitForm()" [disabled]="isNoChanges$ | async"
+                    class="note-dialog__button note-dialog__button--submit"
+                    mat-button
+                    matTooltip="Save Note"
+            ><mat-icon>check_circle</mat-icon>
+            </button>
+            <button (click)="cancelChanges()" [disabled]="isNoChanges$ | async"
+                    class="note-dialog__button note-dialog__button--cancel"
+                    mat-button
+                    matTooltip="Cancel Changes"
+            ><mat-icon>cancel</mat-icon>
+            </button>
+            <button (click)="deleteNote()" class="note-dialog__button note-dialog__button--delete" mat-button matTooltip="Delete Note"
+            ><mat-icon>delete</mat-icon>
+            </button>
+          </ng-template>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
-<mat-dialog-actions align="center">
-  <button mat-button mat-dialog-close="">Close</button>
-</mat-dialog-actions>
 
+<ng-template #newNoteTitle>
+  <h1 class="note-dialog__title" mat-dialog-title>NEW NOTE</h1>
+</ng-template>
 <ng-template #createNote>
-  <button [disabled]="!noteEditorFormGroup.valid" mat-button type="submit">Save Note</button>
+  <button (click)="submitForm()" [disabled]="!noteEditorFormGroup.valid"
+          class="note-dialog__button note-dialog__button--submit"
+          mat-button
+          matTooltip="Save Note"
+  ><mat-icon>check_circle</mat-icon>
+  </button>
+  <button (click)="resetForm()" [disabled]="!noteEditorFormGroup.dirty"
+          class="note-dialog__button note-dialog__button--cancel"
+          mat-button
+          matTooltip="Cancel Changes"
+  ><mat-icon>cancel</mat-icon>
+  </button>
 </ng-template>

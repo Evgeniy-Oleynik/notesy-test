@@ -2,7 +2,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { filter, map, Observable, Subject, switchMap, takeUntil, withLatestFrom } from 'rxjs';
+import { filter, map, Observable, startWith, Subject, switchMap, takeUntil, withLatestFrom } from 'rxjs';
 import { RequestStatus } from 'ngxs-requests-plugin';
 
 import { Note } from '../../shared/interfaces/note';
@@ -24,20 +24,43 @@ interface NoteForm {
 
 export class NoteEditDialogComponent implements OnInit, OnDestroy {
   noteId: number;
+  noteTextarea: Element;
   topics$ = this.topicsService.topics$;
   currentNote$!: Observable<Note>;
   isEditMode$!: Observable<boolean>;
+  isNoChanges$!: Observable<boolean>;
   patchFormSubject$: Subject<void> = new Subject<void>();
   submitFormSubject$: Subject<void> = new Subject<void>();
   deleteNoteSubject$: Subject<void> = new Subject<void>();
+  resizeTextareaSubject$: Subject<void> = new Subject<void>();
   componentDestroyed$: Subject<boolean> = new Subject<boolean>();
 
   noteEditorFormGroup = new FormGroup<NoteForm>({
     id: new FormControl(null),
     topicId: new FormControl(null, [Validators.required]),
-    title: new FormControl('', [Validators.required]),
-    text: new FormControl('', [Validators.required]),
+    title: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(50),
+    ]),
+    text: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(250),
+    ]),
   });
+
+  get topicId() {
+    return this.noteEditorFormGroup.get('topicId') as FormControl;
+  }
+
+  get title() {
+    return this.noteEditorFormGroup.get('title') as FormControl;
+  }
+
+  get text() {
+    return this.noteEditorFormGroup.get('text') as FormControl;
+  }
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: number,
@@ -54,14 +77,38 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
     this.currentNote$ = this.notesService.getNoteById(this.noteId);
 
     this.isEditMode$ = this.currentNote$.pipe(
-      map(note => !!note.id)
+      map(note => !!note?.id)
     );
+
+    this.isNoChanges$ = this.noteEditorFormGroup.valueChanges.pipe(
+      startWith(1),
+      withLatestFrom(this.currentNote$),
+      map(([_, curNote]) => {
+        return curNote.topicId === this.noteEditorFormGroup.value.topicId &&
+          curNote.title === this.noteEditorFormGroup.value.title &&
+          curNote.text === this.noteEditorFormGroup.value.text
+      }),
+    );
+
+    this.noteTextarea = document.querySelector(".textarea-autosize");
+    this.noteTextarea.addEventListener("keyup", (e) => {
+      if (e['key'] === 'Enter') this.resizeTextareaSubject$.next();
+    });
+
+    this.resizeTextareaSubject$.pipe(
+      withLatestFrom(this.noteEditorFormGroup.get('text').valueChanges),
+      takeUntil(this.componentDestroyed$)
+    ).subscribe(([_, text]) => {
+      let numberOfLines = text.match(/\n/g)?.length;
+      this.noteTextarea['style'].height = (20 + numberOfLines * 16) + 'px';
+    });
 
     this.patchFormSubject$.pipe(
       withLatestFrom(this.currentNote$),
       takeUntil(this.componentDestroyed$),
     ).subscribe(([_, note]) => {
       this.noteEditorFormGroup.patchValue(note);
+      this.resizeTextareaSubject$.next();
     });
 
     this.submitFormSubject$.pipe(
@@ -100,6 +147,14 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
 
   deleteNote() {
     this.deleteNoteSubject$.next();
+  }
+
+  cancelChanges() {
+    this.patchFormSubject$.next();
+  }
+
+  resetForm() {
+    this.noteEditorFormGroup.reset();
   }
 
   ngOnDestroy() {

@@ -1,30 +1,69 @@
 @import "../../shared/styles/indents";
 
-.note-block {
-  display: flex;
-  flex-flow: column;
-  justify-content: flex-start;
-  align-items: center;
-  width: 100%;
+.note-dialog {
+  position: relative;
 
-  .note {
+
+  @include tabletV {
+    min-width: 550px;
+  }
+
+  @include tabletH {
+    min-width: 750px;
+  }
+
+  @include laptop {
+    min-width: 1000px;
+  }
+
+  .note-dialog__title {}
+
+  .note-dialog__close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    transition: none;
+  }
+
+  .note-dialog__form {
     display: flex;
-    flex-flow: column;
+    flex-flow: row wrap;
     justify-content: flex-start;
     align-items: center;
-    width: 100%;
+    column-gap: 10px;
 
-    .note-form {
-      display: flex;
-      flex-flow: column;
+    @include tabletV {
+      column-gap: 20px;
+    }
+
+    .form__input {
       width: 100%;
-      max-width: 640px;
 
-      .note-form__actions {
-        display: flex;
-        flex-flow: row;
-        justify-content: space-around;
-        align-items: center;
+      &--topic, &--title {
+        @include tabletV {
+          flex: 1 1 40%;
+        }
+      }
+    }
+  }
+
+  .note-dialog__actions {
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+
+    .note-dialog__button {
+      &--submit:enabled {
+        color: green;
+      }
+
+      &--delete {
+        margin-left: auto;
+        color: red;
       }
     }
   }
