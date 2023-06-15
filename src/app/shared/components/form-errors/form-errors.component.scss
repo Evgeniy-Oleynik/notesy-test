@@ -1,0 +1,13 @@
+
+:host {
+  position: absolute;
+  bottom: -40px;
+  left: 0;
+  height: 30px;
+  width: 100%;
+  .alert {
+    font-size: 12px;
+    color: red;
+    opacity: .6;
+  }
+}
