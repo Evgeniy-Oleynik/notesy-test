@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [],
@@ -21,6 +22,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatInputModule,
     MatMenuModule,
     MatSelectModule,
+    MatTooltipModule,
     ReactiveFormsModule,
   ],
   providers: [],
@@ -34,6 +36,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatInputModule,
     MatMenuModule,
     MatSelectModule,
+    MatTooltipModule,
     ReactiveFormsModule,
   ],
   bootstrap: []
