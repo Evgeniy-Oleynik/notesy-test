@@ -47,6 +47,12 @@
           flex: 1 1 40%;
         }
       }
+
+      &--text {
+        textarea {
+          resize: none;
+        }
+      }
     }
   }
 

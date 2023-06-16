@@ -4,16 +4,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { filter, map, Observable, startWith, Subject, switchMap, takeUntil, withLatestFrom } from 'rxjs';
 import { RequestStatus } from 'ngxs-requests-plugin';
+import _ from 'lodash';
 
 import { Note } from '../../shared/interfaces/note';
 import { NotesService } from '../../core/services/notes.service';
 import { TopicsService } from '../../core/services/topics.service';
 
 interface NoteForm {
-  id: FormControl<number | null>,
-  topicId: FormControl<number | null>,
-  title: FormControl<string | null>,
-  text: FormControl<string | null>
+  id: FormControl<number>,
+  topicId: FormControl<number>,
+  title: FormControl<string>,
+  text: FormControl<string>
 }
 
 @Component({
@@ -23,16 +24,13 @@ interface NoteForm {
 })
 
 export class NoteEditDialogComponent implements OnInit, OnDestroy {
-  noteId: number;
-  noteTextarea: Element;
   topics$ = this.topicsService.topics$;
-  currentNote$!: Observable<Note>;
-  isEditMode$!: Observable<boolean>;
-  isNoChanges$!: Observable<boolean>;
-  patchFormSubject$: Subject<void> = new Subject<void>();
+  currentNote$: Observable<Note>;
+  isEditMode$: Observable<boolean>;
+  isEqual$: Observable<boolean>;
   submitFormSubject$: Subject<void> = new Subject<void>();
   deleteNoteSubject$: Subject<void> = new Subject<void>();
-  resizeTextareaSubject$: Subject<void> = new Subject<void>();
+  cancelChangesSubject$: Subject<void> = new Subject<void>();
   componentDestroyed$: Subject<boolean> = new Subject<boolean>();
 
   noteEditorFormGroup = new FormGroup<NoteForm>({
@@ -50,66 +48,47 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
     ]),
   });
 
-  get topicId() {
-    return this.noteEditorFormGroup.get('topicId') as FormControl;
-  }
-
-  get title() {
-    return this.noteEditorFormGroup.get('title') as FormControl;
-  }
-
-  get text() {
-    return this.noteEditorFormGroup.get('text') as FormControl;
-  }
-
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: number,
+    @Inject(MAT_DIALOG_DATA) public noteId: number,
     private notesService: NotesService,
     private topicsService: TopicsService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
   ) {
-    this.noteId = data;
+  }
+
+  get topicIdFormControl() {
+    return this.noteEditorFormGroup.get('topicId') as FormControl;
+  }
+
+  get titleFormControl() {
+    return this.noteEditorFormGroup.get('title') as FormControl;
+  }
+
+  get textFormControl() {
+    return this.noteEditorFormGroup.get('text') as FormControl;
   }
 
   ngOnInit() {
     this.currentNote$ = this.notesService.getNoteById(this.noteId);
 
+    this.currentNote$.pipe(
+      takeUntil(this.componentDestroyed$)
+    ).subscribe(note => this.noteEditorFormGroup.patchValue(note));
+
     this.isEditMode$ = this.currentNote$.pipe(
       map(note => !!note?.id)
     );
 
-    this.isNoChanges$ = this.noteEditorFormGroup.valueChanges.pipe(
-      startWith(1),
+    this.isEqual$ = this.noteEditorFormGroup.valueChanges.pipe(
+      startWith(this.noteEditorFormGroup.value),
       withLatestFrom(this.currentNote$),
-      map(([_, curNote]) => {
-        return curNote.topicId === this.noteEditorFormGroup.value.topicId &&
-          curNote.title === this.noteEditorFormGroup.value.title &&
-          curNote.text === this.noteEditorFormGroup.value.text
+      map(([v, currentNote]) => {
+        const {updatedAt, createdAt, topicType, userId, userName, ...note} = currentNote;
+        return _.isEqual(this.noteEditorFormGroup.value, note);
       }),
     );
-
-    this.noteTextarea = document.querySelector(".textarea-autosize");
-    this.noteTextarea.addEventListener("keyup", (e) => {
-      if (e['key'] === 'Enter') this.resizeTextareaSubject$.next();
-    });
-
-    this.resizeTextareaSubject$.pipe(
-      withLatestFrom(this.noteEditorFormGroup.get('text').valueChanges),
-      takeUntil(this.componentDestroyed$)
-    ).subscribe(([_, text]) => {
-      let numberOfLines = text.match(/\n/g)?.length;
-      this.noteTextarea['style'].height = (20 + numberOfLines * 16) + 'px';
-    });
-
-    this.patchFormSubject$.pipe(
-      withLatestFrom(this.currentNote$),
-      takeUntil(this.componentDestroyed$),
-    ).subscribe(([_, note]) => {
-      this.noteEditorFormGroup.patchValue(note);
-      this.resizeTextareaSubject$.next();
-    });
 
     this.submitFormSubject$.pipe(
       filter(() => {
@@ -137,7 +116,10 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.patchFormSubject$.next();
+    this.cancelChangesSubject$.pipe(
+      withLatestFrom(this.currentNote$),
+      takeUntil(this.componentDestroyed$)
+    ).subscribe(([_, note]) => this.noteEditorFormGroup.patchValue(note));
   }
 
   submitForm() {
@@ -150,7 +132,7 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
   }
 
   cancelChanges() {
-    this.patchFormSubject$.next();
+    this.cancelChangesSubject$.next();
   }
 
   resetForm() {

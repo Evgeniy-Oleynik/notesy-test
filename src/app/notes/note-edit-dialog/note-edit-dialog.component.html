@@ -12,57 +12,58 @@
       <form #formElement="ngForm" [formGroup]="noteEditorFormGroup" class="note-dialog__form">
         <mat-form-field class="form__input form__input--topic">
           <mat-label>Topic</mat-label>
-          <mat-select [formControl]="topicId">
+          <mat-select [formControl]="topicIdFormControl">
             <mat-option *ngFor="let topic of topics$ | async" [value]="topic.id">{{topic.type}}</mat-option>
           </mat-select>
           <app-form-errors
-            [control]="topicId"
+            [control]="topicIdFormControl"
             [errors]="{required: 'Topic is required'}"
             [submitted]="formElement.submitted"
           ></app-form-errors>
         </mat-form-field>
         <mat-form-field class="form__input form__input--title">
           <mat-label>Title</mat-label>
-          <input [formControl]="title" matInput type="text">
+          <input [formControl]="titleFormControl" matInput type="text">
           <app-form-errors
-            [control]="title"
+            [control]="titleFormControl"
             [errors]="{
-            required: 'Title is required',
-            minlength: 'Title must be at least 3 characters',
-            maxlength: 'Title must be less than 50 characters'
-          }"
+              required: 'Title is required',
+              minlength: 'Title must be at least 3 characters',
+              maxlength: 'Title must be less than 50 characters'
+            }"
             [submitted]="formElement.submitted"
           ></app-form-errors>
         </mat-form-field>
         <mat-form-field class="form__input form__input--text">
           <mat-label>Text</mat-label>
-          <textarea [formControl]="text" class="textarea-autosize" matInput type="text"></textarea>
+          <textarea [formControl]="textFormControl" matInput maxlength="251" rows="11" type="text"></textarea>
           <app-form-errors
-            [control]="text"
+            [control]="textFormControl"
             [errors]="{
-            required: 'Text is required',
-            minlength: 'Text must be at least 3 characters',
-            maxlength: 'Text must be less than 250 characters'
-          }"
+              required: 'Text is required',
+              minlength: 'Text must be at least 3 characters',
+              maxlength: 'Text must be less than 250 characters'
+            }"
             [submitted]="formElement.submitted"
           ></app-form-errors>
         </mat-form-field>
         <div class="note-dialog__actions">
           <ng-template [ngIfElse]="createNote" [ngIf]="isEditMode$ | async">
-            <button (click)="submitForm()" [disabled]="isNoChanges$ | async"
+            <button (click)="submitForm()" [disabled]="isEqual$ | async"
                     class="note-dialog__button note-dialog__button--submit"
                     mat-button
                     matTooltip="Save Note"
-            ><mat-icon>check_circle</mat-icon>
+            >Save<mat-icon>check_circle</mat-icon>
             </button>
-            <button (click)="cancelChanges()" [disabled]="isNoChanges$ | async"
+            <button (click)="cancelChanges()" [disabled]="isEqual$ | async"
                     class="note-dialog__button note-dialog__button--cancel"
                     mat-button
                     matTooltip="Cancel Changes"
-            ><mat-icon>cancel</mat-icon>
+            >Cancel<mat-icon>cancel</mat-icon>
             </button>
-            <button (click)="deleteNote()" class="note-dialog__button note-dialog__button--delete" mat-button matTooltip="Delete Note"
-            ><mat-icon>delete</mat-icon>
+            <button (click)="deleteNote()" class="note-dialog__button note-dialog__button--delete" mat-button
+                    matTooltip="Delete Note"
+            >Delete<mat-icon>delete</mat-icon>
             </button>
           </ng-template>
         </div>
@@ -79,12 +80,12 @@
           class="note-dialog__button note-dialog__button--submit"
           mat-button
           matTooltip="Save Note"
-  ><mat-icon>check_circle</mat-icon>
+  >Save<mat-icon>check_circle</mat-icon>
   </button>
   <button (click)="resetForm()" [disabled]="!noteEditorFormGroup.dirty"
           class="note-dialog__button note-dialog__button--cancel"
           mat-button
           matTooltip="Cancel Changes"
-  ><mat-icon>cancel</mat-icon>
+  >Cancel<mat-icon>cancel</mat-icon>
   </button>
 </ng-template>
