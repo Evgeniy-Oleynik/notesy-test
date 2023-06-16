@@ -4,7 +4,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable, Subject, filter, map, take, shareReplay, switchMap } from 'rxjs';
+import { filter, map, Observable, shareReplay, Subject, switchMap, take } from 'rxjs';
 
 import { NotesService } from '../core/services/notes.service';
 import { TopicsService } from '../core/services/topics.service';
@@ -31,7 +31,7 @@ export class NotesComponent implements OnInit {
   topics$?: Observable<Topic[]>;
 
   notes$ = this.notesService.notes$;
-  tableColumnsList = ['marker', 'topic', 'title', 'author'];
+  tableColumnsList = ['topic', 'title', 'author'];
   newNoteRow = ['createNewNote'];
   selectedRows = new SelectionModel<Note>(true, []);
   notesListLength = 0;
@@ -44,7 +44,8 @@ export class NotesComponent implements OnInit {
     private usersService: UsersService,
     private dialog: MatDialog,
     private route: ActivatedRoute,
-  ) {}
+  ) {
+  }
 
   get userIdFormControl() {
     return this.formGroup?.get('userId') as FormControl;
@@ -64,10 +65,10 @@ export class NotesComponent implements OnInit {
       const userId = parseInt(params['userId']) || null;
       const topicId = parseInt(params['topicId']) || null;
       this.createFormGroup(userId, topicId);
-    })
+    });
 
     this.formGroup?.valueChanges.pipe(
-      switchMap((formData: {userId: number, topicId: number}) => {
+      switchMap((formData: { userId: number, topicId: number }) => {
         const {userId, topicId} = formData;
 
         return this.notesService.getNotes({
@@ -95,10 +96,6 @@ export class NotesComponent implements OnInit {
   openDialog(note: Note) {
     this.dialog.open(NoteEditDialogComponent, {data: note.id});
     console.log('current note:', note);
-  }
-
-  showSelected() {
-    console.log(this.selectedRows.selected);
   }
 
   addQueryParams(params?: Params) {

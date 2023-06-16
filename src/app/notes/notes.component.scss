@@ -5,6 +5,12 @@
   flex-flow: column;
   align-items: center;
 
+  .notes-filters {
+    display: flex;
+    flex-flow: row;
+    gap: 50px;
+  }
+
   .notes-list {
     display: flex;
     flex-flow: row wrap;
@@ -26,12 +32,32 @@
   .notes-table {
     width: 100%;
 
+    .notes-table__new-note {
+      cursor: pointer;
+      color: black;
+      text-align: center;
+
+      &:hover {
+        background: #FAFAFA;
+      }
+    }
+
     .notes-table__row {
       cursor: pointer;
 
       &:hover {
         background: #FAFAFA;
       }
+    }
+
+    .mat-column-topic {
+      width: 20%;
+    }
+    .mat-column-title {
+      width: 60%;
+    }
+    .mat-column-author {
+      width: 20%;
     }
   }
 }
