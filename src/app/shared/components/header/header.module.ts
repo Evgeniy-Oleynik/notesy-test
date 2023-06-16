@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterLinkWithHref } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 import { SharedModule } from '../../shared.module';
 
@@ -11,7 +11,7 @@ import { HeaderComponent } from './header.component';
   ],
   imports: [
     SharedModule,
-    RouterLinkWithHref,
+    RouterLink,
   ],
   exports: [
     HeaderComponent,
