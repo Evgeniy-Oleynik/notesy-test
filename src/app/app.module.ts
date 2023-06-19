@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
 import { HeaderModule } from './shared/components/header/header.module';
+import { SpinnerModule } from './shared/components/spinner/spinner.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { HeaderModule } from './shared/components/header/header.module';
     AppRoutingModule,
     CoreModule,
     HeaderModule,
+    SpinnerModule,
   ],
   providers: [],
   exports: [
