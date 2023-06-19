@@ -1,9 +1,11 @@
 <div class="header-main">
-  <a class="header__logo" routerLink="/">NOTESY</a>
+  <a class="header__logo" routerLink="/">
+    <img src="/assets/svg/logo.svg" alt="notesy">
+  </a>
   <div>
     <button [matMenuTriggerFor]="menu" class="header__button" mat-button>
-      <div *ngIf="currentUser">Hi, {{currentUser.name}}</div>
-      <mat-icon>person</mat-icon>
+      <img src="/assets/svg/user-pic.svg" alt="profile" class="header__profile-pic">
+      <div *ngIf="currentUser" class="header__profile-name">{{currentUser.name}}</div>
     </button>
   </div>
 </div>

@@ -1,4 +1,9 @@
+@import "../../styles/indents";
+
 .header-main {
+  background: #36AA81;
+  color: white;
+  height: 75px;
   display: flex;
   flex-flow: row;
   justify-content: space-between;
@@ -7,7 +12,41 @@
 
   .header__logo {
     text-decoration: none;
-    color: black;
+    color: white;
   }
-  .header__button {}
+
+  .header__button {
+    border: 1.5px solid white;
+    border-radius: 30px;
+    color: white;
+    font-size: 14px;
+    padding: 0;
+    height: 45px;
+    min-width: 45px;
+
+    @include tabletV {
+     padding: 0 5px;
+    }
+
+    ::ng-deep .mdc-button__label {
+      display: flex;
+      flex-flow: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header__profile-pic {
+      @include tabletV {
+        margin: 0 10px 0 0;
+      }
+    }
+
+    .header__profile-name {
+      display: none;
+
+      @include tabletV {
+        display: initial;
+      }
+    }
+  }
 }
