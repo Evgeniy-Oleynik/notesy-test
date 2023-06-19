@@ -45,6 +45,12 @@
       column-gap: 20px;
     }
 
+    .ng-invalid {
+      .form__character-counter {
+        color: #F44336;
+      }
+    }
+
     .form__input {
       width: 100%;
 
@@ -59,6 +65,8 @@
           resize: none;
         }
       }
+
+
 
       .form__character-counter {
         position: absolute;

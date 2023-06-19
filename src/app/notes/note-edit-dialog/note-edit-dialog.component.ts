@@ -28,10 +28,6 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
   currentNote$: Observable<Note>;
   isEditMode$: Observable<boolean>;
   isEqual$: Observable<boolean>;
-  titleLength: number;
-  titleErrorColor: {[style: string]: string};
-  textLength: number;
-  textErrorColor: {[style: string]: string};
   submitFormSubject$: Subject<void> = new Subject<void>();
   deleteNoteSubject$: Subject<void> = new Subject<void>();
   cancelChangesSubject$: Subject<void> = new Subject<void>();
@@ -87,24 +83,6 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
     this.isEditMode$ = this.currentNote$.pipe(
       map(note => !!note?.id)
     );
-
-    this.titleFormControl.valueChanges.pipe(
-      startWith(this.titleFormControl.value),
-      takeUntil(this.componentDestroyed$)
-    ).subscribe(title => {
-      this.titleLength = title.length;
-      if (this.titleLength > this.titleMaxLength) this.titleErrorColor = {'color': 'red'};
-      else this.titleErrorColor = {'color': 'rgba(0, 0, 0, 0.6)'};
-    });
-
-    this.textFormControl.valueChanges.pipe(
-      startWith(this.textFormControl.value),
-      takeUntil(this.componentDestroyed$)
-    ).subscribe(text => {
-      this.textLength = text.length;
-      if (this.textLength > this.textMaxLength) this.textErrorColor = {'color': 'red'};
-      else this.textErrorColor = {'color': 'rgba(0, 0, 0, 0.6)'};
-    });
 
     this.isEqual$ = this.noteEditorFormGroup.valueChanges.pipe(
       startWith(this.noteEditorFormGroup.value),
