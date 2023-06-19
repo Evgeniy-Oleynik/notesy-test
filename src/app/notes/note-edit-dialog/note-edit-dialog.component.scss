@@ -16,16 +16,22 @@
     min-width: 1000px;
   }
 
-  .note-dialog__title {}
+  .note-dialog__top {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
 
-  .note-dialog__close-button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 0;
-    background: none;
-    box-shadow: none;
-    transition: none;
+    .note-dialog__title {}
+
+    .note-dialog__close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 0;
+      background: none;
+      box-shadow: none;
+      transition: none;
+    }
   }
 
   .note-dialog__form {
@@ -52,6 +58,13 @@
         textarea {
           resize: none;
         }
+      }
+
+      .form__character-counter {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 12px;
       }
     }
   }

@@ -21,6 +21,7 @@
         </mat-form-field>
         <mat-form-field class="form__input form__input--title">
           <mat-label>Title</mat-label>
+          <div class="form__character-counter" [ngStyle]="titleErrorColor">{{titleLength}} / {{titleMaxLength}}</div>
           <input [formControl]="titleFormControl" matInput type="text">
           <mat-error *ngIf="titleFormControl.hasError('required')">Title is required</mat-error>
           <mat-error *ngIf="titleFormControl.hasError('minlength')">Title is too short</mat-error>
@@ -28,10 +29,12 @@
         </mat-form-field>
         <mat-form-field class="form__input form__input--text">
           <mat-label>Text</mat-label>
-          <textarea [formControl]="textFormControl" matInput maxlength="251" rows="8" type="text"></textarea>
+          <div class="form__character-counter" [ngStyle]="textErrorColor">{{textLength}} / {{textMaxLength}}</div>
+          <textarea [formControl]="textFormControl" matInput rows="8" type="text"></textarea>
           <mat-error *ngIf="textFormControl.hasError('required')">Text is required</mat-error>
           <mat-error *ngIf="textFormControl.hasError('minlength')">Text is too short</mat-error>
-          <mat-error *ngIf="textFormControl.hasError('maxlength')">Text is too long</mat-error>        </mat-form-field>
+          <mat-error *ngIf="textFormControl.hasError('maxlength')">Text is too long</mat-error>
+        </mat-form-field>
         <div class="note-dialog__actions">
           <ng-template [ngIfElse]="createNote" [ngIf]="isEditMode$ | async">
             <button (click)="submitForm()" [disabled]="isEqual$ | async"
