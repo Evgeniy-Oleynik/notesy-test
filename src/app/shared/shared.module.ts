@@ -11,6 +11,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { TopicTypePipeModule } from './pipes/topic-type/topic-type.pipe.module';
+
 @NgModule({
   declarations: [],
   imports: [
@@ -26,6 +28,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSnackBarModule,
     MatTooltipModule,
     ReactiveFormsModule,
+    TopicTypePipeModule,
   ],
   providers: [],
   exports: [
@@ -41,6 +44,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSnackBarModule,
     MatTooltipModule,
     ReactiveFormsModule,
+    TopicTypePipeModule,
   ],
   bootstrap: []
 })
