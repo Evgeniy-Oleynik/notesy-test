@@ -1,7 +1,7 @@
-@import "../../styles/indents";
+@import "../../styles/base";
 
 .header-main {
-  background: #36AA81;
+  background: $mainColor;
   color: white;
   height: 75px;
   display: flex;
@@ -33,12 +33,10 @@
       flex-flow: row;
       justify-content: space-between;
       align-items: center;
+      gap: 10px;
     }
 
     .header__profile-pic {
-      @include tabletV {
-        margin: 0 10px 0 0;
-      }
     }
 
     .header__profile-name {
