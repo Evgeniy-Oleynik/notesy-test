@@ -17,8 +17,7 @@ export class RequestsGetterState {
     DeleteNoteByIdRequestState,
     LogOutUserRequestState,
   ])
-  static getIsLoadingRequest(request: IRequest) {
-    console.log(111, request.loading);
-    return request.loading;
+  static getIsLoadingRequest(...requests: IRequest[]) {
+    return !!requests.find(({loading}) => loading);
   }
 }
