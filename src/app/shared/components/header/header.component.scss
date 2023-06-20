@@ -33,7 +33,6 @@
       flex-flow: row;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
     }
 
     .header__profile-pic {
@@ -44,6 +43,7 @@
 
       @include tabletV {
         display: initial;
+        margin-left: 10px;
       }
     }
   }
