@@ -1,21 +1,35 @@
-<div class="auth">
-  <h1>Sign Up</h1>
-  <form [formGroup]="signUpForm" class="auth-form">
-    <mat-form-field>
-      <mat-label for="signup-name">Name:</mat-label>
-      <input formControlName="name" id="signup-name" matInput required type="name">
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label for="signup-email">Email:</mat-label>
-      <input formControlName="email" id="signup-email" matInput required type="email">
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label for="signup-password">Password:</mat-label>
-      <input formControlName="password" id="signup-password" matInput required type="password">
-    </mat-form-field>
-    <div class="auth-form__actions">
-      <button (click)="logIn()" mat-button>Log In</button>
-      <button (click)="signUp()" mat-button>Sign Up</button>
+<div class="auth-main">
+  <div class="auth__container">
+    <h1 class="auth__title">Sign Up</h1>
+    <form [formGroup]="signUpForm" class="auth__form">
+      <mat-form-field>
+        <mat-label for="signup-name">Name:</mat-label>
+        <input formControlName="name" id="signup-name" matInput type="name">
+        <mat-error *ngIf="nameFormControl.hasError('required')">Name is required</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="signup-email">Email:</mat-label>
+        <input formControlName="email" id="signup-email" matInput type="email">
+        <mat-error *ngIf="emailFormControl.hasError('required')">Email is required</mat-error>
+        <mat-error *ngIf="emailFormControl.hasError('email')">Email is invalid</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="signup-password">Password:</mat-label>
+        <input formControlName="password" id="signup-password" matInput type="password">
+        <mat-error *ngIf="passwordFormControl.hasError('required')">Password is required</mat-error>
+        <mat-error *ngIf="passwordFormControl.hasError('minlength')">Password is too short</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="confirm-password">Confirm password:</mat-label>
+        <input formControlName="confirm" id="confirm-password" matInput type="password">
+        <mat-error *ngIf="confirmFormControl.hasError('required')">Confirm password</mat-error>
+        <mat-error *ngIf="confirmFormControl.hasError('notEqual')">Passwords are not equal</mat-error>
+      </mat-form-field>
+      <button (click)="signUp()" mat-button class="auth-form__button">Sign Up</button>
+    </form>
+    <div class="auth__change-method">
+      Already have an account?
+      <a routerLink="/login" class="auth__link">Log In</a>
     </div>
-  </form>
+  </div>
 </div>
