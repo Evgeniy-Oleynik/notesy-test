@@ -1,22 +1,46 @@
-@import "../shared/styles/indents";
+@import "../shared/styles/base";
 
 .notes-main {
   display: flex;
   flex-flow: column;
-  align-items: center;
+  align-items: flex-start;
+  margin-top: 50px;
 
-  .notes-filters {
-    display: flex;
-    flex-flow: row;
-    gap: 50px;
+  .notes-main__header {
+    font-size: 28px;
+    font-weight: 600;
   }
 
-  .notes-list {
+  .notes-actions {
+    width: 100%;
     display: flex;
     flex-flow: row wrap;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 30px;
+    margin-top: 20px;
+    justify-content: space-between;
+
+    .notes-actions__filters {
+      display: flex;
+      flex-flow: row wrap;
+      column-gap: 20px;
+
+      .action__filter {
+        ::ng-deep .mdc-text-field {
+          background: none;
+
+          .mat-mdc-form-field-focus-overlay {
+            background: none;
+          }
+        }
+      }
+    }
+
+    .notes-actions__button {
+      background: $mainColor;
+      color: white;
+      border-radius: 100px;
+      height: 60px;
+      width: 120px;
+    }
   }
 
   .notes__button-new {
@@ -31,6 +55,10 @@
 
   .notes-table {
     width: 100%;
+
+    th {
+      font-weight: 600;
+    }
 
     .notes-table__new-note {
       cursor: pointer;
