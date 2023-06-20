@@ -2,6 +2,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { filter, map, Observable, startWith, Subject, switchMap, takeUntil, withLatestFrom } from 'rxjs';
 import { RequestStatus } from 'ngxs-requests-plugin';
 import _ from 'lodash';
@@ -9,6 +10,7 @@ import _ from 'lodash';
 import { Note } from '../../shared/interfaces/note';
 import { NotesService } from '../../core/services/notes.service';
 import { TopicsService } from '../../core/services/topics.service';
+import { AuthService } from '../../core/services/auth.service';
 
 interface NoteForm {
   id: FormControl<number>,
@@ -28,6 +30,7 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
   currentNote$: Observable<Note>;
   isEditMode$: Observable<boolean>;
   isEqual$: Observable<boolean>;
+  isNotYours: boolean;
   submitFormSubject$: Subject<void> = new Subject<void>();
   deleteNoteSubject$: Subject<void> = new Subject<void>();
   cancelChangesSubject$: Subject<void> = new Subject<void>();
@@ -53,11 +56,13 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public noteId: number,
+    private authService: AuthService,
     private notesService: NotesService,
     private topicsService: TopicsService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
+    private snackBar: MatSnackBar,
   ) {
   }
 
@@ -77,8 +82,16 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
     this.currentNote$ = this.notesService.getNoteById(this.noteId);
 
     this.currentNote$.pipe(
+      withLatestFrom(this.authService.currentUser$),
       takeUntil(this.componentDestroyed$)
-    ).subscribe(note => this.noteEditorFormGroup.patchValue(note));
+    ).subscribe(([note, user]) => {
+      this.noteEditorFormGroup.patchValue(note);
+      if (note.userId !== user.id) {
+        this.topicIdFormControl.disable();
+        this.isNotYours = true;
+        this.snackBar.open('This Note is not yours. View only allowed.', 'OK', {duration: 5000});
+      }
+    });
 
     this.isEditMode$ = this.currentNote$.pipe(
       map(note => !!note?.id)

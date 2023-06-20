@@ -22,7 +22,7 @@
         <mat-form-field class="form__input form__input--title">
           <mat-label>Title</mat-label>
           <div class="form__character-counter">{{titleFormControl.value.length}} / {{titleMaxLength}}</div>
-          <input [formControl]="titleFormControl" matInput type="text">
+          <input [formControl]="titleFormControl" [readonly]="isNotYours" matInput type="text">
           <mat-error *ngIf="titleFormControl.hasError('required')">Title is required</mat-error>
           <mat-error *ngIf="titleFormControl.hasError('minlength')">Title is too short</mat-error>
           <mat-error *ngIf="titleFormControl.hasError('maxlength')">Title is too long</mat-error>
@@ -30,24 +30,27 @@
         <mat-form-field class="form__input form__input--text">
           <mat-label>Text</mat-label>
           <div class="form__character-counter">{{textFormControl.value.length}} / {{textMaxLength}}</div>
-          <textarea [formControl]="textFormControl" matInput rows="8" type="text"></textarea>
+          <textarea [formControl]="textFormControl" [readonly]="isNotYours" matInput rows="8" type="text"></textarea>
           <mat-error *ngIf="textFormControl.hasError('required')">Text is required</mat-error>
           <mat-error *ngIf="textFormControl.hasError('minlength')">Text is too short</mat-error>
           <mat-error *ngIf="textFormControl.hasError('maxlength')">Text is too long</mat-error>
         </mat-form-field>
         <div class="note-dialog__actions">
           <ng-template [ngIfElse]="createNote" [ngIf]="isEditMode$ | async">
-            <button (click)="deleteNote()" class="note-dialog__button note-dialog__button--delete" mat-button
+            <button (click)="deleteNote()" [disabled]="isNotYours"
+                    class="note-dialog__button note-dialog__button--delete" mat-button
                     matTooltip="Delete Note"
-            >Delete<mat-icon>delete</mat-icon>
+            >Delete
+              <mat-icon>delete</mat-icon>
             </button>
-            <button (click)="cancelChanges()" [disabled]="isEqual$ | async"
+            <button (click)="cancelChanges()" [disabled]="(isEqual$ | async) || isNotYours"
                     class="note-dialog__button note-dialog__button--cancel"
                     mat-button
                     matTooltip="Cancel Changes"
-            >Cancel<mat-icon>cancel</mat-icon>
+            >Cancel
+              <mat-icon>cancel</mat-icon>
             </button>
-            <button (click)="submitForm()" [disabled]="(isEqual$ | async) || !noteEditorFormGroup.valid"
+            <button (click)="submitForm()" [disabled]="(isEqual$ | async) || !noteEditorFormGroup.valid || isNotYours"
                     class="note-dialog__button note-dialog__button--submit"
                     mat-button
                     matTooltip="Save Note"
@@ -68,7 +71,8 @@
           class="note-dialog__button note-dialog__button--cancel"
           mat-button
           matTooltip="Cancel Changes"
-  >Cancel<mat-icon>cancel</mat-icon>
+  >Cancel
+    <mat-icon>cancel</mat-icon>
   </button>
   <button (click)="submitForm()" [disabled]="!noteEditorFormGroup.valid"
           class="note-dialog__button note-dialog__button--submit"

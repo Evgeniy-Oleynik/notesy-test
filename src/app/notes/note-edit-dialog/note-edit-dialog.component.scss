@@ -28,7 +28,7 @@
       top: 10px;
       right: 10px;
       padding: 0;
-      color: $mainColor;
+      color: #444444;
       background: none;
       box-shadow: none;
       transition: none;
@@ -98,23 +98,29 @@
     align-items: center;
 
     .note-dialog__button {
+      border-radius: 100px;
+      height: 40px;
+      padding: 0 15px;
 
       &--submit {
         margin-left: auto;
         background: rgba(0, 0, 0, 0.38);
         color: white;
-        height: 40px;
         width: 80px;
-        border-radius: 100px;
 
         &:enabled {
           background: $mainColor;
         }
       }
 
+      &--cancel, &--delete {
+        &:enabled {
+          color: #444444;
+        }
+      }
+
       &--delete {
-        color: red;
-        margin-right: 30px;
+        margin-right: 10px;
       }
     }
   }
