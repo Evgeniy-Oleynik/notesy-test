@@ -12,7 +12,7 @@ import { AuthService } from '../core/services/auth.service';
 export class LoginComponent implements OnInit {
 
   logInForm = new FormGroup<any>({
-    email: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required])
   });
 
@@ -22,14 +22,18 @@ export class LoginComponent implements OnInit {
   ) {
   }
 
+  get emailFormControl() {
+    return this.logInForm.get('email') as FormControl;
+  }
+
+  get passwordFormControl() {
+    return this.logInForm.get('password') as FormControl;
+  }
+
   ngOnInit(): void {
   }
 
   logIn() {
     this.authService.logInUser(this.logInForm.value);
-  }
-
-  signUp() {
-    this.router.navigate(['/signup']);
   }
 }
