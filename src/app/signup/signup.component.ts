@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from '../core/services/auth.service';
 
@@ -10,6 +9,8 @@ import { AuthService } from '../core/services/auth.service';
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
+  hidePass1 = true;
+  hidePass2 = true;
 
   signUpForm = new FormGroup<any>({
     name: new FormControl('', [Validators.required]),
@@ -20,7 +21,6 @@ export class SignupComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router,
   ) {
   }
 
