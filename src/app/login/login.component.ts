@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 
 import { AuthService } from '../core/services/auth.service';
 
@@ -10,6 +9,7 @@ import { AuthService } from '../core/services/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  hidePass = true;
 
   logInForm = new FormGroup<any>({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -18,7 +18,6 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router,
   ) {
   }
 
