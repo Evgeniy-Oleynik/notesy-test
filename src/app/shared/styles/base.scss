@@ -1,3 +1,6 @@
+//colors
+$mainColor: #4caf50;
+
 //resolutions
 $desktop: 1920px;
 $laptop: 1440px;
@@ -37,4 +40,26 @@ $phone: 425px;
 
 .base-wrapper {
   margin: 0 5%;
+}
+
+/*BASIC STYLES*/
+* {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: normal;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
 }
