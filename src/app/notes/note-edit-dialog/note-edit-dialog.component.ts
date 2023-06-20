@@ -86,8 +86,7 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
       takeUntil(this.componentDestroyed$)
     ).subscribe(([note, user]) => {
       this.noteEditorFormGroup.patchValue(note);
-      if (note.userId !== user.id) {
-        this.topicIdFormControl.disable();
+      if (note?.userId && (note.userId !== user.id)) {
         this.isNotYours = true;
         this.snackBar.open('This Note is not yours. View only allowed.', 'OK', {duration: 5000});
       }
@@ -156,6 +155,7 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.snackBar.dismiss();
     this.componentDestroyed$.next(true);
     this.componentDestroyed$.complete();
   }

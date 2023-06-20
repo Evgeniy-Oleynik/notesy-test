@@ -21,8 +21,6 @@
     flex-flow: row;
     justify-content: space-between;
 
-    .note-dialog__title {}
-
     .note-dialog__close-button {
       position: absolute;
       top: 10px;
@@ -71,8 +69,6 @@
         }
       }
 
-
-
       .form__character-counter {
         position: absolute;
         top: 0;
@@ -88,40 +84,58 @@
         background: none;
       }
     }
+
+    .note-dialog__actions {
+      width: 100%;
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: flex-start;
+      align-items: center;
+
+      .note-dialog__button {
+        border-radius: 100px;
+        height: 40px;
+        padding: 0 15px;
+
+        &--submit {
+          margin-left: auto;
+          background: rgba(0, 0, 0, 0.38);
+          color: white;
+          width: 80px;
+
+          &:enabled {
+            background: $mainColor;
+          }
+        }
+
+        &--cancel, &--delete {
+          &:enabled {
+            color: #444444;
+          }
+        }
+
+        &--delete {
+          margin-right: 10px;
+        }
+      }
+    }
   }
 
-  .note-dialog__actions {
-    width: 100%;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-start;
-    align-items: center;
+  .not-your-note {
+    gap: 20px;
 
-    .note-dialog__button {
-      border-radius: 100px;
-      height: 40px;
-      padding: 0 15px;
+    .form__input {
+      color: rgba(0, 0, 0, 0.87);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.42);
 
-      &--submit {
-        margin-left: auto;
-        background: rgba(0, 0, 0, 0.38);
-        color: white;
-        width: 80px;
-
-        &:enabled {
-          background: $mainColor;
-        }
+      .not-your-note__input-title {
+        font-size: 12px;
       }
+    }
 
-      &--cancel, &--delete {
-        &:enabled {
-          color: #444444;
-        }
-      }
-
-      &--delete {
-        margin-right: 10px;
-      }
+    .note-dialog__actions {
+      display: flex;
+      justify-content: center;
     }
   }
 }
