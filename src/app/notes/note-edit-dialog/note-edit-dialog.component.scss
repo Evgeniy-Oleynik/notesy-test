@@ -1,4 +1,4 @@
-@import "../../shared/styles/indents";
+@import "../../shared/styles/base";
 
 .note-dialog {
   position: relative;
@@ -28,9 +28,14 @@
       top: 10px;
       right: 10px;
       padding: 0;
+      color: $mainColor;
       background: none;
       box-shadow: none;
       transition: none;
+
+      ::ng-deep .mdc-fab__ripple::before {
+        background-color: #F6FAF9;
+      }
     }
   }
 
@@ -75,6 +80,14 @@
         font-size: 12px;
       }
     }
+
+    ::ng-deep .mdc-text-field {
+      background: none;
+
+      .mat-mdc-form-field-focus-overlay {
+        background: none;
+      }
+    }
   }
 
   .note-dialog__actions {
@@ -82,15 +95,26 @@
     display: flex;
     flex-flow: row wrap;
     justify-content: flex-start;
+    align-items: center;
 
     .note-dialog__button {
-      &--submit:enabled {
-        color: green;
+
+      &--submit {
+        margin-left: auto;
+        background: rgba(0, 0, 0, 0.38);
+        color: white;
+        height: 40px;
+        width: 80px;
+        border-radius: 100px;
+
+        &:enabled {
+          background: $mainColor;
+        }
       }
 
       &--delete {
-        margin-left: auto;
         color: red;
+        margin-right: 30px;
       }
     }
   }

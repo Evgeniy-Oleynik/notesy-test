@@ -1,7 +1,7 @@
 <div class="note-dialog">
   <div class="note-dialog__top">
     <ng-template [ngIfElse]="newNoteTitle" [ngIf]="isEditMode$ | async">
-      <h1 class="note-dialog__title" mat-dialog-title>EDIT NOTE</h1>
+      <div class="note-dialog__title" mat-dialog-title>EDIT NOTE</div>
     </ng-template>
     <mat-dialog-actions>
       <button aria-label="close" class="note-dialog__close-button" mat-dialog-close="" mat-mini-fab matTooltip="Close">
@@ -37,11 +37,9 @@
         </mat-form-field>
         <div class="note-dialog__actions">
           <ng-template [ngIfElse]="createNote" [ngIf]="isEditMode$ | async">
-            <button (click)="submitForm()" [disabled]="(isEqual$ | async) || !noteEditorFormGroup.valid"
-                    class="note-dialog__button note-dialog__button--submit"
-                    mat-button
-                    matTooltip="Save Note"
-            >Save<mat-icon>check_circle</mat-icon>
+            <button (click)="deleteNote()" class="note-dialog__button note-dialog__button--delete" mat-button
+                    matTooltip="Delete Note"
+            >Delete<mat-icon>delete</mat-icon>
             </button>
             <button (click)="cancelChanges()" [disabled]="isEqual$ | async"
                     class="note-dialog__button note-dialog__button--cancel"
@@ -49,9 +47,11 @@
                     matTooltip="Cancel Changes"
             >Cancel<mat-icon>cancel</mat-icon>
             </button>
-            <button (click)="deleteNote()" class="note-dialog__button note-dialog__button--delete" mat-button
-                    matTooltip="Delete Note"
-            >Delete<mat-icon>delete</mat-icon>
+            <button (click)="submitForm()" [disabled]="(isEqual$ | async) || !noteEditorFormGroup.valid"
+                    class="note-dialog__button note-dialog__button--submit"
+                    mat-button
+                    matTooltip="Save Note"
+            >Save
             </button>
           </ng-template>
         </div>
@@ -64,16 +64,16 @@
   <h1 class="note-dialog__title" mat-dialog-title>NEW NOTE</h1>
 </ng-template>
 <ng-template #createNote>
-  <button (click)="submitForm()" [disabled]="!noteEditorFormGroup.valid"
-          class="note-dialog__button note-dialog__button--submit"
-          mat-button
-          matTooltip="Save Note"
-  >Save<mat-icon>check_circle</mat-icon>
-  </button>
   <button (click)="resetForm()" [disabled]="!noteEditorFormGroup.dirty"
           class="note-dialog__button note-dialog__button--cancel"
           mat-button
           matTooltip="Cancel Changes"
   >Cancel<mat-icon>cancel</mat-icon>
+  </button>
+  <button (click)="submitForm()" [disabled]="!noteEditorFormGroup.valid"
+          class="note-dialog__button note-dialog__button--submit"
+          mat-button
+          matTooltip="Save Note"
+  >Save
   </button>
 </ng-template>
