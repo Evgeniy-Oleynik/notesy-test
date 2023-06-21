@@ -41,6 +41,18 @@
       height: 56px;
       width: 120px;
     }
+
+    .action__search {
+      width: 100%;
+
+      ::ng-deep .mdc-text-field {
+        background: none;
+
+        .mat-mdc-form-field-focus-overlay {
+          background: none;
+        }
+      }
+    }
   }
 
   .notes__button-new {

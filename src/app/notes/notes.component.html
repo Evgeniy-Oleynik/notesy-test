@@ -29,6 +29,14 @@
     </div>
 
     <button mat-button (click)="newNote()" class="notes-actions__button">Add Note</button>
+
+    <mat-form-field class="action__search">
+      <mat-label>Search:</mat-label>
+      <input matInput [formControl]="searchFormControl">
+      <button *ngIf="searchFormControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchFormControl.reset()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
   </div>
 
   <table *ngIf="notesList$ | async as notesList" [dataSource]="notesList" class="notes-table" mat-table>
@@ -45,22 +53,6 @@
     <ng-container matColumnDef="author">
       <th *matHeaderCellDef mat-header-cell>Author</th>
       <td *matCellDef="let note" mat-cell>{{note.userName}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="marker">
-      <th *matHeaderCellDef mat-header-cell>
-        <mat-checkbox (change)="$event ? toggleAllRows() : null"
-                      [checked]="selectedRows.hasValue() && isAllSelected()"
-                      [indeterminate]="selectedRows.hasValue() && !isAllSelected()">
-        </mat-checkbox>
-      </th>
-      <td *matCellDef="let row" mat-cell>
-        <mat-checkbox
-          (change)="$event ? selectedRows.toggle(row) : null"
-          (click)="$event.stopPropagation()"
-          [checked]="selectedRows.isSelected(row)"
-        ></mat-checkbox>
-      </td>
     </ng-container>
 
     <tr *matHeaderRowDef="tableColumnsList" mat-header-row></tr>

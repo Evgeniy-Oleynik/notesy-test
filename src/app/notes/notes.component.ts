@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { filter, map, Observable, shareReplay, Subject, switchMap, take } from 'rxjs';
+import { filter, map, Observable, shareReplay, Subject, switchMap, take, takeUntil, withLatestFrom } from 'rxjs';
 
 import { NotesService } from '../core/services/notes.service';
 import { TopicsService } from '../core/services/topics.service';
@@ -20,22 +20,21 @@ import { NoteEditDialogComponent } from './note-edit-dialog/note-edit-dialog.com
   templateUrl: './notes.component.html',
   styleUrls: ['./notes.component.scss']
 })
-export class NotesComponent implements OnInit {
+export class NotesComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatTable) table?: MatTable<any>;
 
   selectAllNotes$ = new Subject<void>();
+  componentDestroyed$: Subject<boolean> = new Subject<boolean>();
 
   notesList$!: Observable<MatTableDataSource<Note>>;
   users$?: Observable<User[]>;
   topics$?: Observable<Topic[]>;
-
   notes$ = this.notesService.notes$;
   tableColumnsList = ['topic', 'title', 'author'];
-  newNoteRow = ['createNewNote'];
   selectedRows = new SelectionModel<Note>(true, []);
-  notesListLength = 0;
   formGroup?: FormGroup;
+  searchFormControl = new FormControl;
 
   constructor(
     private router: Router,
@@ -76,7 +75,8 @@ export class NotesComponent implements OnInit {
             ...(!!topicId ? {topicId} : {}),
           }
         ).pipe(
-          filter(res => res.loaded && !res.loading)
+          filter(res => res.loaded && !res.loading),
+          takeUntil(this.componentDestroyed$)
         );
       }),
     ).subscribe(() => this.addQueryParams(this.formGroup?.value));
@@ -87,6 +87,13 @@ export class NotesComponent implements OnInit {
       }),
       shareReplay({refCount: true, bufferSize: 1})
     );
+
+    this.searchFormControl.valueChanges.pipe(
+      withLatestFrom(this.notesList$),
+      takeUntil(this.componentDestroyed$)
+    ).subscribe(([searchValue, notesList]) => {
+      notesList.filter = searchValue?.trim().toLowerCase();
+    })
   }
 
   newNote() {
@@ -105,23 +112,15 @@ export class NotesComponent implements OnInit {
     });
   }
 
-  isAllSelected() {
-    const numSelected = this.selectedRows.selected.length;
-    return numSelected >= this.notesListLength;
-  }
-
-  toggleAllRows() {
-    if (this.isAllSelected()) {
-      this.selectedRows.clear();
-      return;
-    }
-    this.selectAllNotes$.next();
-  }
-
   private createFormGroup(userId: number | null, topicId: number | null) {
     this.formGroup = new FormGroup({
       userId: new FormControl(userId),
       topicId: new FormControl(topicId),
     });
+  }
+
+  ngOnDestroy() {
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
   }
 }
