@@ -87,7 +87,9 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
 
     this.isOwner$ = this.currentNote$.pipe(
       withLatestFrom(this.authService.currentUser$),
-      map(([note, user]) => note.userId === user.id)
+      map(([note, user]) => {
+        return note?.id ? note.userId === user.id : true
+      })
     );
 
     this.isOwner$.pipe(

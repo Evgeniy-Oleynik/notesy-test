@@ -19,23 +19,28 @@
             <mat-select [formControl]="topicIdFormControl">
               <mat-option *ngFor="let topic of topics$ | async" [value]="topic.id">{{topic.type}}</mat-option>
             </mat-select>
-            <mat-error *ngIf="topicIdFormControl.hasError('required')">Topic is required</mat-error>
+            <app-form-errors
+              [control]="topicIdFormControl"
+              [name]="'Topic'"
+            ></app-form-errors>
           </mat-form-field>
           <mat-form-field class="form__input form__input--title">
             <mat-label>Title</mat-label>
             <div class="form__character-counter">{{titleFormControl.value?.length || 0}} / {{titleMaxLength}}</div>
             <input [formControl]="titleFormControl" matInput type="text">
-            <mat-error *ngIf="titleFormControl.hasError('required')">Title is required</mat-error>
-            <mat-error *ngIf="titleFormControl.hasError('minlength')">Title is too short</mat-error>
-            <mat-error *ngIf="titleFormControl.hasError('maxlength')">Title is too long</mat-error>
+            <app-form-errors
+              [control]="titleFormControl"
+              [name]="'Title'"
+            ></app-form-errors>
           </mat-form-field>
           <mat-form-field class="form__input form__input--text">
             <mat-label>Text</mat-label>
             <div class="form__character-counter">{{textFormControl.value?.length || 0}} / {{textMaxLength}}</div>
             <textarea [formControl]="textFormControl" matInput rows="8" type="text"></textarea>
-            <mat-error *ngIf="textFormControl.hasError('required')">Text is required</mat-error>
-            <mat-error *ngIf="textFormControl.hasError('minlength')">Text is too short</mat-error>
-            <mat-error *ngIf="textFormControl.hasError('maxlength')">Text is too long</mat-error>
+            <app-form-errors
+              [control]="textFormControl"
+              [name]="'Text'"
+            ></app-form-errors>
           </mat-form-field>
           <div class="note-dialog__actions">
             <ng-template [ngIfElse]="createNote" [ngIf]="isEditMode$ | async">
