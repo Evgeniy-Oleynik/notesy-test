@@ -13,6 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { FormErrorsModule } from './components/form-errors/form-errors.module';
 import { TopicTypePipeModule } from './pipes/topic-type/topic-type.pipe.module';
+import { UserNamePipeModule } from './pipes/user-name/user-name.pipe.module';
 
 @NgModule({
   declarations: [],
@@ -31,6 +32,7 @@ import { TopicTypePipeModule } from './pipes/topic-type/topic-type.pipe.module';
     MatTooltipModule,
     ReactiveFormsModule,
     TopicTypePipeModule,
+    UserNamePipeModule,
   ],
   providers: [],
   exports: [
@@ -48,6 +50,7 @@ import { TopicTypePipeModule } from './pipes/topic-type/topic-type.pipe.module';
     MatTooltipModule,
     ReactiveFormsModule,
     TopicTypePipeModule,
+    UserNamePipeModule,
   ],
   bootstrap: []
 })
