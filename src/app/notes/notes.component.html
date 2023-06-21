@@ -33,7 +33,7 @@
     <mat-form-field class="action__search">
       <mat-label>Search:</mat-label>
       <input matInput [formControl]="searchFormControl">
-      <button *ngIf="searchFormControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchFormControl.reset()">
+      <button *ngIf="searchFormControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>

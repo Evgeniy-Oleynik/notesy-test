@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { filter, map, Observable, shareReplay, Subject, switchMap, take, takeUntil } from 'rxjs';
+import { filter, map, Observable, startWith, Subject, switchMap, take, takeUntil, withLatestFrom } from 'rxjs';
 
 import { NotesService } from '../core/services/notes.service';
 import { TopicsService } from '../core/services/topics.service';
@@ -31,7 +31,7 @@ export class NotesComponent implements OnInit, OnDestroy {
   notes$ = this.notesService.notes$;
   tableColumnsList = ['topic', 'title', 'author', 'updated', 'created'];
   formGroup?: FormGroup;
-  searchFormControl = new FormControl;
+  searchFormControl = new FormControl('');
 
   constructor(
     private router: Router,
@@ -66,7 +66,6 @@ export class NotesComponent implements OnInit, OnDestroy {
     this.formGroup?.valueChanges.pipe(
       switchMap((formData: { userId: number, topicId: number }) => {
         const {userId, topicId} = formData;
-
         return this.notesService.getNotes({
             ...(!!userId ? {userId} : {}),
             ...(!!topicId ? {topicId} : {}),
@@ -78,19 +77,15 @@ export class NotesComponent implements OnInit, OnDestroy {
       }),
     ).subscribe(() => this.addQueryParams(this.formGroup?.value));
 
-    this.notesList$ = this.notes$.pipe(
-      map(notes => {
-        return new MatTableDataSource<Note>(notes);
-      }),
-      shareReplay({refCount: true, bufferSize: 1})
-    );
-
-    // this.searchFormControl.valueChanges.pipe(
-    //   withLatestFrom(this.notesList$),
-    //   takeUntil(this.componentDestroyed$)
-    // ).subscribe(([searchValue, notesList]) => {
-    //   notesList.filter = searchValue?.trim().toLowerCase();
-    // })
+    this.notesList$ = this.searchFormControl.valueChanges.pipe(
+      startWith(''),
+      withLatestFrom(this.notes$),
+      map(([search, notes]) => {
+        const notesList = new MatTableDataSource(notes);
+        notesList.filter = search;
+        return notesList;
+      })
+    )
   }
 
   newNote() {
@@ -106,6 +101,10 @@ export class NotesComponent implements OnInit, OnDestroy {
       relativeTo: this.route,
       queryParams: {...params},
     });
+  }
+
+  clearSearch() {
+    this.searchFormControl.reset()
   }
 
   private createFormGroup(userId: number | null, topicId: number | null) {
