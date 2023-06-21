@@ -4,7 +4,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { filter, map, Observable, shareReplay, Subject, switchMap, take, takeUntil, withLatestFrom } from 'rxjs';
+import { filter, map, Observable, shareReplay, Subject, switchMap, take, takeUntil } from 'rxjs';
 
 import { NotesService } from '../core/services/notes.service';
 import { TopicsService } from '../core/services/topics.service';
@@ -88,12 +88,12 @@ export class NotesComponent implements OnInit, OnDestroy {
       shareReplay({refCount: true, bufferSize: 1})
     );
 
-    this.searchFormControl.valueChanges.pipe(
-      withLatestFrom(this.notesList$),
-      takeUntil(this.componentDestroyed$)
-    ).subscribe(([searchValue, notesList]) => {
-      notesList.filter = searchValue?.trim().toLowerCase();
-    })
+    // this.searchFormControl.valueChanges.pipe(
+    //   withLatestFrom(this.notesList$),
+    //   takeUntil(this.componentDestroyed$)
+    // ).subscribe(([searchValue, notesList]) => {
+    //   notesList.filter = searchValue?.trim().toLowerCase();
+    // })
   }
 
   newNote() {
