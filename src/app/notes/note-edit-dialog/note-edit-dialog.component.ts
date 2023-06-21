@@ -30,7 +30,7 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
   currentNote$: Observable<Note>;
   isEditMode$: Observable<boolean>;
   isEqual$: Observable<boolean>;
-  isNotYours: boolean;
+  isOwner$: Observable<boolean>;
   submitFormSubject$: Subject<void> = new Subject<void>();
   deleteNoteSubject$: Subject<void> = new Subject<void>();
   cancelChangesSubject$: Subject<void> = new Subject<void>();
@@ -82,15 +82,19 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
     this.currentNote$ = this.notesService.getNoteById(this.noteId);
 
     this.currentNote$.pipe(
-      withLatestFrom(this.authService.currentUser$),
       takeUntil(this.componentDestroyed$)
-    ).subscribe(([note, user]) => {
-      this.noteEditorFormGroup.patchValue(note);
-      if (note?.userId && (note.userId !== user.id)) {
-        this.isNotYours = true;
-        this.snackBar.open('This Note is not yours. View only allowed.', 'OK', {duration: 5000});
-      }
-    });
+    ).subscribe(note => this.noteEditorFormGroup.patchValue(note));
+
+    this.isOwner$ = this.currentNote$.pipe(
+      withLatestFrom(this.authService.currentUser$),
+      map(([note, user]) => note.userId === user.id)
+    );
+
+    this.isOwner$.pipe(
+      takeUntil(this.componentDestroyed$)
+    ).subscribe(isOwner =>{
+      if (!isOwner) this.snackBar.open('This Note is not yours. View only allowed.', 'OK', {duration: 5000});
+    })
 
     this.isEditMode$ = this.currentNote$.pipe(
       map(note => !!note?.id)

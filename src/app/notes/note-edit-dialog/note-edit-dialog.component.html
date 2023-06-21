@@ -1,5 +1,5 @@
 <div class="note-dialog">
-  <ng-template [ngIfElse]="notYourNote" [ngIf]="!isNotYours">
+  <ng-template [ngIfElse]="notYourNote" [ngIf]="isOwner$ | async">
     <div class="note-dialog__top">
       <ng-template [ngIfElse]="newNoteTitle" [ngIf]="isEditMode$ | async">
         <div class="note-dialog__title" mat-dialog-title>EDIT NOTE</div>
