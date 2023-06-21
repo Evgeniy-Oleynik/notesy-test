@@ -7,7 +7,7 @@
         <input formControlName="name" matInput type="name" autocomplete="username">
         <app-form-errors
           [control]="nameFormControl"
-          [name]="'Name'"
+          [controlName]="'Name'"
         ></app-form-errors>
       </mat-form-field>
       <mat-form-field>
@@ -15,7 +15,7 @@
         <input formControlName="email" matInput type="email" autocomplete="email">
         <app-form-errors
           [control]="emailFormControl"
-          [name]="'Email'"
+          [controlName]="'Email'"
         ></app-form-errors>
       </mat-form-field>
       <mat-form-field>
@@ -24,7 +24,7 @@
         <mat-icon matSuffix (click)="hidePass1 = !hidePass1">{{hidePass1 ? 'visibility_off' : 'visibility'}}</mat-icon>
         <app-form-errors
           [control]="passwordFormControl"
-          [name]="'Password'"
+          [controlName]="'Password'"
         ></app-form-errors>
       </mat-form-field>
       <mat-form-field>
@@ -33,7 +33,7 @@
         <mat-icon matSuffix (click)="hidePass2 = !hidePass2">{{hidePass2 ? 'visibility_off' : 'visibility'}}</mat-icon>
         <app-form-errors
           [control]="confirmFormControl"
-          [name]="'Password'"
+          [controlName]="'Password'"
         ></app-form-errors>
       </mat-form-field>
       <button (click)="signUp()" mat-button class="auth-form__button">Sign Up</button>

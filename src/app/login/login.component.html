@@ -7,7 +7,7 @@
         <input formControlName="email" matInput type="email" autocomplete="email">
         <app-form-errors
           [control]="emailFormControl"
-          [name]="'Email'"
+          [controlName]="'Email'"
         ></app-form-errors>
       </mat-form-field>
       <mat-form-field>
@@ -16,7 +16,7 @@
         <mat-icon matSuffix (click)="hidePass = !hidePass">{{hidePass ? 'visibility_off' : 'visibility'}}</mat-icon>
         <app-form-errors
           [control]="passwordFormControl"
-          [name]="'Password'"
+          [controlName]="'Password'"
         ></app-form-errors>
       </mat-form-field>
       <button (click)="logIn()" mat-button class="auth-form__button">Log In</button>
