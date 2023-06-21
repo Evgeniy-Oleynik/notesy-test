@@ -52,35 +52,32 @@ export class AuthService {
 
   signUpUser(user: User) {
     this.store.dispatch(new SignUpUser(user));
-    this.signUpUserRequestState$.pipe(
-      filter(res => {
-        return res?.loaded && !res?.loading && res?.status === RequestStatus.Success
-      }),
-    ).subscribe(() => {
-      this.router.navigate(['notes'])
-    });
+    return this.signUpUserRequestState$.pipe(
+      filter(req => req.loaded && !req.loading)
+    );
   }
 
   logInUser(user: Partial<User>) {
     this.store.dispatch(new LogInUser(user));
-    this.logInUserRequestState$.pipe(
-      filter(res => {
-        return res?.loaded && !res?.loading && res?.status === RequestStatus.Success
-      }),
-    ).subscribe(() => {
-      this.router.navigate(['notes'])
-    });
+    return this.logInUserRequestState$.pipe(
+      filter(req => req.loaded && !req.loading)
+    );
   }
 
   logOutUser() {
     this.store.dispatch(new LogOutUser()).pipe(
-      filter(res => res?.requests.logOutUser.loaded && !res?.requests.logOutUser.loading && res?.requests.logOutUser.status === RequestStatus.Success)
+      filter(res => {
+        const request = res?.requests.logOutUser;
+        return request.loaded && !request.loading && (request.status === RequestStatus.Success)
+      })
     ).subscribe(() => {
       this.router.navigate(['/login']);
-      this.store.dispatch(new ResetNotesState());
-      this.store.dispatch(new ResetTopicsState());
-      this.store.dispatch(new ResetUsersState());
-      this.store.dispatch(new ResetAuthState());
+      this.store.dispatch([
+        new ResetNotesState(),
+        new ResetTopicsState(),
+        new ResetUsersState(),
+        new ResetAuthState()
+      ]);
     });
   }
 

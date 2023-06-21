@@ -1,15 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { AuthService } from '../core/services/auth.service';
+import { filter, Subject, switchMap, takeUntil } from 'rxjs';
+import { RequestStatus } from 'ngxs-requests-plugin';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   hidePass = true;
+
+  logInSubject$: Subject<void> = new Subject<void>();
+  componentDestroyed$: Subject<boolean> = new Subject<boolean>();
 
   logInForm = new FormGroup<any>({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -18,6 +24,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private router: Router,
   ) {
   }
 
@@ -30,9 +37,26 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.logInSubject$.pipe(
+      filter(() => this.logInForm.valid),
+      switchMap(() => {
+        const formValue = this.logInForm.value;
+        return this.authService.logInUser(formValue);
+      }),
+      takeUntil(this.componentDestroyed$)
+    ).subscribe(res => {
+      if (res.status === RequestStatus.Success) {
+        this.router.navigate(['notes'])
+      }
+    })
   }
 
   logIn() {
-    this.authService.logInUser(this.logInForm.value);
+    this.logInSubject$.next();
+  }
+
+  ngOnDestroy() {
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete()
   }
 }
