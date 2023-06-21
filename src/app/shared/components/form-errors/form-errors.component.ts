@@ -8,14 +8,20 @@ import { FormControl } from '@angular/forms';
 })
 export class FormErrorsComponent {
   @Input() control: FormControl;
-  @Input() errors: { [key: string]: string; };
-  @Input() submitted: boolean;
+  @Input() name: string;
 
-  get errorMessages() {
-    if(this.control?.errors) {
-      return Object.keys(this.control.errors)
-      .map((key) => this.errors?.[key] || this.control.errors[key]);
+  ERRORS: {[key: string]: string} = {
+    'required': 'is required',
+    'minlength': 'is too short',
+    'maxlength': 'is too long',
+    'email': 'is invalid',
+    'notequal': 'is different',
+  }
+
+  get errors() {
+    if (this.control.errors && (this.control.dirty || this.control.touched)) {
+      return Object.keys(this.control.errors).map(key => this.name + ' ' + this.ERRORS[key])
     }
-    return [];
+    return []
   }
 }

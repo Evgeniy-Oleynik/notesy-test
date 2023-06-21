@@ -1,7 +1,8 @@
 
 :host {
   position: absolute;
-  bottom: -40px;
+  z-index: 1000;
+  bottom: -30px;
   left: 0;
   height: 30px;
   width: 100%;
