@@ -55,6 +55,16 @@
       <td *matCellDef="let note" mat-cell>{{note.userName}}</td>
     </ng-container>
 
+    <ng-container matColumnDef="updated">
+      <th *matHeaderCellDef mat-header-cell>Created</th>
+      <td *matCellDef="let note" mat-cell>{{note.createdAt | date: 'short'}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="created">
+      <th *matHeaderCellDef mat-header-cell>Updated</th>
+      <td *matCellDef="let note" mat-cell>{{note.updatedAt | date: 'short'}}</td>
+    </ng-container>
+
     <tr *matHeaderRowDef="tableColumnsList" mat-header-row></tr>
     <tr
       (click)="openDialog(row)"

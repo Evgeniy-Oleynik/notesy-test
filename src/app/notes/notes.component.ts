@@ -31,7 +31,7 @@ export class NotesComponent implements OnInit, OnDestroy {
   users$?: Observable<User[]>;
   topics$?: Observable<Topic[]>;
   notes$ = this.notesService.notes$;
-  tableColumnsList = ['topic', 'title', 'author'];
+  tableColumnsList = ['topic', 'title', 'author', 'updated', 'created'];
   selectedRows = new SelectionModel<Note>(true, []);
   formGroup?: FormGroup;
   searchFormControl = new FormControl;

@@ -72,16 +72,6 @@
       font-weight: 600;
     }
 
-    .notes-table__new-note {
-      cursor: pointer;
-      color: black;
-      text-align: center;
-
-      &:hover {
-        background: #FAFAFA;
-      }
-    }
-
     .notes-table__row {
       cursor: pointer;
 
@@ -91,13 +81,19 @@
     }
 
     .mat-column-topic {
-      width: 20%;
+      width: 15%;
     }
     .mat-column-title {
-      width: 60%;
+      width: 40%;
     }
     .mat-column-author {
-      width: 20%;
+      width: 15%;
+    }
+    .mat-column-created {
+      width: 15%;
+    }
+    .mat-column-updated {
+      width: 15%;
     }
   }
 }
