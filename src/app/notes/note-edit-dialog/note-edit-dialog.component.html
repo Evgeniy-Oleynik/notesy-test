@@ -21,7 +21,7 @@
             </mat-select>
             <app-form-errors
               [control]="topicIdFormControl"
-              [name]="'Topic'"
+              [controlName]="'Topic'"
             ></app-form-errors>
           </mat-form-field>
           <mat-form-field class="form__input form__input--title">
@@ -30,7 +30,7 @@
             <input [formControl]="titleFormControl" matInput type="text">
             <app-form-errors
               [control]="titleFormControl"
-              [name]="'Title'"
+              [controlName]="'Title'"
             ></app-form-errors>
           </mat-form-field>
           <mat-form-field class="form__input form__input--text">
@@ -39,7 +39,7 @@
             <textarea [formControl]="textFormControl" matInput rows="8" type="text"></textarea>
             <app-form-errors
               [control]="textFormControl"
-              [name]="'Text'"
+              [controlName]="'Text'"
             ></app-form-errors>
           </mat-form-field>
           <div class="note-dialog__actions">
@@ -93,7 +93,7 @@
 
 <ng-template #notYourNote>
   <div class="note-dialog__top">
-    <div class="note-dialog__title" mat-dialog-title>VIEW NOTE</div>
+    <div class="note-dialog__title" mat-dialog-title>VIEW {{(currentNote$ | async).userId | userName: (users$ | async)}}'s NOTE</div>
     <mat-dialog-actions>
       <button aria-label="close" class="note-dialog__close-button" mat-dialog-close="" mat-mini-fab
               matTooltip="Close">

@@ -11,6 +11,7 @@ import { Note } from '../../shared/interfaces/note';
 import { NotesService } from '../../core/services/notes.service';
 import { TopicsService } from '../../core/services/topics.service';
 import { AuthService } from '../../core/services/auth.service';
+import { UsersService } from '../../core/services/users.service';
 
 interface NoteForm {
   id: FormControl<number>,
@@ -27,6 +28,7 @@ interface NoteForm {
 
 export class NoteEditDialogComponent implements OnInit, OnDestroy {
   topics$ = this.topicsService.topics$;
+  users$ = this.usersService.users$;
   currentNote$: Observable<Note>;
   isEditMode$: Observable<boolean>;
   isEqual$: Observable<boolean>;
@@ -59,6 +61,7 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private notesService: NotesService,
     private topicsService: TopicsService,
+    private usersService: UsersService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
@@ -92,12 +95,6 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.isOwner$.pipe(
-      takeUntil(this.componentDestroyed$)
-    ).subscribe(isOwner =>{
-      if (!isOwner) this.snackBar.open('This Note is not yours. View only allowed.', 'OK', {duration: 5000});
-    })
-
     this.isEditMode$ = this.currentNote$.pipe(
       map(note => !!note?.id)
     );
@@ -124,6 +121,7 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
     ).subscribe(res => {
       if (res.status === RequestStatus.Success) {
         this.dialog.closeAll();
+        this.snackBar.open('Note was successfully saved', 'OK', {duration: 5000})
       }
     });
 
@@ -134,6 +132,7 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
     ).subscribe(res => {
       if (res.status === RequestStatus.Success) {
         this.dialog.closeAll();
+        this.snackBar.open('Note was successfully deleted', 'OK', {duration: 5000})
       }
     });
 
@@ -161,7 +160,6 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.snackBar.dismiss();
     this.componentDestroyed$.next(true);
     this.componentDestroyed$.complete();
   }
