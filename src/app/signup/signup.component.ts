@@ -49,7 +49,7 @@ export class SignupComponent implements OnInit {
       const firstControl = control.get(password);
       const secondControl = control.get(confirm);
       if (secondControl.value && (firstControl.value !== secondControl.value)) {
-        return this.confirmFormControl.setErrors({notEqual: true})
+        return this.confirmFormControl.setErrors({notequal: true})
       }
     }
   }

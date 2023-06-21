@@ -5,27 +5,36 @@
       <mat-form-field>
         <mat-label>Name:</mat-label>
         <input formControlName="name" matInput type="name" autocomplete="username">
-        <mat-error *ngIf="nameFormControl.hasError('required')">Name is required</mat-error>
+        <app-form-errors
+          [control]="nameFormControl"
+          [name]="'Name'"
+        ></app-form-errors>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Email:</mat-label>
         <input formControlName="email" matInput type="email" autocomplete="email">
-        <mat-error *ngIf="emailFormControl.hasError('required')">Email is required</mat-error>
-        <mat-error *ngIf="emailFormControl.hasError('email')">Email is invalid</mat-error>
+        <app-form-errors
+          [control]="emailFormControl"
+          [name]="'Email'"
+        ></app-form-errors>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Password:</mat-label>
         <input formControlName="password" matInput [type]="hidePass1 ? 'password' : 'text'" autocomplete="new-password">
         <mat-icon matSuffix (click)="hidePass1 = !hidePass1">{{hidePass1 ? 'visibility_off' : 'visibility'}}</mat-icon>
-        <mat-error *ngIf="passwordFormControl.hasError('required')">Password is required</mat-error>
-        <mat-error *ngIf="passwordFormControl.hasError('minlength')">Password is too short</mat-error>
+        <app-form-errors
+          [control]="passwordFormControl"
+          [name]="'Password'"
+        ></app-form-errors>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Confirm password:</mat-label>
         <input formControlName="confirm" matInput [type]="hidePass2 ? 'password' : 'text'" autocomplete="new-password">
         <mat-icon matSuffix (click)="hidePass2 = !hidePass2">{{hidePass2 ? 'visibility_off' : 'visibility'}}</mat-icon>
-        <mat-error *ngIf="confirmFormControl.hasError('required')">Confirm password</mat-error>
-        <mat-error *ngIf="confirmFormControl.hasError('notEqual')">Passwords are not equal</mat-error>
+        <app-form-errors
+          [control]="confirmFormControl"
+          [name]="'Password'"
+        ></app-form-errors>
       </mat-form-field>
       <button (click)="signUp()" mat-button class="auth-form__button">Sign Up</button>
     </form>
