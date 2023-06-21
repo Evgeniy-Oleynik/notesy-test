@@ -84,7 +84,6 @@ export class AuthService {
   getUserByToken() {
     const token = localStorage.getItem('notesy_authToken');
     if (token) {
-      console.log('local token found');
       this.store.dispatch(new GetUserByToken(token));
     }
     return this.getUserByTokenRequestState$;

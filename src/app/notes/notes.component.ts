@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { SelectionModel } from '@angular/cdk/collections';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { filter, map, Observable, shareReplay, Subject, switchMap, take, takeUntil } from 'rxjs';
@@ -24,7 +23,6 @@ export class NotesComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatTable) table?: MatTable<any>;
 
-  selectAllNotes$ = new Subject<void>();
   componentDestroyed$: Subject<boolean> = new Subject<boolean>();
 
   notesList$!: Observable<MatTableDataSource<Note>>;
@@ -32,7 +30,6 @@ export class NotesComponent implements OnInit, OnDestroy {
   topics$?: Observable<Topic[]>;
   notes$ = this.notesService.notes$;
   tableColumnsList = ['topic', 'title', 'author', 'updated', 'created'];
-  selectedRows = new SelectionModel<Note>(true, []);
   formGroup?: FormGroup;
   searchFormControl = new FormControl;
 
@@ -102,7 +99,6 @@ export class NotesComponent implements OnInit, OnDestroy {
 
   openDialog(note: Note) {
     this.dialog.open(NoteEditDialogComponent, {data: note.id});
-    console.log('current note:', note);
   }
 
   addQueryParams(params?: Params) {

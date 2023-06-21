@@ -86,12 +86,10 @@ export class AuthState {
 
   @Action(SignUpUserFailed)
   signUpUserFailed() {
-    console.log('signup failed');
   }
 
   @Action(SignUpUserSuccess)
   signUpUserSuccess({patchState}: StateContext<AuthStateModel>, {payload: userData}: SignUpUserSuccess) {
-    console.log('signup success');
     patchState({user: userData});
     if (userData.token) {
       this.localStorageService.setItem('authToken', userData.token);
@@ -112,12 +110,10 @@ export class AuthState {
 
   @Action(LogInUserFailed)
   logInUserFailed() {
-    console.log('login failed');
   }
 
   @Action(LogInUserSuccess)
   logInUserSuccess({patchState}: StateContext<AuthStateModel>, {payload: userData}: LogInUserSuccess) {
-    console.log('login success');
     patchState({user: userData});
     if (userData.token) {
       this.localStorageService.setItem('authToken', userData.token);
@@ -138,24 +134,20 @@ export class AuthState {
 
   @Action(LogOutUserSuccess)
   logOutUserSuccess({patchState}: StateContext<AuthStateModel>) {
-    console.log('logout success');
     patchState({user: emptyUser});
   }
 
   @Action(LogOutUserFailed)
   logOutUserFailed() {
-    console.log('logout failed');
   }
 
   @Action(SetToken)
   setToken({patchState}: StateContext<AuthStateModel>, {payload: authToken}: SetToken) {
-    console.log('set token', authToken);
     patchState({user: {token: authToken}});
   }
 
   @Action(GetUserByToken)
   getUserByToken({patchState, dispatch}: StateContext<AuthStateModel>, {payload: localAuthToken}: GetUserByToken) {
-    console.log('getUserByToken:', localAuthToken);
     patchState({user: {token: localAuthToken}});
     const request = this.rawHttpClient.get('http://localhost:3000/users/,', {headers: {'Authorization': `Bearer ${localAuthToken}`}});
 
@@ -169,13 +161,11 @@ export class AuthState {
 
   @Action(GetUserByTokenSuccess)
   getUserByTokenSuccess({patchState}: StateContext<AuthStateModel>, {payload: userData}: GetUserByTokenSuccess) {
-    console.log('getUserByToken success');
     patchState({user: userData});
   }
 
   @Action(GetUserByTokenFailed)
   getUserByTokenFailed() {
-    console.log('getUserByToken failed');
   }
 
   @Action(ResetAuthState)

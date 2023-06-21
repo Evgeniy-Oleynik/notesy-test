@@ -143,7 +143,6 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
   }
 
   submitForm() {
-    console.log('submit form triggered');
     this.submitFormSubject$.next();
   }
 

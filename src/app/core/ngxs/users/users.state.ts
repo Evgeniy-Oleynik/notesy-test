@@ -61,7 +61,6 @@ export class UsersState {
 
   @Action(GetAllUsersSuccess)
   getAllUsersSuccess({getState, patchState}: StateContext<UsersStateModel>, {payload: users}: GetAllUsersSuccess) {
-    console.log('getAllUsers success');
     const state = getState();
     const {ids, entities} = createEntitiesIds(state, users);
 
@@ -70,7 +69,6 @@ export class UsersState {
 
   @Action(GetAllUsersFailed)
   getAllUsersFailed() {
-    console.log('getAllUsers failed');
   }
 
   @Action(GetUserById)
@@ -87,7 +85,6 @@ export class UsersState {
 
   @Action(GetUserByIdSuccess)
   getUserByIdSuccess({getState, patchState}: StateContext<UsersStateModel>, {payload: user}: GetUserByIdSuccess) {
-    console.log('getUserById success');
     const state = getState();
     const {ids, entities} = createEntitiesIds(state, [user]);
 
@@ -96,7 +93,6 @@ export class UsersState {
 
   @Action(GetUserByIdFailed)
   getUserByIdFailed() {
-    console.log('getUserById failed');
   }
 
   @Action(ResetUsersState)

@@ -9,18 +9,6 @@ export class ApiInterceptor implements HttpInterceptor {
   constructor() {
   }
 
-  // intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-  //   let requestUrl = req.url;
-  //   if (requestUrl.indexOf('api') !== -1) {
-  //     requestUrl = requestUrl.replace('api', environment.api);
-  //   }
-  //
-  //   req = req.clone({
-  //     url: requestUrl,
-  //   });
-  //   return next.handle(req);
-  // }
-
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     if (/^https?:\/\//i.test(req.url)) {
       return next.handle(req);

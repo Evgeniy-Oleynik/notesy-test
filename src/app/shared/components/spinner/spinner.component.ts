@@ -13,7 +13,5 @@ export class SpinnerComponent {
   @Select(RequestsGetterState.getIsLoadingRequest)
   isLoading$: Observable<boolean>;
 
-  constructor() {
-    this.isLoading$.subscribe(val => console.log('spinner', val))
-  }
+  constructor() {}
 }

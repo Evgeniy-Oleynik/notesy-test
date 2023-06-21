@@ -86,7 +86,6 @@ export class NotesState {
 
   @Action(GetNotesSuccess)
   getNotesSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload: notes}: GetNotesSuccess) {
-    console.log('getNotes success');
     const state = getState();
     const {ids, entities} = createEntitiesIds(state, notes);
 
@@ -95,7 +94,6 @@ export class NotesState {
 
   @Action(GetNotesFailed)
   getNotesFailed() {
-    console.log('getNotes failed');
   }
 
   @Action(GetNoteById)
@@ -112,7 +110,6 @@ export class NotesState {
 
   @Action(GetNoteByIdSuccess)
   getNoteByIdSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload: note}: GetNoteByIdSuccess) {
-    console.log('getNoteById success');
     const state = getState();
     const {ids, entities} = createEntitiesIds(state, [note]);
 
@@ -121,7 +118,6 @@ export class NotesState {
 
   @Action(GetNoteByIdFailed)
   getNoteByIdFailed() {
-    console.log('getNoteById failed');
   }
 
   @Action(PostNote)
@@ -138,7 +134,6 @@ export class NotesState {
 
   @Action(PostNoteSuccess)
   postNoteSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload: note}: PostNoteSuccess) {
-    console.log('postNote success');
     const state = getState();
     const {ids, entities} = updateEntitiesIds(state, [note]);
 
@@ -147,7 +142,6 @@ export class NotesState {
 
   @Action(PostNoteFailed)
   postNoteFailed() {
-    console.log('postNote failed');
   }
 
   @Action(PatchNote)
@@ -164,7 +158,6 @@ export class NotesState {
 
   @Action(PatchNoteSuccess)
   patchNoteByIdSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload: note}: PatchNoteSuccess) {
-    console.log('patchNoteById success');
     const state = getState();
     const {ids, entities} = updateEntitiesIds(state, [note]);
 
@@ -173,7 +166,6 @@ export class NotesState {
 
   @Action(PatchNoteFailed)
   patchNoteByIdFailed() {
-    console.log('patchNoteById failed');
   }
 
   @Action(DeleteNoteById)
@@ -191,7 +183,6 @@ export class NotesState {
 
   @Action(DeleteNoteByIdSuccess)
   deleteNoteByIdSuccess({getState, patchState}: StateContext<NotesStateModel>, {noteId}: DeleteNoteByIdSuccess) {
-    console.log(noteId, 'deleteNoteById success');
     const {ids} = getState();
     const updatedIds = ids.filter(id => id !== noteId);
 
@@ -200,7 +191,6 @@ export class NotesState {
 
   @Action(DeleteNoteByIdFailed)
   deleteNoteByIdFailed() {
-    console.log('deleteNoteById failed');
   }
 
   @Action(ResetNotesState)

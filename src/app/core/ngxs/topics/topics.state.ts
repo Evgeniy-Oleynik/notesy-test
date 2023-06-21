@@ -48,12 +48,10 @@ export class TopicsState {
 
   @Action(GetTopicsFailed)
   getTopicsFail() {
-    console.log('getTopics failed');
   }
 
   @Action(GetTopicsSuccess)
   getTopicsSuccess({getState, patchState}: StateContext<TopicsStateModel>, {payload: topics}: GetTopicsSuccess) {
-    console.log('getTopics success');
     const state = getState();
     const {ids, entities} = createEntitiesIds(state, topics);
 
