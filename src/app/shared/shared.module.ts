@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { FormErrorsModule } from './components/form-errors/form-errors.module';
 import { TopicTypePipeModule } from './pipes/topic-type/topic-type.pipe.module';
 
 @NgModule({
@@ -18,6 +19,7 @@ import { TopicTypePipeModule } from './pipes/topic-type/topic-type.pipe.module';
   imports: [
     CommonModule,
     FormsModule,
+    FormErrorsModule,
     MatButtonModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -34,6 +36,7 @@ import { TopicTypePipeModule } from './pipes/topic-type/topic-type.pipe.module';
   exports: [
     CommonModule,
     FormsModule,
+    FormErrorsModule,
     MatButtonModule,
     MatDialogModule,
     MatFormFieldModule,
