@@ -8,7 +8,7 @@ import { FormControl } from '@angular/forms';
 })
 export class FormErrorsComponent {
   @Input() control: FormControl;
-  @Input() name: string;
+  @Input() controlName: string;
 
   ERRORS: {[key: string]: string} = {
     'required': 'is required',
@@ -16,12 +16,5 @@ export class FormErrorsComponent {
     'maxlength': 'is too long',
     'email': 'is invalid',
     'notequal': 'is different',
-  }
-
-  get errors() {
-    if (this.control.errors && (this.control.dirty || this.control.touched)) {
-      return Object.keys(this.control.errors).map(key => this.name + ' ' + this.ERRORS[key])
-    }
-    return []
   }
 }

@@ -1,1 +1,5 @@
-<div class="alert" *ngFor="let error of errors">{{error}}</div>
+<div *ngIf="control.errors && (control.dirty || control.touched)">
+  <div class="alert" *ngFor="let error of (control.errors | formControlError: controlName: ERRORS)">
+    {{error}}
+  </div>
+</div>
