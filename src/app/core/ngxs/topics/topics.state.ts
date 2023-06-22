@@ -3,7 +3,7 @@ import { Action, State, StateContext, Store } from '@ngxs/store';
 import { HttpClient } from '@angular/common/http';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
 
-import { Topic } from '../../../shared/interfaces/topic';
+import { TopicInterface } from '../../../shared/interfaces/models/topic.interface';
 import { createEntitiesIds } from '../../../shared/utility/create-entities-ids';
 
 import { GetTopics, GetTopicsFailed, GetTopicsSuccess, ResetTopicsState } from './topics.actions';
@@ -14,7 +14,7 @@ export class GetTopicsRequestState {
 }
 
 export interface TopicsStateModel {
-  entities: { [key: number]: Topic };
+  entities: { [key: number]: TopicInterface };
   ids: number[];
 }
 

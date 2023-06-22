@@ -6,7 +6,7 @@ import { IRequest } from 'ngxs-requests-plugin';
 import { UsersGetterState } from '../ngxs/users/users-getter.state';
 import { GetAllUsersRequestState, GetUserByIdRequestState } from '../ngxs/users/users.state';
 import { GetAllUsers, GetUserById } from '../ngxs/users/users.actions';
-import { User } from '../../shared/interfaces/user';
+import { UserInterface } from '../../shared/interfaces/models/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +14,13 @@ import { User } from '../../shared/interfaces/user';
 export class UsersService {
 
   @Select(UsersGetterState.getAllUsers)
-  users$!: Observable<User[]>;
+  users$!: Observable<UserInterface[]>;
 
   @Select(GetAllUsersRequestState)
-  getAllUsersRequestState$!: Observable<IRequest<User[]>>;
+  getAllUsersRequestState$!: Observable<IRequest<UserInterface[]>>;
 
   @Select(GetUserByIdRequestState)
-  getUserByIdRequestState$!: Observable<IRequest<User>>;
+  getUserByIdRequestState$!: Observable<IRequest<UserInterface>>;
 
   constructor(
     private store: Store,

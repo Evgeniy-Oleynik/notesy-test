@@ -1,4 +1,4 @@
-import { Topic } from '../../../shared/interfaces/topic';
+import { TopicInterface } from '../../../shared/interfaces/models/topic.interface';
 
 const ActionTypes = {
   GET_TOPICS: '[Topics] Get Topics',
@@ -15,7 +15,7 @@ export class GetTopics {
 export class GetTopicsSuccess {
   static type = ActionTypes.GET_TOPICS_SUCCESS;
 
-  constructor(public payload: Topic[]) {
+  constructor(public payload: TopicInterface[]) {
   }
 }
 

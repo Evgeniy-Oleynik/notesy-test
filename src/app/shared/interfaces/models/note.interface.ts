@@ -1,4 +1,4 @@
-export interface Note {
+export interface NoteInterface {
   id: number | null;
   userId: number | null;
   userName?: string | null;

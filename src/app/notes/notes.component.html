@@ -4,7 +4,7 @@
   <div class="notes-actions">
     <div class="notes-actions__filters">
       <mat-form-field class="action__filter">
-        <mat-label>User:</mat-label>
+        <mat-label>UserInterface:</mat-label>
         <mat-select [formControl]="userIdFormControl">
           <mat-option [value]="null" ngDefaultControl>
             ALL
@@ -16,7 +16,7 @@
       </mat-form-field>
 
       <mat-form-field class="action__filter">
-        <mat-label>Topic:</mat-label>
+        <mat-label>TopicInterface:</mat-label>
         <mat-select [formControl]="topicIdFormControl">
           <mat-option [value]="null" ngDefaultControl>
             ALL
@@ -28,7 +28,7 @@
       </mat-form-field>
     </div>
 
-    <button mat-button (click)="newNote()" class="notes-actions__button">Add Note</button>
+    <button mat-button (click)="newNote()" class="notes-actions__button">Add NoteInterface</button>
 
     <mat-form-field class="action__search">
       <mat-label>Search:</mat-label>
@@ -41,7 +41,7 @@
 
   <table *ngIf="notesList$ | async as notesList" [dataSource]="notesList" class="notes-table" mat-table>
     <ng-container matColumnDef="topic">
-      <th *matHeaderCellDef mat-header-cell>Topic</th>
+      <th *matHeaderCellDef mat-header-cell>TopicInterface</th>
       <td *matCellDef="let note" mat-cell>{{note.topicType}}</td>
     </ng-container>
 

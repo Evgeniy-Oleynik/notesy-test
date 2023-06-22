@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Action, State, StateContext, Store } from '@ngxs/store';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
 
-import { User } from '../../../shared/interfaces/user';
+import { UserInterface } from '../../../shared/interfaces/models/user.interface';
 import { createEntitiesIds } from '../../../shared/utility/create-entities-ids';
 
 import {
@@ -27,7 +27,7 @@ export class GetUserByIdRequestState {
 }
 
 export interface UsersStateModel {
-  entities: { [key: number]: User };
+  entities: { [key: number]: UserInterface };
   ids: number[];
 }
 
@@ -94,7 +94,7 @@ export class UsersState {
 
   @Action(GetUserByIdFailed)
   getUserByIdFailed() {
-    console.log('Get User By ID Failed');
+    console.log('Get UserInterface By ID Failed');
   }
 
   @Action(ResetUsersState)

@@ -7,7 +7,7 @@ import { filter, map, Observable, startWith, Subject, switchMap, takeUntil, with
 import { RequestStatus } from 'ngxs-requests-plugin';
 import _ from 'lodash';
 
-import { Note } from '../../shared/interfaces/note';
+import { NoteInterface } from '../../shared/interfaces/models/note.interface';
 import { NotesService } from '../../core/services/notes.service';
 import { TopicsService } from '../../core/services/topics.service';
 import { AuthService } from '../../core/services/auth.service';
@@ -29,7 +29,7 @@ interface NoteForm {
 export class NoteEditDialogComponent implements OnInit, OnDestroy {
   topics$ = this.topicsService.topics$;
   users$ = this.usersService.users$;
-  currentNote$: Observable<Note>;
+  currentNote$: Observable<NoteInterface>;
   isEditMode$: Observable<boolean>;
   isEqual$: Observable<boolean>;
   isOwner$: Observable<boolean>;
@@ -121,7 +121,7 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
     ).subscribe(res => {
       if (res.status === RequestStatus.Success) {
         this.dialog.closeAll();
-        this.snackBar.open('Note was successfully saved', 'OK', {duration: 5000})
+        this.snackBar.open('NoteInterface was successfully saved', 'OK', {duration: 5000})
       }
     });
 
@@ -132,7 +132,7 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
     ).subscribe(res => {
       if (res.status === RequestStatus.Success) {
         this.dialog.closeAll();
-        this.snackBar.open('Note was successfully deleted', 'OK', {duration: 5000})
+        this.snackBar.open('NoteInterface was successfully deleted', 'OK', {duration: 5000})
       }
     });
 

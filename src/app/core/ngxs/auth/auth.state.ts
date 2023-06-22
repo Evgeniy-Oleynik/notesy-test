@@ -5,7 +5,7 @@ import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
 
 import { LocalStorageService } from '../../services/local-storage.service';
 import { RawHttpClient } from '../../../shared/utility/raw-http-client.module';
-import { User } from '../../../shared/interfaces/user';
+import { UserInterface } from '../../../shared/interfaces/models/user.interface';
 
 import {
   GetUserByToken,
@@ -45,10 +45,10 @@ export class GetUserByTokenRequestState {
 }
 
 export interface AuthStateModel {
-  user: User;
+  user: UserInterface;
 }
 
-const emptyUser: User = {
+const emptyUser: UserInterface = {
   id: null,
   name: null,
   email: null,
@@ -161,7 +161,7 @@ export class AuthState {
 
   @Action(GetUserByTokenFailed)
   getUserByTokenFailed() {
-    console.log('Get User By Token Failed');
+    console.log('Get UserInterface By Token Failed');
   }
 
   @Action(ResetAuthState)
