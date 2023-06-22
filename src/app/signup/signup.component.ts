@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { filter, Subject, switchMap, takeUntil } from 'rxjs';
 import { RequestStatus } from 'ngxs-requests-plugin';
 
 import { AuthService } from '../core/services/auth.service';
+import { inputsNotEqual } from '../shared/validators/inputs-not-equal/inputs-not-equal.validator';
 
 @Component({
   selector: 'app-signup',
@@ -18,12 +19,17 @@ export class SignupComponent implements OnInit, OnDestroy {
   signUpSubject$: Subject<void> = new Subject<void>();
   componentDestroyed$: Subject<boolean> = new Subject<boolean>();
 
-  signUpForm = new FormGroup<any>({
+  signUpForm = new FormGroup<{
+    name: FormControl<string>,
+    email: FormControl<string>,
+    password: FormControl<string>,
+    confirm: FormControl<string>,
+  }>({
     name: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
     confirm: new FormControl('', [Validators.required])
-  }, {validators: [this.passwordsAreNotEqual('password', 'confirm')]});
+  }, {validators: [inputsNotEqual('password', 'confirm')]});
 
   constructor(
     private authService: AuthService,
@@ -32,16 +38,16 @@ export class SignupComponent implements OnInit, OnDestroy {
   }
 
   get nameFormControl() {
-    return this.signUpForm.get('name') as FormControl;
+    return this.signUpForm.controls.name;
   }
   get emailFormControl() {
-    return this.signUpForm.get('email') as FormControl;
+    return this.signUpForm.controls.email;
   }
   get passwordFormControl() {
-    return this.signUpForm.get('password') as FormControl;
+    return this.signUpForm.controls.password;
   }
   get confirmFormControl() {
-    return this.signUpForm.get('confirm') as FormControl;
+    return this.signUpForm.controls.confirm;
   }
 
   ngOnInit(): void {
@@ -61,16 +67,6 @@ export class SignupComponent implements OnInit, OnDestroy {
 
   signUp() {
     this.signUpSubject$.next();
-  }
-
-  passwordsAreNotEqual(password, confirm) {
-    return (control: AbstractControl) => {
-      const firstControl = control.get(password);
-      const secondControl = control.get(confirm);
-      if (secondControl.value && (firstControl.value !== secondControl.value)) {
-        return this.confirmFormControl.setErrors({notequal: true})
-      }
-    }
   }
 
   ngOnDestroy() {
