@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import { filter, mapTo, Observable } from 'rxjs';
 
 import { AuthService } from '../services/auth.service';
 
@@ -18,13 +19,10 @@ export class AuthGuard {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): boolean {
-    this.authService.isAuthorizedSubject$.next();
-    if (!this.authService.isAuthorized) {
-      this.router.navigate(['/login']);
-    }
-    return this.authService.isAuthorized;
+  ): Observable<(user) => boolean> {
+    return this.authService.currentUser$.pipe(
+      filter(user => !!user.token),
+      mapTo(() => true)
+    )
   }
-
-
 }
