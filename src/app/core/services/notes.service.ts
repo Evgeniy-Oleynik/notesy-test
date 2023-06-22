@@ -12,7 +12,7 @@ import {
   PatchNoteRequestState,
   PostNoteRequestState
 } from '../ngxs/notes/notes.state';
-import { NoteInterface } from '../../shared/interfaces/models/note.interface';
+import { Note } from '../../shared/interfaces/note';
 
 @Injectable({
   providedIn: 'root'
@@ -20,13 +20,13 @@ import { NoteInterface } from '../../shared/interfaces/models/note.interface';
 export class NotesService {
 
   @Select(NotesGetterState.getNotes)
-  notes$!: Observable<NoteInterface[]>;
+  notes$!: Observable<Note[]>;
 
   @Select(GetNotesRequestState)
-  getNotesRequestState$!: Observable<IRequest<NoteInterface[]>>;
+  getNotesRequestState$!: Observable<IRequest<Note[]>>;
 
   @Select(GetNoteByIdRequestState)
-  getNoteByIdRequestState$!: Observable<IRequest<NoteInterface[]>>;
+  getNoteByIdRequestState$!: Observable<IRequest<Note[]>>;
 
   @Select(PostNoteRequestState)
   postNoteRequestState$!: Observable<IRequest>;
@@ -51,14 +51,14 @@ export class NotesService {
     return this.store.select(NotesGetterState.getNoteById(id))
   }
 
-  postNote(note: Partial<NoteInterface>) {
+  postNote(note: Partial<Note>) {
     this.store.dispatch(new PostNote(note));
     return this.postNoteRequestState$.pipe(
       filter(req => req.loaded && !req.loading),
     );
   }
 
-  patchNote(note: Partial<NoteInterface>) {
+  patchNote(note: Partial<Note>) {
     this.store.dispatch(new PatchNote(note));
     return this.patchNoteByIdRequestState$.pipe(
       filter(req => req.loaded && !req.loading)

@@ -8,9 +8,9 @@ import { combineLatest, filter, map, Observable, startWith, Subject, switchMap, 
 import { NotesService } from '../core/services/notes.service';
 import { TopicsService } from '../core/services/topics.service';
 import { UsersService } from '../core/services/users.service';
-import { NoteInterface } from '../shared/interfaces/models/note.interface';
-import { UserInterface } from '../shared/interfaces/models/user.interface';
-import { TopicInterface } from '../shared/interfaces/models/topic.interface';
+import { Note } from '../shared/interfaces/note';
+import { User } from '../shared/interfaces/user';
+import { Topic } from '../shared/interfaces/topic';
 
 import { NoteEditDialogComponent } from './note-edit-dialog/note-edit-dialog.component';
 
@@ -25,9 +25,9 @@ export class NotesComponent implements OnInit, OnDestroy {
 
   componentDestroyed$: Subject<boolean> = new Subject<boolean>();
 
-  notesList$: Observable<MatTableDataSource<NoteInterface>>;
-  users$: Observable<UserInterface[]>;
-  topics$: Observable<TopicInterface[]>;
+  notesList$: Observable<MatTableDataSource<Note>>;
+  users$: Observable<User[]>;
+  topics$: Observable<Topic[]>;
   notes$ = this.notesService.notes$;
   tableColumnsList = ['topic', 'title', 'author', 'updated', 'created'];
   formGroup: FormGroup<{userId: FormControl<number>, topicId: FormControl<number>}>;
@@ -97,7 +97,7 @@ export class NotesComponent implements OnInit, OnDestroy {
     this.dialog.open(NoteEditDialogComponent);
   }
 
-  openDialog(note: NoteInterface) {
+  openDialog(note: Note) {
     this.dialog.open(NoteEditDialogComponent, {data: note.id});
   }
 

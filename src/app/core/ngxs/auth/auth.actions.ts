@@ -1,21 +1,21 @@
-import { UserInterface } from '../../../shared/interfaces/models/user.interface';
+import { User } from '../../../shared/interfaces/user';
 
 const ActionTypes = {
-  SIGNUP_USER: '[Auth] Sign Up UserInterface',
-  SIGNUP_USER_SUCCESS: '[Auth] Sign Up UserInterface Success',
-  SIGNUP_USER_FAILED: '[Auth] Sign Up UserInterface Failed',
+  SIGNUP_USER: '[Auth] Sign Up User',
+  SIGNUP_USER_SUCCESS: '[Auth] Sign Up User Success',
+  SIGNUP_USER_FAILED: '[Auth] Sign Up User Failed',
 
-  LOGIN_USER: '[Auth] Log In UserInterface',
-  LOGIN_USER_SUCCESS: '[Auth] Log In UserInterface Success',
-  LOGIN_USER_FAILED: '[Auth] Log In UserInterface Failed',
+  LOGIN_USER: '[Auth] Log In User',
+  LOGIN_USER_SUCCESS: '[Auth] Log In User Success',
+  LOGIN_USER_FAILED: '[Auth] Log In User Failed',
 
   LOG_OUT_USER: '[Auth] Log Out',
   LOG_OUT_USER_SUCCESS: '[Auth] Log Out Success',
   LOG_OUT_USER_FAILED: '[Auth] Log Out Failed',
 
-  GET_USER_BY_TOKEN: '[Auth] Get UserInterface By Token',
-  GET_USER_BY_TOKEN_SUCCESS: '[Auth] Get UserInterface By Token Success',
-  GET_USER_BY_TOKEN_FAILED: '[Auth] Get UserInterface By Token Failed',
+  GET_USER_BY_TOKEN: '[Auth] Get User By Token',
+  GET_USER_BY_TOKEN_SUCCESS: '[Auth] Get User By Token Success',
+  GET_USER_BY_TOKEN_FAILED: '[Auth] Get User By Token Failed',
 
   RESET_AUTH_STATE: '[Auth] Reset Auth State',
 };
@@ -23,14 +23,14 @@ const ActionTypes = {
 export class SignUpUser {
   static type = ActionTypes.SIGNUP_USER;
 
-  constructor(public payload: Partial<UserInterface>) {
+  constructor(public payload: Partial<User>) {
   }
 }
 
 export class SignUpUserSuccess {
   static type = ActionTypes.SIGNUP_USER_SUCCESS;
 
-  constructor(public payload: UserInterface) {
+  constructor(public payload: User) {
   }
 }
 
@@ -41,14 +41,14 @@ export class SignUpUserFailed {
 export class LogInUser {
   static type = ActionTypes.LOGIN_USER;
 
-  constructor(public payload: Partial<UserInterface>) {
+  constructor(public payload: Partial<User>) {
   }
 }
 
 export class LogInUserSuccess {
   static type = ActionTypes.LOGIN_USER_SUCCESS;
 
-  constructor(public payload: UserInterface) {
+  constructor(public payload: User) {
   }
 }
 
@@ -78,7 +78,7 @@ export class GetUserByToken {
 export class GetUserByTokenSuccess {
   static type = ActionTypes.GET_USER_BY_TOKEN_SUCCESS;
 
-  constructor(public payload: UserInterface) {
+  constructor(public payload: User) {
   }
 }
 

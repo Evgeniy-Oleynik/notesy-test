@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
-import { UserInterface } from '../../interfaces/models/user.interface';
+import { User } from '../../interfaces/user';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  currentUser: UserInterface;
+  currentUser: User;
   componentDestroyed$: Subject<boolean> = new Subject<boolean>();
 
   constructor(

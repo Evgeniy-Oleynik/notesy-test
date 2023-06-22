@@ -1,25 +1,25 @@
-import { NoteInterface } from '../../../shared/interfaces/models/note.interface';
+import { Note } from '../../../shared/interfaces/note';
 
 const ActionTypes = {
   GET_NOTES: '[Notes] Get All Notes',
   GET_NOTES_SUCCESS: '[Notes] Get All Notes Success',
   GET_NOTES_FAILED: '[Notes] Get All Notes Failed',
 
-  GET_NOTE_BY_ID: '[Notes] Get NoteInterface By ID',
-  GET_NOTE_BY_ID_SUCCESS: '[Notes] Get NoteInterface By ID Success',
-  GET_NOTE_BY_ID_FAILED: '[Notes] Get NoteInterface By ID Failed',
+  GET_NOTE_BY_ID: '[Notes] Get Note By ID',
+  GET_NOTE_BY_ID_SUCCESS: '[Notes] Get Note By ID Success',
+  GET_NOTE_BY_ID_FAILED: '[Notes] Get Note By ID Failed',
 
-  POST_NOTE: '[Notes] Post NoteInterface',
-  POST_NOTE_SUCCESS: '[Notes] Post NoteInterface Success',
-  POST_NOTE_FAILED: '[Notes] Post NoteInterface Failed',
+  POST_NOTE: '[Notes] Post Note',
+  POST_NOTE_SUCCESS: '[Notes] Post Note Success',
+  POST_NOTE_FAILED: '[Notes] Post Note Failed',
 
-  PATCH_NOTE: '[Notes] Patch NoteInterface By ID',
-  PATCH_NOTE_SUCCESS: '[Notes] Patch NoteInterface By ID Success',
-  PATCH_NOTE_FAILED: '[Notes] Patch NoteInterface By ID Failed',
+  PATCH_NOTE: '[Notes] Patch Note By ID',
+  PATCH_NOTE_SUCCESS: '[Notes] Patch Note By ID Success',
+  PATCH_NOTE_FAILED: '[Notes] Patch Note By ID Failed',
 
-  DELETE_NOTE_BY_ID: '[Notes] Delete NoteInterface By ID',
-  DELETE_NOTE_BY_ID_SUCCESS: '[Notes] Delete NoteInterface By ID Success',
-  DELETE_NOTE_BY_ID_FAILED: '[Notes] Delete NoteInterface By ID Failed',
+  DELETE_NOTE_BY_ID: '[Notes] Delete Note By ID',
+  DELETE_NOTE_BY_ID_SUCCESS: '[Notes] Delete Note By ID Success',
+  DELETE_NOTE_BY_ID_FAILED: '[Notes] Delete Note By ID Failed',
 
   RESET_NOTES_STATE: '[Notes] Reset Notes State'
 };
@@ -34,7 +34,7 @@ export class GetNotes {
 export class GetNotesSuccess {
   static type = ActionTypes.GET_NOTES_SUCCESS;
 
-  constructor(public payload: NoteInterface[]) {
+  constructor(public payload: Note[]) {
   }
 }
 
@@ -52,7 +52,7 @@ export class GetNoteById {
 export class GetNoteByIdSuccess {
   static type = ActionTypes.GET_NOTE_BY_ID_SUCCESS;
 
-  constructor(public payload: NoteInterface) {
+  constructor(public payload: Note) {
   }
 }
 
@@ -63,14 +63,14 @@ export class GetNoteByIdFailed {
 export class PostNote {
   static type = ActionTypes.POST_NOTE;
 
-  constructor(public payload: Partial<NoteInterface>) {
+  constructor(public payload: Partial<Note>) {
   }
 }
 
 export class PostNoteSuccess {
   static type = ActionTypes.POST_NOTE_SUCCESS;
 
-  constructor(public payload: NoteInterface) {
+  constructor(public payload: Note) {
   }
 }
 
@@ -81,14 +81,14 @@ export class PostNoteFailed {
 export class PatchNote {
   static type = ActionTypes.PATCH_NOTE;
 
-  constructor(public payload: Partial<NoteInterface>) {
+  constructor(public payload: Partial<Note>) {
   }
 }
 
 export class PatchNoteSuccess {
   static type = ActionTypes.PATCH_NOTE_SUCCESS;
 
-  constructor(public payload: NoteInterface) {
+  constructor(public payload: Note) {
   }
 }
 

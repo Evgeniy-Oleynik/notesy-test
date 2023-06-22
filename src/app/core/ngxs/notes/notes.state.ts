@@ -5,7 +5,7 @@ import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
 
 import { createEntitiesIds } from '../../../shared/utility/create-entities-ids';
 import { updateEntitiesIds } from '../../../shared/utility/update-entities-ids';
-import { NoteInterface } from '../../../shared/interfaces/models/note.interface';
+import { Note } from '../../../shared/interfaces/note';
 
 import {
   DeleteNoteById,
@@ -52,7 +52,7 @@ export class DeleteNoteByIdRequestState {
 }
 
 export interface NotesStateModel {
-  entities: { [key: number]: NoteInterface };
+  entities: { [key: number]: Note };
   ids: number[];
 }
 
@@ -119,7 +119,7 @@ export class NotesState {
 
   @Action(GetNoteByIdFailed)
   getNoteByIdFailed() {
-    console.log('Get NoteInterface By ID Failed');
+    console.log('Get Note By ID Failed');
   }
 
   @Action(PostNote)
@@ -144,7 +144,7 @@ export class NotesState {
 
   @Action(PostNoteFailed)
   postNoteFailed() {
-    console.log('Post NoteInterface Failed');
+    console.log('Post Note Failed');
   }
 
   @Action(PatchNote)
@@ -169,7 +169,7 @@ export class NotesState {
 
   @Action(PatchNoteFailed)
   patchNoteByIdFailed() {
-    console.log('Patch NoteInterface Failed');
+    console.log('Patch Note Failed');
   }
 
   @Action(DeleteNoteById)
@@ -195,7 +195,7 @@ export class NotesState {
 
   @Action(DeleteNoteByIdFailed)
   deleteNoteByIdFailed() {
-    console.log('Delete NoteInterface Failed');
+    console.log('Delete Note Failed');
   }
 
   @Action(ResetNotesState)

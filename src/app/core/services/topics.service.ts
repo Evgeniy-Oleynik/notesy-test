@@ -6,7 +6,7 @@ import { IRequest } from 'ngxs-requests-plugin';
 import { TopicsGetterState } from '../ngxs/topics/topics-getter.state';
 import { GetTopicsRequestState } from '../ngxs/topics/topics.state';
 import { GetTopics } from '../ngxs/topics/topics.actions';
-import { TopicInterface } from '../../shared/interfaces/models/topic.interface';
+import { Topic } from '../../shared/interfaces/topic';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +14,9 @@ import { TopicInterface } from '../../shared/interfaces/models/topic.interface';
 export class TopicsService {
 
   @Select(TopicsGetterState.getTopics)
-  topics$!: Observable<TopicInterface[]>;
+  topics$!: Observable<Topic[]>;
   @Select(GetTopicsRequestState)
-  getTopicsRequestState$!: Observable<IRequest<TopicInterface[]>>;
+  getTopicsRequestState$!: Observable<IRequest<Topic[]>>;
 
   constructor(
     private store: Store,

@@ -10,7 +10,7 @@ import { GetUserByToken, LogInUser, LogOutUser, ResetAuthState, SignUpUser } fro
 import { ResetNotesState } from '../ngxs/notes/notes.actions';
 import { ResetTopicsState } from '../ngxs/topics/topics.actions';
 import { ResetUsersState } from '../ngxs/users/users.actions';
-import { UserInterface } from '../../shared/interfaces/models/user.interface';
+import { User } from '../../shared/interfaces/user';
 
 import { LocalStorageService } from './local-storage.service';
 
@@ -22,16 +22,16 @@ export class AuthService {
   isAuthorized!: boolean;
 
   @Select(SignUpUserRequestState)
-  signUpUserRequestState$!: Observable<IRequest<UserInterface>>;
+  signUpUserRequestState$!: Observable<IRequest<User>>;
 
   @Select(AuthGetterState.currentUser)
-  currentUser$!: Observable<UserInterface>;
+  currentUser$!: Observable<User>;
 
   @Select(LogInUserRequestState)
-  logInUserRequestState$!: Observable<IRequest<UserInterface>>;
+  logInUserRequestState$!: Observable<IRequest<User>>;
 
   @Select(GetUserByTokenRequestState)
-  getUserByTokenRequestState$!: Observable<IRequest<UserInterface>>;
+  getUserByTokenRequestState$!: Observable<IRequest<User>>;
 
   @Select(LogOutUserRequestState)
   logOutUserRequestState$!: Observable<IRequest>;
@@ -50,14 +50,14 @@ export class AuthService {
     });
   }
 
-  signUpUser(user: UserInterface) {
+  signUpUser(user: User) {
     this.store.dispatch(new SignUpUser(user));
     return this.signUpUserRequestState$.pipe(
       filter(req => req.loaded && !req.loading)
     );
   }
 
-  logInUser(user: Partial<UserInterface>) {
+  logInUser(user: Partial<User>) {
     this.store.dispatch(new LogInUser(user));
     return this.logInUserRequestState$.pipe(
       filter(req => req.loaded && !req.loading)

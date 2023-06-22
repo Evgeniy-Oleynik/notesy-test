@@ -15,13 +15,13 @@
       <div class="note-dialog__content">
         <form #formElement="ngForm" [formGroup]="noteEditorFormGroup" class="note-dialog__form">
           <mat-form-field class="form__input form__input--topic">
-            <mat-label>TopicInterface</mat-label>
+            <mat-label>Topic</mat-label>
             <mat-select [formControl]="topicIdFormControl">
               <mat-option *ngFor="let topic of topics$ | async" [value]="topic.id">{{topic.type}}</mat-option>
             </mat-select>
             <app-form-errors
               [control]="topicIdFormControl"
-              [controlName]="'TopicInterface'"
+              [controlName]="'Topic'"
             ></app-form-errors>
           </mat-form-field>
           <mat-form-field class="form__input form__input--title">
@@ -46,7 +46,7 @@
             <ng-template [ngIfElse]="createNote" [ngIf]="isEditMode$ | async">
               <button (click)="deleteNote()"
                       class="note-dialog__button note-dialog__button--delete" mat-button
-                      matTooltip="Delete NoteInterface"
+                      matTooltip="Delete Note"
               >Delete
                 <mat-icon>delete</mat-icon>
               </button>
@@ -60,7 +60,7 @@
               <button (click)="submitForm()" [disabled]="(isEqual$ | async) || !noteEditorFormGroup.valid"
                       class="note-dialog__button note-dialog__button--submit"
                       mat-button
-                      matTooltip="Save NoteInterface"
+                      matTooltip="Save Note"
               >Save
               </button>
             </ng-template>
@@ -86,7 +86,7 @@
   <button (click)="submitForm()" [disabled]="!noteEditorFormGroup.valid"
           class="note-dialog__button note-dialog__button--submit"
           mat-button
-          matTooltip="Save NoteInterface"
+          matTooltip="Save Note"
   >Save
   </button>
 </ng-template>
@@ -105,7 +105,7 @@
     <div class="note-dialog__content">
       <div class="note-dialog__form not-your-note">
         <div class="form__input form__input--topic">
-          <div class="not-your-note__input-title">TopicInterface:</div>
+          <div class="not-your-note__input-title">Topic:</div>
           {{topicIdFormControl.value | topicType: (topics$ | async)}}
         </div>
         <div class="form__input form__input--title">
@@ -118,7 +118,7 @@
         </div>
         <div class="note-dialog__actions">
           <button class="note-dialog__button note-dialog__button--cancel" mat-button mat-dialog-close=""
-                  matTooltip="Close NoteInterface">Close
+                  matTooltip="Close Note">Close
           </button>
         </div>
       </div>

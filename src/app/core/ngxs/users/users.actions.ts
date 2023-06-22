@@ -1,13 +1,13 @@
-import { UserInterface } from '../../../shared/interfaces/models/user.interface';
+import { User } from '../../../shared/interfaces/user';
 
 const ActionTypes = {
   GET_ALL_USERS: '[Users] Get All Users',
   GET_ALL_USERS_SUCCESS: '[Users] Get All Users Success',
   GET_ALL_USERS_FAILED: '[Users] Get All Users Failed',
 
-  GET_USER_BY_ID: '[Users] Get UserInterface By Id',
-  GET_USER_BY_ID_SUCCESS: '[Users] Get UserInterface By Id Success',
-  GET_USER_BY_ID_FAILED: '[Users] Get UserInterface By Id Failed',
+  GET_USER_BY_ID: '[Users] Get User By Id',
+  GET_USER_BY_ID_SUCCESS: '[Users] Get User By Id Success',
+  GET_USER_BY_ID_FAILED: '[Users] Get User By Id Failed',
 
   RESET_USERS_STATE: '[Users] Reset Users State',
 };
@@ -19,7 +19,7 @@ export class GetAllUsers {
 export class GetAllUsersSuccess {
   static type = ActionTypes.GET_ALL_USERS_SUCCESS;
 
-  constructor(public payload: UserInterface[]) {
+  constructor(public payload: User[]) {
   }
 }
 
@@ -37,7 +37,7 @@ export class GetUserById {
 export class GetUserByIdSuccess {
   static type = ActionTypes.GET_USER_BY_ID_SUCCESS;
 
-  constructor(public payload: UserInterface) {
+  constructor(public payload: User) {
   }
 }
 
