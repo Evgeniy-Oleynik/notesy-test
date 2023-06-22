@@ -3,6 +3,7 @@ import { Select, Store } from '@ngxs/store';
 import { filter, Observable } from 'rxjs';
 import { IRequest } from 'ngxs-requests-plugin';
 
+import { Note } from '../../shared/interfaces/models/note.interface';
 import { NotesGetterState } from '../ngxs/notes/notes-getter.state';
 import { DeleteNoteById, GetNotes, PatchNote, PostNote } from '../ngxs/notes/notes.actions';
 import {
@@ -12,7 +13,6 @@ import {
   PatchNoteRequestState,
   PostNoteRequestState
 } from '../ngxs/notes/notes.state';
-import { Note } from '../../shared/interfaces/models/note.interface';
 
 @Injectable({
   providedIn: 'root'

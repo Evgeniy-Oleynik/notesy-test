@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Action, State, StateContext, Store } from '@ngxs/store';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
 
-import { User } from '../../../shared/interfaces/models/user.interface';
 import { createEntitiesIds } from '../../../shared/utility/create-entities-ids';
+import { User } from '../../../shared/interfaces/models/user.interface';
 
 import {
   GetAllUsers,

@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
-import { AuthService } from '../core/services/auth.service';
+import { Router } from '@angular/router';
 import { filter, Subject, switchMap, takeUntil } from 'rxjs';
 import { RequestStatus } from 'ngxs-requests-plugin';
-import { Router } from '@angular/router';
+
+import { AuthService } from '../core/services/auth.service';
 
 @Component({
   selector: 'app-login',

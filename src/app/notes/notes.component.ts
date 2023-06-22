@@ -87,7 +87,7 @@ export class NotesComponent implements OnInit, OnDestroy {
     this.notesList$ = combineLatest([this.notes$, this.searchFormControlValue$]).pipe(
       map(([notes, search]) => {
         const notesList = new MatTableDataSource(notes);
-        notesList.filter = search.trim().toLowerCase();
+        notesList.filter = search?.trim().toLowerCase();
         return notesList;
       })
     )

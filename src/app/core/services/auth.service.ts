@@ -4,13 +4,13 @@ import { Select, Store } from '@ngxs/store';
 import { filter, Observable, Subject, withLatestFrom } from 'rxjs';
 import { IRequest, RequestStatus } from 'ngxs-requests-plugin';
 
+import { User } from '../../shared/interfaces/models/user.interface';
 import { GetUserByTokenRequestState, LogInUserRequestState, LogOutUserRequestState, SignUpUserRequestState } from '../ngxs/auth/auth.state';
 import { AuthGetterState } from '../ngxs/auth/auth-getter.state';
 import { GetUserByToken, LogInUser, LogOutUser, ResetAuthState, SignUpUser } from '../ngxs/auth/auth.actions';
 import { ResetNotesState } from '../ngxs/notes/notes.actions';
 import { ResetTopicsState } from '../ngxs/topics/topics.actions';
 import { ResetUsersState } from '../ngxs/users/users.actions';
-import { User } from '../../shared/interfaces/models/user.interface';
 
 import { LocalStorageService } from './local-storage.service';
 

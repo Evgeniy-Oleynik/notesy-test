@@ -7,11 +7,11 @@ import { filter, map, Observable, startWith, Subject, switchMap, takeUntil, with
 import { RequestStatus } from 'ngxs-requests-plugin';
 import _ from 'lodash';
 
-import { Note } from '../../shared/interfaces/models/note.interface';
 import { NotesService } from '../../core/services/notes.service';
 import { TopicsService } from '../../core/services/topics.service';
 import { AuthService } from '../../core/services/auth.service';
 import { UsersService } from '../../core/services/users.service';
+import { Note } from '../../shared/interfaces/models/note.interface';
 
 interface NoteForm {
   id: FormControl<number>,

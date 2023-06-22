@@ -3,10 +3,10 @@ import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { IRequest } from 'ngxs-requests-plugin';
 
+import { Topic } from '../../shared/interfaces/models/topic.interface';
 import { TopicsGetterState } from '../ngxs/topics/topics-getter.state';
 import { GetTopicsRequestState } from '../ngxs/topics/topics.state';
 import { GetTopics } from '../ngxs/topics/topics.actions';
-import { Topic } from '../../shared/interfaces/models/topic.interface';
 
 @Injectable({
   providedIn: 'root'

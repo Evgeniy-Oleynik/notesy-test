@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Action, State, StateContext, Store } from '@ngxs/store';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
 
-import { LocalStorageService } from '../../services/local-storage.service';
 import { RawHttpClient } from '../../../shared/utility/raw-http-client.module';
 import { User } from '../../../shared/interfaces/models/user.interface';
+import { LocalStorageService } from '../../services/local-storage.service';
 
 import {
   GetUserByToken,

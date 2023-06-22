@@ -3,10 +3,10 @@ import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { IRequest } from 'ngxs-requests-plugin';
 
+import { User } from '../../shared/interfaces/models/user.interface';
 import { UsersGetterState } from '../ngxs/users/users-getter.state';
 import { GetAllUsersRequestState, GetUserByIdRequestState } from '../ngxs/users/users.state';
 import { GetAllUsers, GetUserById } from '../ngxs/users/users.actions';
-import { User } from '../../shared/interfaces/models/user.interface';
 
 @Injectable({
   providedIn: 'root'
