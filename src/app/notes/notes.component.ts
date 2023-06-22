@@ -21,16 +21,16 @@ import { NoteEditDialogComponent } from './note-edit-dialog/note-edit-dialog.com
 })
 export class NotesComponent implements OnInit, OnDestroy {
 
-  @ViewChild(MatTable) table?: MatTable<any>;
+  @ViewChild(MatTable) table: MatTable<any>;
 
   componentDestroyed$: Subject<boolean> = new Subject<boolean>();
 
-  notesList$!: Observable<MatTableDataSource<Note>>;
-  users$?: Observable<User[]>;
-  topics$?: Observable<Topic[]>;
+  notesList$: Observable<MatTableDataSource<Note>>;
+  users$: Observable<User[]>;
+  topics$: Observable<Topic[]>;
   notes$ = this.notesService.notes$;
   tableColumnsList = ['topic', 'title', 'author', 'updated', 'created'];
-  formGroup?: FormGroup;
+  formGroup: FormGroup<{userId: FormControl<number>, topicId: FormControl<number>}>;
   searchFormControl = new FormControl('');
   searchFormControlValue$: Observable<string>;
 
@@ -45,11 +45,11 @@ export class NotesComponent implements OnInit, OnDestroy {
   }
 
   get userIdFormControl() {
-    return this.formGroup?.get('userId') as FormControl;
+    return this.formGroup.controls.userId;
   };
 
   get topicIdFormControl() {
-    return this.formGroup?.get('topicId') as FormControl;
+    return this.formGroup.controls.topicId;
   };
 
   ngOnInit(): void {
@@ -73,7 +73,7 @@ export class NotesComponent implements OnInit, OnDestroy {
           }
         ).pipe(
           filter(res => res.loaded && !res.loading),
-          map(res => formData),
+          map(() => formData),
           takeUntil(this.componentDestroyed$)
         );
       }),
