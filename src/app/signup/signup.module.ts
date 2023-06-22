@@ -3,6 +3,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 import { FormErrorsModule } from '../shared/components/form-errors/form-errors.module';
 import { SharedModule } from '../shared/shared.module';
@@ -19,6 +20,7 @@ import { SignupComponent } from './signup.component';
     FormErrorsModule,
     MatInputModule,
     MatIconModule,
+    MatButtonModule,
   ],
   declarations: [
     SignupComponent
