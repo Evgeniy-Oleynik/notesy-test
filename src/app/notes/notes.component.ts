@@ -80,8 +80,7 @@ export class NotesComponent implements OnInit, OnDestroy {
     ).subscribe(formData => this.addQueryParams(formData));
 
     this.searchFormControlValue$ = this.searchFormControl.valueChanges.pipe(
-      startWith(''),
-      map(value => value)
+      startWith(this.searchFormControl.value)
     );
 
     this.notesList$ = combineLatest([this.notes$, this.searchFormControlValue$]).pipe(
@@ -109,7 +108,7 @@ export class NotesComponent implements OnInit, OnDestroy {
   }
 
   clearSearch() {
-    this.searchFormControl.reset()
+    this.searchFormControl.reset();
   }
 
   private createFormGroup(userId: number | null, topicId: number | null) {
