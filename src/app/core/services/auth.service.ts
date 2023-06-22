@@ -24,7 +24,7 @@ export class AuthService {
   @Select(SignUpUserRequestState)
   signUpUserRequestState$!: Observable<IRequest<User>>;
 
-  @Select(AuthGetterState.authUser)
+  @Select(AuthGetterState.currentUser)
   currentUser$!: Observable<User>;
 
   @Select(LogInUserRequestState)

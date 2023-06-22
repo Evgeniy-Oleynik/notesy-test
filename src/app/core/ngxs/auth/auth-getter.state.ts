@@ -4,7 +4,7 @@ import { AuthState, AuthStateModel } from './auth.state';
 
 export class AuthGetterState {
   @Selector([AuthState])
-  static authUser(state: AuthStateModel) {
+  static currentUser(state: AuthStateModel) {
     return state.user;
   }
 }
