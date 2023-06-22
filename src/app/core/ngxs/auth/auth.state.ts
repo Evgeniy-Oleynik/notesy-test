@@ -18,11 +18,11 @@ import {
   LogOutUserFailed,
   LogOutUserSuccess,
   ResetAuthState,
-  SetToken,
   SignUpUser,
   SignUpUserFailed,
   SignUpUserSuccess
 } from './auth.actions';
+import { environment } from '../../../../environments/environment';
 
 @RequestState('signUpUser')
 @Injectable()
@@ -49,10 +49,10 @@ export interface AuthStateModel {
 }
 
 const emptyUser: User = {
-  id: undefined,
-  name: '',
-  email: '',
-  token: ''
+  id: null,
+  name: null,
+  email: null,
+  token: null
 };
 
 @State<AuthStateModel>({
@@ -86,6 +86,7 @@ export class AuthState {
 
   @Action(SignUpUserFailed)
   signUpUserFailed() {
+    console.log('Sign Up Failed');
   }
 
   @Action(SignUpUserSuccess)
@@ -110,6 +111,7 @@ export class AuthState {
 
   @Action(LogInUserFailed)
   logInUserFailed() {
+    console.log('Log In Failed');
   }
 
   @Action(LogInUserSuccess)
@@ -139,17 +141,12 @@ export class AuthState {
 
   @Action(LogOutUserFailed)
   logOutUserFailed() {
-  }
-
-  @Action(SetToken)
-  setToken({patchState}: StateContext<AuthStateModel>, {payload: authToken}: SetToken) {
-    patchState({user: {token: authToken}});
+    console.log('Log Out Failed');
   }
 
   @Action(GetUserByToken)
   getUserByToken({patchState, dispatch}: StateContext<AuthStateModel>, {payload: localAuthToken}: GetUserByToken) {
-    patchState({user: {token: localAuthToken}});
-    const request = this.rawHttpClient.get('http://localhost:3000/users/,', {headers: {'Authorization': `Bearer ${localAuthToken}`}});
+    const request = this.rawHttpClient.get(`${environment.api}/users/,`, {headers: {'Authorization': `Bearer ${localAuthToken}`}});
 
     return dispatch(createRequestAction({
       state: GetUserByTokenRequestState,
@@ -166,6 +163,7 @@ export class AuthState {
 
   @Action(GetUserByTokenFailed)
   getUserByTokenFailed() {
+    console.log('Get User By Token Failed');
   }
 
   @Action(ResetAuthState)
