@@ -50,7 +50,7 @@ export class AuthService {
     });
   }
 
-  signUpUser(user: User) {
+  signUpUser(user: Partial<User>) {
     this.store.dispatch(new SignUpUser(user));
     return this.signUpUserRequestState$.pipe(
       filter(req => req.loaded && !req.loading)
