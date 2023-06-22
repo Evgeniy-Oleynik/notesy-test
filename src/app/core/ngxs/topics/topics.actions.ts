@@ -4,6 +4,7 @@ const ActionTypes = {
   GET_TOPICS: '[Topics] Get Topics',
   GET_TOPICS_SUCCESS: '[Topics] Get Topics Success',
   GET_TOPICS_FAILED: '[Topics] Get Topics Failed',
+
   RESET_TOPICS_STATE: '[Topics] Reset Topics State',
 };
 

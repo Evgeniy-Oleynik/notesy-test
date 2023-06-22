@@ -4,19 +4,23 @@ const ActionTypes = {
   GET_NOTES: '[Notes] Get All Notes',
   GET_NOTES_SUCCESS: '[Notes] Get All Notes Success',
   GET_NOTES_FAILED: '[Notes] Get All Notes Failed',
+
   GET_NOTE_BY_ID: '[Notes] Get Note By ID',
   GET_NOTE_BY_ID_SUCCESS: '[Notes] Get Note By ID Success',
   GET_NOTE_BY_ID_FAILED: '[Notes] Get Note By ID Failed',
-  SET_CURRENT_NOTE_ID: '[Notes] Set Current Note ID',
+
   POST_NOTE: '[Notes] Post Note',
   POST_NOTE_SUCCESS: '[Notes] Post Note Success',
   POST_NOTE_FAILED: '[Notes] Post Note Failed',
+
   PATCH_NOTE: '[Notes] Patch Note By ID',
   PATCH_NOTE_SUCCESS: '[Notes] Patch Note By ID Success',
   PATCH_NOTE_FAILED: '[Notes] Patch Note By ID Failed',
+
   DELETE_NOTE_BY_ID: '[Notes] Delete Note By ID',
   DELETE_NOTE_BY_ID_SUCCESS: '[Notes] Delete Note By ID Success',
   DELETE_NOTE_BY_ID_FAILED: '[Notes] Delete Note By ID Failed',
+
   RESET_NOTES_STATE: '[Notes] Reset Notes State'
 };
 

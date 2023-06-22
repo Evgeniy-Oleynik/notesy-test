@@ -4,9 +4,11 @@ const ActionTypes = {
   GET_ALL_USERS: '[Users] Get All Users',
   GET_ALL_USERS_SUCCESS: '[Users] Get All Users Success',
   GET_ALL_USERS_FAILED: '[Users] Get All Users Failed',
+
   GET_USER_BY_ID: '[Users] Get User By Id',
   GET_USER_BY_ID_SUCCESS: '[Users] Get User By Id Success',
   GET_USER_BY_ID_FAILED: '[Users] Get User By Id Failed',
+
   RESET_USERS_STATE: '[Users] Reset Users State',
 };
 
