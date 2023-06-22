@@ -47,7 +47,8 @@ export class TopicsState {
   }
 
   @Action(GetTopicsFailed)
-  getTopicsFail() {
+  getTopicsFailed() {
+    console.log('Get Topics Failed');
   }
 
   @Action(GetTopicsSuccess)

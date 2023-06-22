@@ -69,6 +69,7 @@ export class UsersState {
 
   @Action(GetAllUsersFailed)
   getAllUsersFailed() {
+    console.log('Get Users Failed');
   }
 
   @Action(GetUserById)
@@ -93,6 +94,7 @@ export class UsersState {
 
   @Action(GetUserByIdFailed)
   getUserByIdFailed() {
+    console.log('Get User By ID Failed');
   }
 
   @Action(ResetUsersState)

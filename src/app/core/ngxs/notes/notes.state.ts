@@ -94,6 +94,7 @@ export class NotesState {
 
   @Action(GetNotesFailed)
   getNotesFailed() {
+    console.log('Get Notes Failed');
   }
 
   @Action(GetNoteById)
@@ -118,6 +119,7 @@ export class NotesState {
 
   @Action(GetNoteByIdFailed)
   getNoteByIdFailed() {
+    console.log('Get Note By ID Failed');
   }
 
   @Action(PostNote)
@@ -142,6 +144,7 @@ export class NotesState {
 
   @Action(PostNoteFailed)
   postNoteFailed() {
+    console.log('Post Note Failed');
   }
 
   @Action(PatchNote)
@@ -166,6 +169,7 @@ export class NotesState {
 
   @Action(PatchNoteFailed)
   patchNoteByIdFailed() {
+    console.log('Patch Note Failed');
   }
 
   @Action(DeleteNoteById)
@@ -191,6 +195,7 @@ export class NotesState {
 
   @Action(DeleteNoteByIdFailed)
   deleteNoteByIdFailed() {
+    console.log('Delete Note Failed');
   }
 
   @Action(ResetNotesState)
