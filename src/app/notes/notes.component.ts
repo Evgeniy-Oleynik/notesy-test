@@ -3,7 +3,20 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { filter, map, Observable, startWith, Subject, switchMap, take, takeUntil, withLatestFrom } from 'rxjs';
+import {
+  combineLatest,
+  concat,
+  filter,
+  map,
+  merge,
+  Observable,
+  startWith,
+  Subject,
+  switchMap,
+  take,
+  takeUntil,
+  withLatestFrom
+} from 'rxjs';
 
 import { NotesService } from '../core/services/notes.service';
 import { TopicsService } from '../core/services/topics.service';
@@ -32,6 +45,7 @@ export class NotesComponent implements OnInit, OnDestroy {
   tableColumnsList = ['topic', 'title', 'author', 'updated', 'created'];
   formGroup?: FormGroup;
   searchFormControl = new FormControl('');
+  searchFormControlValue$: Observable<string>;
 
   constructor(
     private router: Router,
@@ -72,17 +86,21 @@ export class NotesComponent implements OnInit, OnDestroy {
           }
         ).pipe(
           filter(res => res.loaded && !res.loading),
+          map(res => formData),
           takeUntil(this.componentDestroyed$)
         );
       }),
-    ).subscribe(() => this.addQueryParams(this.formGroup?.value));
+    ).subscribe(formData => this.addQueryParams(formData));
 
-    this.notesList$ = this.searchFormControl.valueChanges.pipe(
+    this.searchFormControlValue$ = this.searchFormControl.valueChanges.pipe(
       startWith(''),
-      withLatestFrom(this.notes$),
-      map(([search, notes]) => {
+      map(value => value)
+    );
+
+    this.notesList$ = combineLatest([this.notes$, this.searchFormControlValue$]).pipe(
+      map(([notes, search]) => {
         const notesList = new MatTableDataSource(notes);
-        notesList.filter = search;
+        notesList.filter = search.trim().toLowerCase();
         return notesList;
       })
     )
