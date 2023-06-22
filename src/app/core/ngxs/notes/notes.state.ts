@@ -5,7 +5,7 @@ import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
 
 import { createEntitiesIds } from '../../../shared/utility/create-entities-ids';
 import { updateEntitiesIds } from '../../../shared/utility/update-entities-ids';
-import { Note } from '../../../shared/interfaces/note';
+import { Note } from '../../../shared/interfaces/models/note.interface';
 
 import {
   DeleteNoteById,

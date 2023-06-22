@@ -8,9 +8,9 @@ import { combineLatest, filter, map, Observable, startWith, Subject, switchMap, 
 import { NotesService } from '../core/services/notes.service';
 import { TopicsService } from '../core/services/topics.service';
 import { UsersService } from '../core/services/users.service';
-import { Note } from '../shared/interfaces/note';
-import { User } from '../shared/interfaces/user';
-import { Topic } from '../shared/interfaces/topic';
+import { Note } from '../shared/interfaces/models/note.interface';
+import { User } from '../shared/interfaces/models/user.interface';
+import { Topic } from '../shared/interfaces/models/topic.interface';
 
 import { NoteEditDialogComponent } from './note-edit-dialog/note-edit-dialog.component';
 

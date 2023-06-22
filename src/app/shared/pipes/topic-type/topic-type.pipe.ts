@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Topic } from '../../interfaces/topic';
+import { Topic } from '../../interfaces/models/topic.interface';
 
 @Pipe({name: 'topicType'})
 export class TopicTypePipe implements PipeTransform {

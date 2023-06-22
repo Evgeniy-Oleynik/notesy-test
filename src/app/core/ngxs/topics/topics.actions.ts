@@ -1,4 +1,4 @@
-import { Topic } from '../../../shared/interfaces/topic';
+import { Topic } from '../../../shared/interfaces/models/topic.interface';
 
 const ActionTypes = {
   GET_TOPICS: '[Topics] Get Topics',

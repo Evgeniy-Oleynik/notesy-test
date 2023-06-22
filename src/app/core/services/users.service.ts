@@ -6,7 +6,7 @@ import { IRequest } from 'ngxs-requests-plugin';
 import { UsersGetterState } from '../ngxs/users/users-getter.state';
 import { GetAllUsersRequestState, GetUserByIdRequestState } from '../ngxs/users/users.state';
 import { GetAllUsers, GetUserById } from '../ngxs/users/users.actions';
-import { User } from '../../shared/interfaces/user';
+import { User } from '../../shared/interfaces/models/user.interface';
 
 @Injectable({
   providedIn: 'root'

@@ -6,7 +6,7 @@ import { IRequest } from 'ngxs-requests-plugin';
 import { TopicsGetterState } from '../ngxs/topics/topics-getter.state';
 import { GetTopicsRequestState } from '../ngxs/topics/topics.state';
 import { GetTopics } from '../ngxs/topics/topics.actions';
-import { Topic } from '../../shared/interfaces/topic';
+import { Topic } from '../../shared/interfaces/models/topic.interface';
 
 @Injectable({
   providedIn: 'root'

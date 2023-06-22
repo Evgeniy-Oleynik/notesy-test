@@ -12,7 +12,7 @@ import {
   PatchNoteRequestState,
   PostNoteRequestState
 } from '../ngxs/notes/notes.state';
-import { Note } from '../../shared/interfaces/note';
+import { Note } from '../../shared/interfaces/models/note.interface';
 
 @Injectable({
   providedIn: 'root'

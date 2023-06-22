@@ -5,7 +5,7 @@ import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
 
 import { LocalStorageService } from '../../services/local-storage.service';
 import { RawHttpClient } from '../../../shared/utility/raw-http-client.module';
-import { User } from '../../../shared/interfaces/user';
+import { User } from '../../../shared/interfaces/models/user.interface';
 
 import {
   GetUserByToken,

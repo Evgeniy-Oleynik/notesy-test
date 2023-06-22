@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
-import { User } from '../../interfaces/user';
+import { User } from '../../interfaces/models/user.interface';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({

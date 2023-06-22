@@ -1,4 +1,4 @@
-import { User } from '../../../shared/interfaces/user';
+import { User } from '../../../shared/interfaces/models/user.interface';
 
 const ActionTypes = {
   GET_ALL_USERS: '[Users] Get All Users',

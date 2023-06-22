@@ -10,7 +10,7 @@ import { GetUserByToken, LogInUser, LogOutUser, ResetAuthState, SignUpUser } fro
 import { ResetNotesState } from '../ngxs/notes/notes.actions';
 import { ResetTopicsState } from '../ngxs/topics/topics.actions';
 import { ResetUsersState } from '../ngxs/users/users.actions';
-import { User } from '../../shared/interfaces/user';
+import { User } from '../../shared/interfaces/models/user.interface';
 
 import { LocalStorageService } from './local-storage.service';
 
