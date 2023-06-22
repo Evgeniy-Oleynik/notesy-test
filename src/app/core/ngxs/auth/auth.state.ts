@@ -117,9 +117,7 @@ export class AuthState {
   @Action(LogInUserSuccess)
   logInUserSuccess({patchState}: StateContext<AuthStateModel>, {payload: userData}: LogInUserSuccess) {
     patchState({user: userData});
-    if (userData.token) {
-      this.localStorageService.setItem('authToken', userData.token);
-    }
+    this.localStorageService.setItem('authToken', userData.token);
   }
 
   @Action(LogOutUser)
@@ -135,8 +133,8 @@ export class AuthState {
   }
 
   @Action(LogOutUserSuccess)
-  logOutUserSuccess({patchState}: StateContext<AuthStateModel>) {
-    patchState({user: emptyUser});
+  logOutUserSuccess() {
+    console.log('Log Out Complete');
   }
 
   @Action(LogOutUserFailed)
