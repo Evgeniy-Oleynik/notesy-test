@@ -3,20 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import {
-  combineLatest,
-  concat,
-  filter,
-  map,
-  merge,
-  Observable,
-  startWith,
-  Subject,
-  switchMap,
-  take,
-  takeUntil,
-  withLatestFrom
-} from 'rxjs';
+import { combineLatest, filter, map, Observable, startWith, Subject, switchMap, take, takeUntil, } from 'rxjs';
 
 import { NotesService } from '../core/services/notes.service';
 import { TopicsService } from '../core/services/topics.service';
