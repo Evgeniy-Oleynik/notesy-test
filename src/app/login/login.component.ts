@@ -6,21 +6,23 @@ import { RequestStatus } from 'ngxs-requests-plugin';
 
 import { AuthService } from '../core/services/auth.service';
 
+interface LogInForm {
+  email: FormControl<string>,
+  password: FormControl<string>
+}
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  hidePass = true;
-
   logInSubject$: Subject<void> = new Subject<void>();
   componentDestroyed$: Subject<boolean> = new Subject<boolean>();
 
-  logInForm = new FormGroup<{
-    email: FormControl<string>,
-    password: FormControl<string>
-  }>({
+  hidePass = true;
+
+  logInForm = new FormGroup<LogInForm>({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required])
   });
@@ -46,12 +48,11 @@ export class LoginComponent implements OnInit, OnDestroy {
         const formValue = this.logInForm.value;
         return this.authService.logInUser(formValue);
       }),
+      filter(res => res.status === RequestStatus.Success),
       takeUntil(this.componentDestroyed$)
     ).subscribe(res => {
-      if (res.status === RequestStatus.Success) {
-        this.router.navigate(['notes'])
-      }
-    })
+      this.router.navigate(['notes']);
+    });
   }
 
   logIn() {
@@ -60,6 +61,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.componentDestroyed$.next(true);
-    this.componentDestroyed$.complete()
+    this.componentDestroyed$.complete();
   }
 }
