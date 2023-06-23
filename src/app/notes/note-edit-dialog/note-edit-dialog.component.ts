@@ -1,6 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { filter, map, Observable, startWith, Subject, switchMap, takeUntil, withLatestFrom } from 'rxjs';
@@ -12,6 +11,8 @@ import { TopicsService } from '../../core/services/topics.service';
 import { AuthService } from '../../core/services/auth.service';
 import { UsersService } from '../../core/services/users.service';
 import { Note } from '../../shared/interfaces/models/note.interface';
+import { Topic } from '../../shared/interfaces/models/topic.interface';
+import { User } from '../../shared/interfaces/models/user.interface';
 
 interface NoteForm {
   id: FormControl<number>,
@@ -27,16 +28,17 @@ interface NoteForm {
 })
 
 export class NoteEditDialogComponent implements OnInit, OnDestroy {
-  topics$ = this.topicsService.topics$;
-  users$ = this.usersService.users$;
-  currentNote$: Observable<Note>;
-  isEditMode$: Observable<boolean>;
-  isEqual$: Observable<boolean>;
-  isOwner$: Observable<boolean>;
   submitFormSubject$: Subject<void> = new Subject<void>();
   deleteNoteSubject$: Subject<void> = new Subject<void>();
   cancelChangesSubject$: Subject<void> = new Subject<void>();
   componentDestroyed$: Subject<boolean> = new Subject<boolean>();
+
+  topics$: Observable<Topic[]>;
+  users$: Observable<User[]>;
+  currentNote$: Observable<Note>;
+  isEditMode$: Observable<boolean>;
+  isEqual$: Observable<boolean>;
+  isOwner$: Observable<boolean>;
 
   titleMaxLength = 50;
   textMaxLength = 250;
@@ -62,26 +64,26 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
     private notesService: NotesService,
     private topicsService: TopicsService,
     private usersService: UsersService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
   ) {
   }
 
   get topicIdFormControl() {
-    return this.noteEditorFormGroup.get('topicId') as FormControl;
+    return this.noteEditorFormGroup.controls.topicId;
   }
 
   get titleFormControl() {
-    return this.noteEditorFormGroup.get('title') as FormControl;
+    return this.noteEditorFormGroup.controls.title;
   }
 
   get textFormControl() {
-    return this.noteEditorFormGroup.get('text') as FormControl;
+    return this.noteEditorFormGroup.controls.text;
   }
 
   ngOnInit() {
+    this.topics$ = this.topicsService.topics$;
+    this.users$ = this.usersService.users$;
     this.currentNote$ = this.notesService.getNoteById(this.noteId);
 
     this.currentNote$.pipe(
@@ -91,7 +93,7 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
     this.isOwner$ = this.currentNote$.pipe(
       withLatestFrom(this.authService.currentUser$),
       map(([note, user]) => {
-        return note?.id ? note.userId === user.id : true
+        return note?.id ? note.userId === user.id : true;
       })
     );
 
@@ -121,7 +123,7 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
     ).subscribe(res => {
       if (res.status === RequestStatus.Success) {
         this.dialog.closeAll();
-        this.snackBar.open('Note was successfully saved', 'OK', {duration: 5000})
+        this.snackBar.open('Note was successfully saved', 'OK', {duration: 5000});
       }
     });
 
@@ -132,7 +134,7 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
     ).subscribe(res => {
       if (res.status === RequestStatus.Success) {
         this.dialog.closeAll();
-        this.snackBar.open('Note was successfully deleted', 'OK', {duration: 5000})
+        this.snackBar.open('Note was successfully deleted', 'OK', {duration: 5000});
       }
     });
 
