@@ -12,6 +12,4 @@ import { RequestsGetterState } from '../../../core/ngxs/requests/requests-getter
 export class SpinnerComponent {
   @Select(RequestsGetterState.getIsLoadingRequest)
   isLoading$: Observable<boolean>;
-
-  constructor() {}
 }

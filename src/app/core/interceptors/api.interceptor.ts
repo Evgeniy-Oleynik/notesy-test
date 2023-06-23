@@ -5,8 +5,6 @@ import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
-  constructor() {
-  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     if (/^https?:\/\//i.test(req.url)) {
