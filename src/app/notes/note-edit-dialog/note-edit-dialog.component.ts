@@ -121,7 +121,7 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
       }),
       filter(res => res.status === RequestStatus.Success),
       takeUntil(this.componentDestroyed$),
-    ).subscribe(res => {
+    ).subscribe(() => {
       this.dialog.closeAll();
       this.snackBar.open('Note was successfully saved', 'OK', {duration: 5000});
     });
@@ -131,7 +131,7 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
       switchMap(([_, note]) => this.notesService.deleteNote(note.id)),
       filter(res => res.status === RequestStatus.Success),
       takeUntil(this.componentDestroyed$),
-    ).subscribe(res => {
+    ).subscribe(() => {
       this.dialog.closeAll();
       this.snackBar.open('Note was successfully deleted', 'OK', {duration: 5000});
     });

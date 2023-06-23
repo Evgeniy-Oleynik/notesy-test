@@ -64,7 +64,7 @@ export class SignupComponent implements OnInit, OnDestroy {
       }),
       filter(res => res.status === RequestStatus.Success),
       takeUntil(this.componentDestroyed$)
-    ).subscribe(res => {
+    ).subscribe(() => {
       this.router.navigate(['notes']);
     });
   }
