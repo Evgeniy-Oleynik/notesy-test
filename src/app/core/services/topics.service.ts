@@ -14,9 +14,9 @@ import { GetTopics } from '../ngxs/topics/topics.actions';
 export class TopicsService {
 
   @Select(TopicsGetterState.getTopics)
-  topics$!: Observable<Topic[]>;
+  topics$: Observable<Topic[]>;
   @Select(GetTopicsRequestState)
-  getTopicsRequestState$!: Observable<IRequest<Topic[]>>;
+  getTopicsRequestState$: Observable<IRequest<Topic[]>>;
 
   constructor(
     private store: Store,

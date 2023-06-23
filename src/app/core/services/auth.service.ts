@@ -20,19 +20,19 @@ import { LocalStorageService } from './local-storage.service';
 export class AuthService {
 
   @Select(SignUpUserRequestState)
-  signUpUserRequestState$!: Observable<IRequest<User>>;
+  signUpUserRequestState$: Observable<IRequest<User>>;
 
   @Select(AuthGetterState.currentUser)
-  currentUser$!: Observable<User>;
+  currentUser$: Observable<User>;
 
   @Select(LogInUserRequestState)
-  logInUserRequestState$!: Observable<IRequest<User>>;
+  logInUserRequestState$: Observable<IRequest<User>>;
 
   @Select(GetUserByTokenRequestState)
-  getUserByTokenRequestState$!: Observable<IRequest<User>>;
+  getUserByTokenRequestState$: Observable<IRequest<User>>;
 
   @Select(LogOutUserRequestState)
-  logOutUserRequestState$!: Observable<IRequest>;
+  logOutUserRequestState$: Observable<IRequest>;
 
   constructor(
     private store: Store,
@@ -74,10 +74,8 @@ export class AuthService {
   }
 
   getUserByToken() {
-    const token = localStorage.getItem('notesy_authToken');
-    if (token) {
-      this.store.dispatch(new GetUserByToken(token));
-    }
+    const token = this.localStorageService.getItem('notesy_authToken');
+    this.store.dispatch(new GetUserByToken(token));
     return this.getUserByTokenRequestState$;
   }
 }
