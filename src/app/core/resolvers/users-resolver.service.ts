@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { filter, Observable } from 'rxjs';
+import { filter, Observable, take } from 'rxjs';
 import { IRequest } from 'ngxs-requests-plugin';
 
 import { UsersService } from '../services/users.service';
@@ -13,6 +13,7 @@ export class UsersResolver implements Resolve<IRequest> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IRequest> {
     return this.usersService.getAllUsers().pipe(
       filter(res => res.loaded && !res.loading),
+      take(1)
     );
   }
 }
