@@ -26,11 +26,13 @@ export class NotesComponent implements OnInit, OnDestroy {
   notesList$: Observable<MatTableDataSource<Note>>;
   users$: Observable<User[]>;
   topics$: Observable<Topic[]>;
-  notes$ = this.notesService.notes$;
-  tableColumnsList = ['topic', 'title', 'author', 'updated', 'created'];
-  formGroup: FormGroup<{userId: FormControl<number>, topicId: FormControl<number>}>;
-  searchFormControl = new FormControl('');
+  notes$: Observable<Note[]>;
   searchFormControlValue$: Observable<string>;
+
+  formGroup: FormGroup<{ userId: FormControl<number>, topicId: FormControl<number> }>;
+  searchFormControl: FormControl<string>;
+
+  tableColumnsList = ['topic', 'title', 'author', 'updated', 'created'];
 
   constructor(
     private router: Router,
@@ -53,6 +55,9 @@ export class NotesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.users$ = this.usersService.users$;
     this.topics$ = this.topicsService.topics$;
+    this.notes$ = this.notesService.notes$;
+
+    this.searchFormControl = new FormControl('');
 
     this.route.queryParams.pipe(
       take(1)
@@ -69,13 +74,11 @@ export class NotesComponent implements OnInit, OnDestroy {
             ...(!!userId ? {userId} : {}),
             ...(!!topicId ? {topicId} : {}),
           }
-        ).pipe(
-          filter(res => res.loaded && !res.loading),
-          map(() => formData),
-          takeUntil(this.componentDestroyed$)
         );
       }),
-    ).subscribe(formData => this.addQueryParams(formData));
+      filter(res => res.loaded && !res.loading),
+      takeUntil(this.componentDestroyed$)
+    ).subscribe(() => this.addQueryParams(this.formGroup.value));
 
     this.searchFormControlValue$ = this.searchFormControl.valueChanges.pipe(
       startWith(this.searchFormControl.value)
@@ -87,7 +90,7 @@ export class NotesComponent implements OnInit, OnDestroy {
         notesList.filter = search?.trim().toLowerCase();
         return notesList;
       })
-    )
+    );
   }
 
   newNote() {
@@ -109,15 +112,15 @@ export class NotesComponent implements OnInit, OnDestroy {
     this.searchFormControl.reset();
   }
 
-  private createFormGroup(userId: number | null, topicId: number | null) {
+  ngOnDestroy() {
+    this.componentDestroyed$.next(true);
+    this.componentDestroyed$.complete();
+  }
+
+  private createFormGroup(userId: number, topicId: number) {
     this.formGroup = new FormGroup({
       userId: new FormControl(userId),
       topicId: new FormControl(topicId),
     });
-  }
-
-  ngOnDestroy() {
-    this.componentDestroyed$.next(true);
-    this.componentDestroyed$.complete();
   }
 }
