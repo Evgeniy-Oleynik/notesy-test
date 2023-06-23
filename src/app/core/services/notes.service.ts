@@ -20,22 +20,22 @@ import {
 export class NotesService {
 
   @Select(NotesGetterState.getNotes)
-  notes$!: Observable<Note[]>;
+  notes$: Observable<Note[]>;
 
   @Select(GetNotesRequestState)
-  getNotesRequestState$!: Observable<IRequest<Note[]>>;
+  getNotesRequestState$: Observable<IRequest<Note[]>>;
 
   @Select(GetNoteByIdRequestState)
-  getNoteByIdRequestState$!: Observable<IRequest<Note[]>>;
+  getNoteByIdRequestState$: Observable<IRequest<Note[]>>;
 
   @Select(PostNoteRequestState)
-  postNoteRequestState$!: Observable<IRequest>;
+  postNoteRequestState$: Observable<IRequest>;
 
   @Select(PatchNoteRequestState)
-  patchNoteByIdRequestState$!: Observable<IRequest>;
+  patchNoteByIdRequestState$: Observable<IRequest>;
 
   @Select(DeleteNoteByIdRequestState)
-  deleteNoteByIdRequestState$!: Observable<IRequest>;
+  deleteNoteByIdRequestState$: Observable<IRequest>;
 
   constructor(
     private store: Store,

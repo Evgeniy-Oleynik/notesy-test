@@ -14,13 +14,13 @@ import { GetAllUsers, GetUserById } from '../ngxs/users/users.actions';
 export class UsersService {
 
   @Select(UsersGetterState.getAllUsers)
-  users$!: Observable<User[]>;
+  users$: Observable<User[]>;
 
   @Select(GetAllUsersRequestState)
-  getAllUsersRequestState$!: Observable<IRequest<User[]>>;
+  getAllUsersRequestState$: Observable<IRequest<User[]>>;
 
   @Select(GetUserByIdRequestState)
-  getUserByIdRequestState$!: Observable<IRequest<User>>;
+  getUserByIdRequestState$: Observable<IRequest<User>>;
 
   constructor(
     private store: Store,
