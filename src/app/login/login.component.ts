@@ -17,7 +17,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   logInSubject$: Subject<void> = new Subject<void>();
   componentDestroyed$: Subject<boolean> = new Subject<boolean>();
 
-  logInForm = new FormGroup<any>({
+  logInForm = new FormGroup<{
+    email: FormControl<string>,
+    password: FormControl<string>
+  }>({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required])
   });
@@ -29,11 +32,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   get emailFormControl() {
-    return this.logInForm.get('email') as FormControl;
+    return this.logInForm.controls.email;
   }
 
   get passwordFormControl() {
-    return this.logInForm.get('password') as FormControl;
+    return this.logInForm.controls.password;
   }
 
   ngOnInit(): void {
