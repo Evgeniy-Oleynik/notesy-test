@@ -1,4 +1,8 @@
-export function updateEntitiesIds<T extends {entities?: { [key: number]: K }, ids?: number[]}, K>(state: T, array: K[], keyName: string = 'id') {
+export function updateEntitiesIds<A, T extends { entities: { [key: number]: A }; ids: number[] }>(
+  array: A[],
+  state: { entities: { [key: number]: A }; ids: number[] } = {entities: {}, ids: []},
+  keyName: string = 'id'
+) {
   return array.reduce((acc, item) => {
     return {
       entities: {...acc.entities, [item[keyName]]: item},
