@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Action, State, StateContext, Store } from '@ngxs/store';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
 
-import { createEntitiesIds } from '../../../shared/utility/create-entities-ids';
+import { updateEntitiesIds } from '../../../shared/utility/update-entities-ids';
 import { User } from '../../../shared/interfaces/models/user.interface';
 
 import {
@@ -15,7 +15,6 @@ import {
   GetUserByIdSuccess,
   ResetUsersState
 } from './users.actions';
-import { updateEntitiesIds } from '../../../shared/utility/update-entities-ids';
 
 @RequestState('getAllUsers')
 @Injectable()
@@ -62,7 +61,7 @@ export class UsersState {
 
   @Action(GetAllUsersSuccess)
   getAllUsersSuccess({getState, patchState}: StateContext<UsersStateModel>, {payload: users}: GetAllUsersSuccess) {
-    const {ids, entities} = createEntitiesIds(users);
+    const {ids, entities} = updateEntitiesIds(users);
 
     patchState({ids, entities});
   }
@@ -87,7 +86,7 @@ export class UsersState {
   @Action(GetUserByIdSuccess)
   getUserByIdSuccess({getState, patchState}: StateContext<UsersStateModel>, {payload: user}: GetUserByIdSuccess) {
     const state = getState();
-    const {ids, entities} = updateEntitiesIds(state,[user]);
+    const {ids, entities} = updateEntitiesIds([user], state);
 
     patchState({ids, entities});
   }
