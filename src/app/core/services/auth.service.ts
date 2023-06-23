@@ -53,14 +53,14 @@ export class AuthService {
   signUpUser(user: Partial<User>) {
     this.store.dispatch(new SignUpUser(user));
     return this.signUpUserRequestState$.pipe(
-      filter(req => req.loaded && !req.loading)
+      filter(res => res.loaded && !res.loading)
     );
   }
 
   logInUser(user: Partial<User>) {
     this.store.dispatch(new LogInUser(user));
     return this.logInUserRequestState$.pipe(
-      filter(req => req.loaded && !req.loading)
+      filter(res => res.loaded && !res.loading)
     );
   }
 

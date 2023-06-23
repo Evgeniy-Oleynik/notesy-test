@@ -54,21 +54,21 @@ export class NotesService {
   postNote(note: Partial<Note>) {
     this.store.dispatch(new PostNote(note));
     return this.postNoteRequestState$.pipe(
-      filter(req => req.loaded && !req.loading),
+      filter(res => res.loaded && !res.loading),
     );
   }
 
   patchNote(note: Partial<Note>) {
     this.store.dispatch(new PatchNote(note));
     return this.patchNoteByIdRequestState$.pipe(
-      filter(req => req.loaded && !req.loading)
+      filter(res => res.loaded && !res.loading)
     );
   }
 
   deleteNote(id: number) {
     this.store.dispatch(new DeleteNoteById(id));
     return this.deleteNoteByIdRequestState$.pipe(
-      filter(req => req.loaded && !req.loading)
+      filter(res => res.loaded && !res.loading)
     );
   }
 }
