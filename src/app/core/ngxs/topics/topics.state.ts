@@ -53,8 +53,7 @@ export class TopicsState {
 
   @Action(GetTopicsSuccess)
   getTopicsSuccess({getState, patchState}: StateContext<TopicsStateModel>, {payload: topics}: GetTopicsSuccess) {
-    const state = getState();
-    const {ids, entities} = createEntitiesIds(state, topics);
+    const {ids, entities} = createEntitiesIds(topics);
 
     patchState({ids, entities});
   }

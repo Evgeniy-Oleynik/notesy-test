@@ -15,6 +15,7 @@ import {
   GetUserByIdSuccess,
   ResetUsersState
 } from './users.actions';
+import { updateEntitiesIds } from '../../../shared/utility/update-entities-ids';
 
 @RequestState('getAllUsers')
 @Injectable()
@@ -61,8 +62,7 @@ export class UsersState {
 
   @Action(GetAllUsersSuccess)
   getAllUsersSuccess({getState, patchState}: StateContext<UsersStateModel>, {payload: users}: GetAllUsersSuccess) {
-    const state = getState();
-    const {ids, entities} = createEntitiesIds(state, users);
+    const {ids, entities} = createEntitiesIds(users);
 
     patchState({ids, entities});
   }
@@ -87,7 +87,7 @@ export class UsersState {
   @Action(GetUserByIdSuccess)
   getUserByIdSuccess({getState, patchState}: StateContext<UsersStateModel>, {payload: user}: GetUserByIdSuccess) {
     const state = getState();
-    const {ids, entities} = createEntitiesIds(state, [user]);
+    const {ids, entities} = updateEntitiesIds(state,[user]);
 
     patchState({ids, entities});
   }

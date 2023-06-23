@@ -86,8 +86,7 @@ export class NotesState {
 
   @Action(GetNotesSuccess)
   getNotesSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload: notes}: GetNotesSuccess) {
-    const state = getState();
-    const {ids, entities} = createEntitiesIds(state, notes);
+    const {ids, entities} = createEntitiesIds(notes);
 
     patchState({ids, entities});
   }

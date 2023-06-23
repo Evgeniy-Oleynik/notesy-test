@@ -1,4 +1,4 @@
-export function createEntitiesIds(state: any, array: any[], keyName: string = 'id') {
+export function createEntitiesIds<T>(array: T[], keyName: string = 'id') {
   return array.reduce((acc, item) => {
     return {
       entities: {...acc.entities, [item[keyName]]: item},
