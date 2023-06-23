@@ -7,24 +7,26 @@ import { RequestStatus } from 'ngxs-requests-plugin';
 import { AuthService } from '../core/services/auth.service';
 import { inputsNotEqual } from '../shared/validators/inputs-not-equal/inputs-not-equal.validator';
 
+interface SignUpForm {
+  name: FormControl<string>,
+  email: FormControl<string>,
+  password: FormControl<string>,
+  confirm: FormControl<string>,
+}
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit, OnDestroy {
-  hidePass1 = true;
-  hidePass2 = true;
-
   signUpSubject$: Subject<void> = new Subject<void>();
   componentDestroyed$: Subject<boolean> = new Subject<boolean>();
 
-  signUpForm = new FormGroup<{
-    name: FormControl<string>,
-    email: FormControl<string>,
-    password: FormControl<string>,
-    confirm: FormControl<string>,
-  }>({
+  hidePass1 = true;
+  hidePass2 = true;
+
+  signUpForm = new FormGroup<SignUpForm>({
     name: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)]),
@@ -40,12 +42,15 @@ export class SignupComponent implements OnInit, OnDestroy {
   get nameFormControl() {
     return this.signUpForm.controls.name;
   }
+
   get emailFormControl() {
     return this.signUpForm.controls.email;
   }
+
   get passwordFormControl() {
     return this.signUpForm.controls.password;
   }
+
   get confirmFormControl() {
     return this.signUpForm.controls.confirm;
   }
@@ -60,7 +65,7 @@ export class SignupComponent implements OnInit, OnDestroy {
       takeUntil(this.componentDestroyed$)
     ).subscribe(res => {
       if (res.status === RequestStatus.Success) {
-        this.router.navigate(['notes'])
+        this.router.navigate(['notes']);
       }
     });
   }
