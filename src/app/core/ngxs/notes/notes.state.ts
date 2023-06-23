@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Action, State, StateContext, Store } from '@ngxs/store';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
 
-import { updateEntitiesIds } from '../../../shared/utility/update-entities-ids';
+import { createEntitiesIds } from '../../../shared/utility/create-entities-ids';
 import { Note } from '../../../shared/interfaces/models/note.interface';
 
 import {
@@ -85,7 +85,7 @@ export class NotesState {
 
   @Action(GetNotesSuccess)
   getNotesSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload: notes}: GetNotesSuccess) {
-    const {ids, entities} = updateEntitiesIds(notes);
+    const {ids, entities} = createEntitiesIds(notes);
 
     patchState({ids, entities});
   }
@@ -110,7 +110,7 @@ export class NotesState {
   @Action(GetNoteByIdSuccess)
   getNoteByIdSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload: note}: GetNoteByIdSuccess) {
     const state = getState();
-    const {ids, entities} = updateEntitiesIds([note], state);
+    const {ids, entities} = createEntitiesIds([note], state);
 
     patchState({ids, entities});
   }
@@ -135,7 +135,7 @@ export class NotesState {
   @Action(PostNoteSuccess)
   postNoteSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload: note}: PostNoteSuccess) {
     const state = getState();
-    const {ids, entities} = updateEntitiesIds([note], state);
+    const {ids, entities} = createEntitiesIds([note], state);
 
     patchState({ids, entities});
   }
@@ -160,7 +160,7 @@ export class NotesState {
   @Action(PatchNoteSuccess)
   patchNoteByIdSuccess({getState, patchState}: StateContext<NotesStateModel>, {payload: note}: PatchNoteSuccess) {
     const state = getState();
-    const {ids, entities} = updateEntitiesIds([note], state);
+    const {ids, entities} = createEntitiesIds([note], state);
 
     patchState({ids, entities});
   }

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Action, State, StateContext, Store } from '@ngxs/store';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
 
-import { updateEntitiesIds } from '../../../shared/utility/update-entities-ids';
+import { createEntitiesIds } from '../../../shared/utility/create-entities-ids';
 import { User } from '../../../shared/interfaces/models/user.interface';
 
 import {
@@ -61,7 +61,7 @@ export class UsersState {
 
   @Action(GetAllUsersSuccess)
   getAllUsersSuccess({getState, patchState}: StateContext<UsersStateModel>, {payload: users}: GetAllUsersSuccess) {
-    const {ids, entities} = updateEntitiesIds(users);
+    const {ids, entities} = createEntitiesIds(users);
 
     patchState({ids, entities});
   }
@@ -86,7 +86,7 @@ export class UsersState {
   @Action(GetUserByIdSuccess)
   getUserByIdSuccess({getState, patchState}: StateContext<UsersStateModel>, {payload: user}: GetUserByIdSuccess) {
     const state = getState();
-    const {ids, entities} = updateEntitiesIds([user], state);
+    const {ids, entities} = createEntitiesIds([user], state);
 
     patchState({ids, entities});
   }

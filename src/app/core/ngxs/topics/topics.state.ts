@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { createRequestAction, RequestState } from 'ngxs-requests-plugin';
 
 import { Topic } from '../../../shared/interfaces/models/topic.interface';
-import { updateEntitiesIds } from '../../../shared/utility/update-entities-ids';
+import { createEntitiesIds } from '../../../shared/utility/create-entities-ids';
 
 import { GetTopics, GetTopicsFailed, GetTopicsSuccess, ResetTopicsState } from './topics.actions';
 
@@ -53,7 +53,7 @@ export class TopicsState {
 
   @Action(GetTopicsSuccess)
   getTopicsSuccess({getState, patchState}: StateContext<TopicsStateModel>, {payload: topics}: GetTopicsSuccess) {
-    const {ids, entities} = updateEntitiesIds(topics);
+    const {ids, entities} = createEntitiesIds(topics);
 
     patchState({ids, entities});
   }
