@@ -1,99 +1,110 @@
 @import "../shared/styles/base";
 
-.notes-main {
+:host {
   display: flex;
   flex-flow: column;
-  align-items: flex-start;
-  margin-top: 50px;
+  align-items: center;
 
-  .notes-main__header {
-    font-size: 28px;
-    font-weight: 600;
-  }
-
-  .notes-actions {
-    width: 100%;
+  .notes-main {
     display: flex;
-    flex-flow: row wrap;
-    margin-top: 20px;
-    justify-content: space-between;
+    flex-flow: column;
+    align-items: center;
+    margin-top: 50px;
+    width: 90%;
 
-    .notes-actions__filters {
-      display: flex;
-      flex-flow: row wrap;
-      column-gap: 20px;
+    .notes-container {
+      width: 100%;
 
-      .action__filter {
-        ::ng-deep .mdc-text-field {
-          background: none;
+      .notes-main__header {
+        font-size: 28px;
+        font-weight: 600;
+      }
 
-          .mat-mdc-form-field-focus-overlay {
+      .notes-actions {
+        width: 100%;
+        display: flex;
+        flex-flow: row wrap;
+        margin-top: 20px;
+        justify-content: space-between;
+
+        .notes-actions__filters {
+          display: flex;
+          flex-flow: row wrap;
+          column-gap: 20px;
+
+          .action__filter {
+            ::ng-deep .mdc-text-field {
+              background: none;
+
+              .mat-mdc-form-field-focus-overlay {
+                background: none;
+              }
+            }
+          }
+        }
+
+        .notes-actions__button {
+          background: $mainColor;
+          color: white;
+          border-radius: 100px;
+          height: 56px;
+          width: 120px;
+        }
+
+        .action__search {
+          width: 100%;
+
+          ::ng-deep .mdc-text-field {
             background: none;
+
+            .mat-mdc-form-field-focus-overlay {
+              background: none;
+            }
           }
         }
       }
-    }
 
-    .notes-actions__button {
-      background: $mainColor;
-      color: white;
-      border-radius: 100px;
-      height: 56px;
-      width: 120px;
-    }
+      .notes__button-new {
+        width: 100px;
+        height: 100px;
+        font-size: 80px;
+        padding: 20px;
+        background: gray;
+        color: white;
+        border-radius: 15px;
+      }
 
-    .action__search {
-      width: 100%;
+      .notes-table {
+        width: 100%;
 
-      ::ng-deep .mdc-text-field {
-        background: none;
+        th {
+          font-weight: 600;
+        }
 
-        .mat-mdc-form-field-focus-overlay {
-          background: none;
+        .notes-table__row {
+          cursor: pointer;
+
+          &:hover {
+            background: #FAFAFA;
+          }
+        }
+
+        .mat-column-topic {
+          width: 15%;
+        }
+        .mat-column-title {
+          width: 40%;
+        }
+        .mat-column-author {
+          width: 15%;
+        }
+        .mat-column-created {
+          width: 15%;
+        }
+        .mat-column-updated {
+          width: 15%;
         }
       }
-    }
-  }
-
-  .notes__button-new {
-    width: 100px;
-    height: 100px;
-    font-size: 80px;
-    padding: 20px;
-    background: gray;
-    color: white;
-    border-radius: 15px;
-  }
-
-  .notes-table {
-    width: 100%;
-
-    th {
-      font-weight: 600;
-    }
-
-    .notes-table__row {
-      cursor: pointer;
-
-      &:hover {
-        background: #FAFAFA;
-      }
-    }
-
-    .mat-column-topic {
-      width: 15%;
-    }
-    .mat-column-title {
-      width: 40%;
-    }
-    .mat-column-author {
-      width: 15%;
-    }
-    .mat-column-created {
-      width: 15%;
-    }
-    .mat-column-updated {
-      width: 15%;
     }
   }
 }

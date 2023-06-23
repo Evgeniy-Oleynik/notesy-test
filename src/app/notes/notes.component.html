@@ -1,76 +1,78 @@
 <div class="notes-main base-wrapper">
-  <h1 class="notes-main__header">NOTESY main page</h1>
+  <div class="notes-container">
+    <h1 class="notes-main__header">NOTESY main page</h1>
 
-  <div class="notes-actions">
-    <div class="notes-actions__filters">
-      <mat-form-field class="action__filter">
-        <mat-label>User:</mat-label>
-        <mat-select [formControl]="userIdFormControl">
-          <mat-option [value]="null" ngDefaultControl>
-            ALL
-          </mat-option>
-          <mat-option *ngFor="let user of users$ | async" [value]="user.id">
-            {{user.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+    <div class="notes-actions">
+      <div class="notes-actions__filters">
+        <mat-form-field class="action__filter">
+          <mat-label>User:</mat-label>
+          <mat-select [formControl]="userIdFormControl">
+            <mat-option [value]="null" ngDefaultControl>
+              ALL
+            </mat-option>
+            <mat-option *ngFor="let user of users$ | async" [value]="user.id">
+              {{user.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <mat-form-field class="action__filter">
-        <mat-label>Topic:</mat-label>
-        <mat-select [formControl]="topicIdFormControl">
-          <mat-option [value]="null" ngDefaultControl>
-            ALL
-          </mat-option>
-          <mat-option *ngFor="let topic of topics$ | async" [value]="topic.id">
-            {{topic.type}}
-          </mat-option>
-        </mat-select>
+        <mat-form-field class="action__filter">
+          <mat-label>Topic:</mat-label>
+          <mat-select [formControl]="topicIdFormControl">
+            <mat-option [value]="null" ngDefaultControl>
+              ALL
+            </mat-option>
+            <mat-option *ngFor="let topic of topics$ | async" [value]="topic.id">
+              {{topic.type}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <button mat-button (click)="openDialog(null)" class="notes-actions__button">Add Note</button>
+
+      <mat-form-field class="action__search">
+        <mat-label>Search:</mat-label>
+        <input matInput [formControl]="searchFormControl">
+        <button *ngIf="searchFormControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+          <mat-icon>close</mat-icon>
+        </button>
       </mat-form-field>
     </div>
 
-    <button mat-button (click)="openDialog(null)" class="notes-actions__button">Add Note</button>
+    <table *ngIf="notesList$ | async as notesList" [dataSource]="notesList" class="notes-table" mat-table>
+      <ng-container matColumnDef="topic">
+        <th *matHeaderCellDef mat-header-cell>Topic</th>
+        <td *matCellDef="let note" mat-cell>{{note.topicType}}</td>
+      </ng-container>
 
-    <mat-form-field class="action__search">
-      <mat-label>Search:</mat-label>
-      <input matInput [formControl]="searchFormControl">
-      <button *ngIf="searchFormControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
+      <ng-container matColumnDef="title">
+        <th *matHeaderCellDef mat-header-cell>Title</th>
+        <td *matCellDef="let note" mat-cell>{{note.title}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="author">
+        <th *matHeaderCellDef mat-header-cell>Author</th>
+        <td *matCellDef="let note" mat-cell>{{note.userName}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="updated">
+        <th *matHeaderCellDef mat-header-cell>Created</th>
+        <td *matCellDef="let note" mat-cell>{{note.createdAt | date: 'short'}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="created">
+        <th *matHeaderCellDef mat-header-cell>Updated</th>
+        <td *matCellDef="let note" mat-cell>{{note.updatedAt | date: 'short'}}</td>
+      </ng-container>
+
+      <tr *matHeaderRowDef="tableColumnsList" mat-header-row></tr>
+      <tr
+        (click)="openDialog(row)"
+        *matRowDef="let row; columns: tableColumnsList;"
+        class="notes-table__row"
+        mat-row
+      ></tr>
+    </table>
   </div>
-
-  <table *ngIf="notesList$ | async as notesList" [dataSource]="notesList" class="notes-table" mat-table>
-    <ng-container matColumnDef="topic">
-      <th *matHeaderCellDef mat-header-cell>Topic</th>
-      <td *matCellDef="let note" mat-cell>{{note.topicType}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="title">
-      <th *matHeaderCellDef mat-header-cell>Title</th>
-      <td *matCellDef="let note" mat-cell>{{note.title}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="author">
-      <th *matHeaderCellDef mat-header-cell>Author</th>
-      <td *matCellDef="let note" mat-cell>{{note.userName}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="updated">
-      <th *matHeaderCellDef mat-header-cell>Created</th>
-      <td *matCellDef="let note" mat-cell>{{note.createdAt | date: 'short'}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="created">
-      <th *matHeaderCellDef mat-header-cell>Updated</th>
-      <td *matCellDef="let note" mat-cell>{{note.updatedAt | date: 'short'}}</td>
-    </ng-container>
-
-    <tr *matHeaderRowDef="tableColumnsList" mat-header-row></tr>
-    <tr
-      (click)="openDialog(row)"
-      *matRowDef="let row; columns: tableColumnsList;"
-      class="notes-table__row"
-      mat-row
-    ></tr>
-  </table>
 </div>
