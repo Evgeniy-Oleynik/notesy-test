@@ -93,7 +93,9 @@
 
 <ng-template #notYourNote>
   <div class="note-dialog__top">
-    <div class="note-dialog__title" mat-dialog-title>VIEW {{(currentNote$ | async).userId | userName: (users$ | async)}}'s NOTE</div>
+    <div class="note-dialog__title" mat-dialog-title>
+      VIEW {{(currentNote$ | async).userId | idToLabel: (users$ | async): 'name'}}'s NOTE
+    </div>
     <mat-dialog-actions>
       <button aria-label="close" class="note-dialog__close-button" mat-dialog-close="" mat-mini-fab
               matTooltip="Close">
@@ -106,7 +108,7 @@
       <div class="note-dialog__form not-your-note">
         <div class="form__input form__input--topic">
           <div class="not-your-note__input-title">Topic:</div>
-          {{topicIdFormControl.value | topicType: (topics$ | async)}}
+          {{topicIdFormControl.value | idToLabel: (topics$ | async): 'type'}}
         </div>
         <div class="form__input form__input--title">
           <div class="not-your-note__input-title">Title:</div>
