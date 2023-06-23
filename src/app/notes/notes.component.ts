@@ -21,8 +21,6 @@ import { NoteEditDialogComponent } from './note-edit-dialog/note-edit-dialog.com
 })
 export class NotesComponent implements OnInit, OnDestroy {
 
-  @ViewChild(MatTable) table: MatTable<any>;
-
   componentDestroyed$: Subject<boolean> = new Subject<boolean>();
 
   notesList$: Observable<MatTableDataSource<Note>>;
