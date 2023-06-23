@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
-import { filter, Observable, Subject, withLatestFrom } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import { IRequest, RequestStatus } from 'ngxs-requests-plugin';
 
 import { User } from '../../shared/interfaces/models/user.interface';
@@ -18,8 +18,6 @@ import { LocalStorageService } from './local-storage.service';
   providedIn: 'root'
 })
 export class AuthService {
-  isAuthorizedSubject$: Subject<void> = new Subject<void>();
-  isAuthorized!: boolean;
 
   @Select(SignUpUserRequestState)
   signUpUserRequestState$!: Observable<IRequest<User>>;
@@ -42,12 +40,6 @@ export class AuthService {
     private router: Router,
   ) {
     this.getUserByToken();
-
-    this.isAuthorizedSubject$.pipe(
-      withLatestFrom(this.currentUser$),
-    ).subscribe(([_, user]) => {
-      this.isAuthorized = !!user.token;
-    });
   }
 
   signUpUser(user: Partial<User>) {
