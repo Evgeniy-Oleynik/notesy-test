@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NotfoundComponent } from './notfound.component';
+import { NotFoundComponent } from './not-found.component';
 
 const notfoundRoutes: Routes = [
-  {path: '', component: NotfoundComponent}
+  {path: '', component: NotFoundComponent}
 ]
 
 @NgModule({
@@ -15,4 +15,4 @@ const notfoundRoutes: Routes = [
   ],
   declarations: []
 })
-export class NotfoundRoutingModule {}
+export class NotFoundRoutingModule {}
