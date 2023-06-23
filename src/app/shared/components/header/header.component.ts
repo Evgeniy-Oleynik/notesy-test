@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { User } from '../../interfaces/models/user.interface';
@@ -11,8 +11,9 @@ import { User } from '../../interfaces/models/user.interface';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  currentUser: User;
   componentDestroyed$: Subject<boolean> = new Subject<boolean>();
+
+  currentUser$: Observable<User>;
 
   constructor(
     private authService: AuthService,
@@ -21,9 +22,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.authService.currentUser$.pipe(
-      takeUntil(this.componentDestroyed$)
-    ).subscribe(user => user?.id ? this.currentUser = user : this.currentUser = null);
+    this.currentUser$ = this.authService.currentUser$;
   }
 
   logOut() {
@@ -31,7 +30,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logIn() {
-    this.router.navigate(['login'])
+    this.router.navigate(['login']);
   }
 
   ngOnDestroy() {
