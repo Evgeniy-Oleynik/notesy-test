@@ -48,17 +48,10 @@ export interface AuthStateModel {
   user: User;
 }
 
-const emptyUser: User = {
-  id: null,
-  name: null,
-  email: null,
-  token: null
-};
-
 @State<AuthStateModel>({
-  name: 'currentUser',
+  name: 'auth',
   defaults: {
-    user: emptyUser
+    user: null
   }
 })
 
