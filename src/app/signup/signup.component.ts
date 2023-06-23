@@ -62,11 +62,10 @@ export class SignupComponent implements OnInit, OnDestroy {
         const formValue = this.signUpForm.value;
         return this.authService.signUpUser(formValue);
       }),
+      filter(res => res.status === RequestStatus.Success),
       takeUntil(this.componentDestroyed$)
     ).subscribe(res => {
-      if (res.status === RequestStatus.Success) {
-        this.router.navigate(['notes']);
-      }
+      this.router.navigate(['notes']);
     });
   }
 
