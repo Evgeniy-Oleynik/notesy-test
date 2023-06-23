@@ -21,9 +21,7 @@ export class AuthGuard {
     state: RouterStateSnapshot
   ) {
     return this.authService.currentUser$.pipe(
-      map(user => {
-        return user.token ? true : this.router.navigate(['login']);
-      }),
+      map(user => user.token ? true : this.router.navigate(['login'])),
     );
   }
 }
