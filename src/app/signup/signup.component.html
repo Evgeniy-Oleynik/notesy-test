@@ -2,7 +2,7 @@
   <div class="auth__container">
     <h1 class="auth__title">Sign Up</h1>
     <form [formGroup]="signUpForm" class="auth__form">
-      <mat-form-field>
+      <mat-form-field class="auth-form__field">
         <mat-label>Name:</mat-label>
         <input formControlName="name" matInput type="name" autocomplete="username">
         <app-form-errors
@@ -10,7 +10,7 @@
           [controlName]="'Name'"
         ></app-form-errors>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field class="auth-form__field">
         <mat-label>Email:</mat-label>
         <input formControlName="email" matInput type="email" autocomplete="email">
         <app-form-errors
@@ -18,7 +18,7 @@
           [controlName]="'Email'"
         ></app-form-errors>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field class="auth-form__field">
         <mat-label>Password:</mat-label>
         <input formControlName="password" matInput [type]="hidePass1 ? 'password' : 'text'" autocomplete="new-password">
         <mat-icon matSuffix (click)="hidePass1 = !hidePass1">{{hidePass1 ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -27,7 +27,7 @@
           [controlName]="'Password'"
         ></app-form-errors>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field class="auth-form__field">
         <mat-label>Confirm password:</mat-label>
         <input formControlName="confirm" matInput [type]="hidePass2 ? 'password' : 'text'" autocomplete="new-password">
         <mat-icon matSuffix (click)="hidePass2 = !hidePass2">{{hidePass2 ? 'visibility_off' : 'visibility'}}</mat-icon>

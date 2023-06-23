@@ -35,12 +35,14 @@
         -webkit-box-shadow: 0 0 0 30px white inset !important;
       }
 
-      ::ng-deep .mdc-text-field {
-        background: none;
-        overflow: visible;
-
-        .mat-mdc-form-field-focus-overlay {
+      .auth-form__field {
+        .mdc-text-field {
           background: none;
+          overflow: visible;
+
+          .mat-mdc-form-field-focus-overlay {
+            background: none;
+          }
         }
       }
     }

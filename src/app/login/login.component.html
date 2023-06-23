@@ -2,7 +2,7 @@
   <div class="auth__container">
     <h1 class="auth__title">Log In</h1>
     <form [formGroup]="logInForm" class="auth__form">
-      <mat-form-field>
+      <mat-form-field class="auth-form__field">
         <mat-label>Email:</mat-label>
         <input formControlName="email" matInput type="email" autocomplete="email">
         <app-form-errors
@@ -10,7 +10,7 @@
           [controlName]="'Email'"
         ></app-form-errors>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field class="auth-form__field">
         <mat-label>Password:</mat-label>
         <input formControlName="password" matInput [type]="hidePass ? 'password' : 'text'" autocomplete="current-password">
         <mat-icon matSuffix (click)="hidePass = !hidePass">{{hidePass ? 'visibility_off' : 'visibility'}}</mat-icon>
