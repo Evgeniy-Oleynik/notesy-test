@@ -93,7 +93,7 @@ export class NotesComponent implements OnInit, OnDestroy {
     );
   }
 
-  openDialog(note: Note | null) {
+  openDialog(note?: Note) {
     this.dialog.open(NoteEditDialogComponent, {data: note?.id});
   }
 
