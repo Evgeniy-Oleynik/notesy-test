@@ -119,23 +119,21 @@ export class NoteEditDialogComponent implements OnInit, OnDestroy {
         const formValue = this.noteEditorFormGroup.value;
         return isEditMode ? this.notesService.patchNote(formValue) : this.notesService.postNote(formValue);
       }),
+      filter(res => res.status === RequestStatus.Success),
       takeUntil(this.componentDestroyed$),
     ).subscribe(res => {
-      if (res.status === RequestStatus.Success) {
-        this.dialog.closeAll();
-        this.snackBar.open('Note was successfully saved', 'OK', {duration: 5000});
-      }
+      this.dialog.closeAll();
+      this.snackBar.open('Note was successfully saved', 'OK', {duration: 5000});
     });
 
     this.deleteNoteSubject$.pipe(
       withLatestFrom(this.currentNote$),
       switchMap(([_, note]) => this.notesService.deleteNote(note.id)),
+      filter(res => res.status === RequestStatus.Success),
       takeUntil(this.componentDestroyed$),
     ).subscribe(res => {
-      if (res.status === RequestStatus.Success) {
-        this.dialog.closeAll();
-        this.snackBar.open('Note was successfully deleted', 'OK', {duration: 5000});
-      }
+      this.dialog.closeAll();
+      this.snackBar.open('Note was successfully deleted', 'OK', {duration: 5000});
     });
 
     this.cancelChangesSubject$.pipe(
