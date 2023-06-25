@@ -1,5 +1,6 @@
 import { createSelector, Selector } from '@ngxs/store';
 
+import { IdToLabelPipe } from '../../../shared/pipes/id-to-label/id-to-label.pipe';
 import { TopicsState, TopicsStateModel } from '../topics/topics.state';
 import { UsersState, UsersStateModel } from '../users/users.state';
 
@@ -14,16 +15,11 @@ export class NotesGetterState {
     const topics = topicsState.ids.map(id => topicsState.entities[id]);
     const users = usersState.ids.map(id => usersState.entities[id]);
     return notes.map(note => {
-      if (note.topicId) {
-        note = {
-          ...note, topicType: topics.find(topic => topic.id === note.topicId)?.type
-        };
-      }
-      if (note.userId) {
-        note = {
-          ...note, userName: users.find(user => user.id === note.userId)?.name
-        };
-      }
+      note = {
+        ...note,
+        topicType: IdToLabelPipe.prototype.transform(note.topicId, topics, 'type'),
+        userName: IdToLabelPipe.prototype.transform(note.userId, users, 'name')
+      };
       return note;
     });
   }
