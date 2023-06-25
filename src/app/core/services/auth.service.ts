@@ -60,9 +60,10 @@ export class AuthService {
     this.store.dispatch(new LogOutUser()).pipe(
       filter(res => {
         const request = res?.requests.logOutUser;
-        return request.loaded && !request.loading && (request.status === RequestStatus.Success)
+        return request.loaded && !request.loading && (request.status === RequestStatus.Success);
       })
     ).subscribe(() => {
+      this.localStorageService.removeItem('authToken');
       this.router.navigate(['/login']);
       this.store.dispatch([
         new ResetNotesState(),
@@ -74,7 +75,7 @@ export class AuthService {
   }
 
   getUserByToken() {
-    const token = this.localStorageService.getItem('notesy_authToken');
+    const token = this.localStorageService.getItem('authToken');
     this.store.dispatch(new GetUserByToken(token));
     return this.getUserByTokenRequestState$;
   }
