@@ -70,6 +70,14 @@ export class SignupComponent implements OnInit, OnDestroy {
       this.localStorageService.setItem('authToken', res.data.token)
       this.router.navigate(['notes']);
     });
+
+    this.authService.currentUser$.pipe(
+      takeUntil(this.componentDestroyed$)
+    ).subscribe(user => {
+      if (user.token) {
+        this.router.navigate(['notes']);
+      }
+    });
   }
 
   signUp() {
