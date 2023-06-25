@@ -5756,10 +5756,10 @@ neo-async@^2.6.2:
   resolved "https://registry.npmjs.org/neo-async/-/neo-async-2.6.2.tgz"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
-ngxs-requests-plugin@^0.1.7-beta.2:
-  version "0.1.7-beta.2"
-  resolved "https://registry.npmjs.org/ngxs-requests-plugin/-/ngxs-requests-plugin-0.1.7-beta.2.tgz"
-  integrity sha512-z5lDNiJFX20LsygHJxs3zXE8LENnUYHZ6E9YOsNCtW+tuvEkGikBgrA0kq/0RqfwLgt3wE7Ccb/v0TUm5pQfQw==
+ngxs-requests-plugin@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/ngxs-requests-plugin/-/ngxs-requests-plugin-0.1.7.tgz#032cba196b5d2d7afeff9bcd0d605084e201120f"
+  integrity sha512-QrYdACbQpfldCF/8bfCuYyJXtQkauR9sN+iMXLZx9zhcBohtTbdLkoLTuusCN+gVvDUbqquLkJfFropCgxMCGQ==
   dependencies:
     tslib "^2.3.0"
 

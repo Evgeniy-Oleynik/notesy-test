@@ -23,7 +23,7 @@
     "@angular/router": "^16.1.1",
     "@ngxs/store": "^3.8.1",
     "lodash": "^4.17.21",
-    "ngxs-requests-plugin": "^0.1.7-beta.2",
+    "ngxs-requests-plugin": "^0.1.7",
     "rxjs": "^7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "^0.13.1"
