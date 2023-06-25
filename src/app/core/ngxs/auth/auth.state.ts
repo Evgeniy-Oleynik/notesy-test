@@ -83,11 +83,8 @@ export class AuthState {
   }
 
   @Action(SignUpUserSuccess)
-  signUpUserSuccess({patchState}: StateContext<AuthStateModel>, {payload: userData}: SignUpUserSuccess) {
-    patchState({user: userData});
-    if (userData.token) {
-      this.localStorageService.setItem('authToken', userData.token);
-    }
+  signUpUserSuccess({patchState}: StateContext<AuthStateModel>, {payload: user}: SignUpUserSuccess) {
+    patchState({user});
   }
 
   @Action(LogInUser)
@@ -110,7 +107,6 @@ export class AuthState {
   @Action(LogInUserSuccess)
   logInUserSuccess({patchState}: StateContext<AuthStateModel>, {payload: userData}: LogInUserSuccess) {
     patchState({user: userData});
-    this.localStorageService.setItem('authToken', userData.token);
   }
 
   @Action(LogOutUser)
@@ -159,7 +155,6 @@ export class AuthState {
 
   @Action(ResetAuthState)
   resetAuthState() {
-    this.localStorageService.removeItem('authToken');
     this.store.reset(AuthState);
   }
 }

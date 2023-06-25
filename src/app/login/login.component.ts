@@ -5,6 +5,7 @@ import { filter, Subject, switchMap, takeUntil } from 'rxjs';
 import { RequestStatus } from 'ngxs-requests-plugin';
 
 import { AuthService } from '../core/services/auth.service';
+import { LocalStorageService } from '../core/services/local-storage.service';
 
 interface LogInForm {
   email: FormControl<string>,
@@ -30,6 +31,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private router: Router,
+    private localStorageService: LocalStorageService,
   ) {
   }
 
@@ -50,7 +52,8 @@ export class LoginComponent implements OnInit, OnDestroy {
       }),
       filter(res => res.status === RequestStatus.Success),
       takeUntil(this.componentDestroyed$)
-    ).subscribe(() => {
+    ).subscribe(res => {
+      this.localStorageService.setItem('authToken', res.data.token)
       this.router.navigate(['notes']);
     });
   }

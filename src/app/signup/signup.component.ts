@@ -6,6 +6,7 @@ import { RequestStatus } from 'ngxs-requests-plugin';
 
 import { AuthService } from '../core/services/auth.service';
 import { inputsNotEqual } from '../shared/validators/inputs-not-equal/inputs-not-equal.validator';
+import { LocalStorageService } from '../core/services/local-storage.service';
 
 interface SignUpForm {
   name: FormControl<string>,
@@ -36,6 +37,7 @@ export class SignupComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private router: Router,
+    private localStorageService: LocalStorageService,
   ) {
   }
 
@@ -64,7 +66,8 @@ export class SignupComponent implements OnInit, OnDestroy {
       }),
       filter(res => res.status === RequestStatus.Success),
       takeUntil(this.componentDestroyed$)
-    ).subscribe(() => {
+    ).subscribe(res => {
+      this.localStorageService.setItem('authToken', res.data.token)
       this.router.navigate(['notes']);
     });
   }
