@@ -1,4 +1,4 @@
-export function createEntitiesIds<A, T extends { entities: { [key: number]: A }; ids: number[] }>( // TODO: rename
+export function createEntitiesIds<A, T extends { entities: { [key: number]: A }; ids: number[] }>(
   array: A[],
   state: { entities: { [key: number]: A }; ids: number[] } = {entities: {}, ids: []},
   keyName: string = 'id'
