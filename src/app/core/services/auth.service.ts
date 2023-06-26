@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { filter, Observable, tap } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import { IRequest } from 'ngxs-requests-plugin';
 
 import { User } from '../../shared/interfaces/models/user.interface';
@@ -57,7 +57,6 @@ export class AuthService {
   logOutUser() {
     this.store.dispatch(new LogOutUser());
     return this.logOutUserRequestState$.pipe(
-      tap(res => console.log(res)),
       filter(res => res.loaded && !res.loading)
     );
   }
