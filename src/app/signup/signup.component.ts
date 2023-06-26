@@ -74,7 +74,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.authService.currentUser$.pipe(
       takeUntil(this.componentDestroyed$)
     ).subscribe(user => {
-      if (user.token) {
+      if (user?.token) {
         this.router.navigate(['notes']);
       }
     });
