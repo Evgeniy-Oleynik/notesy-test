@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { filter, Observable, tap } from 'rxjs';
 import { IRequest } from 'ngxs-requests-plugin';
@@ -37,7 +36,6 @@ export class AuthService {
   constructor(
     private store: Store,
     private localStorageService: LocalStorageService,
-    private router: Router,
   ) {
     this.getUserByToken();
   }
