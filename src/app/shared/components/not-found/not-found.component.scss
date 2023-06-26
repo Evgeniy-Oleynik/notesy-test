@@ -1,0 +1,36 @@
+@import "../../../../styles/base";
+
+:host {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+
+  .not-found-main {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    width: 100%;
+
+    .not-found-container {
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+
+      .not-found__title {
+        font-size: 48px;
+      }
+
+      .not-found__button {
+        background: $mainColor;
+        color: white;
+        border-radius: 100px;
+        height: 56px;
+        font-size: 16px;
+        margin-top: 32px;
+        padding: 0 32px;
+      }
+    }
+  }
+}
