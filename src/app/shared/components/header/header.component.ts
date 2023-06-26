@@ -1,16 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
+import { RequestStatus } from 'ngxs-requests-plugin';
 
 import { AuthService } from '../../../core/services/auth.service';
-import { User } from '../../interfaces/models/user.interface';
-import { ResetNotesState } from '../../../core/ngxs/notes/notes.actions';
-import { ResetTopicsState } from '../../../core/ngxs/topics/topics.actions';
-import { ResetUsersState } from '../../../core/ngxs/users/users.actions';
-import { ResetAuthState } from '../../../core/ngxs/auth/auth.actions';
 import { LocalStorageService } from '../../../core/services/local-storage.service';
-import { Store } from '@ngxs/store';
-import { RequestStatus } from 'ngxs-requests-plugin';
+import { User } from '../../interfaces/models/user.interface';
 
 @Component({
   selector: 'app-header',
@@ -26,7 +21,6 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private localStorageService: LocalStorageService,
-    private store: Store,
   ) {
   }
 
@@ -41,12 +35,7 @@ export class HeaderComponent implements OnInit {
     ).subscribe(() => {
       this.localStorageService.removeItem('authToken');
       this.router.navigate(['/login']);
-      this.store.dispatch([
-        new ResetNotesState(),
-        new ResetTopicsState(),
-        new ResetUsersState(),
-        new ResetAuthState()
-      ]);
+      this.authService.resetState();
       this.unsubscribe();
     });
   }
