@@ -13,6 +13,5 @@ const notfoundRoutes: Routes = [
   exports: [
     RouterModule
   ],
-  declarations: []
 })
 export class NotFoundRoutingModule {}

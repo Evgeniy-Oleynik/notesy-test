@@ -20,7 +20,6 @@ import {
 
 
 @NgModule({
-  declarations: [],
   imports: [
     CommonModule,
     NgxsModule.forRoot([

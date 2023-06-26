@@ -7,7 +7,6 @@ import { INTERCEPTORS } from './interceptors/interceptors';
 import { NgxsStateModule } from './ngxs/ngxs.module';
 
 @NgModule({
-  declarations: [],
   imports: [
     NgxsStateModule,
     HttpClientModule,
