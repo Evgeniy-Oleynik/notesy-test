@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { RawHttpClientModule } from '../shared/utility/raw-http-client.module';
 
@@ -11,6 +12,7 @@ import { NgxsStateModule } from './ngxs/ngxs.module';
     NgxsStateModule,
     HttpClientModule,
     RawHttpClientModule,
+    MatSnackBarModule,
   ],
   providers: [
     INTERCEPTORS
