@@ -6,8 +6,11 @@ import { IRequest } from 'ngxs-requests-plugin';
 
 import { User } from '../../shared/interfaces/models/user.interface';
 import { GetUserByTokenRequestState, LogInUserRequestState, LogOutUserRequestState, SignUpUserRequestState } from '../ngxs/auth/auth.state';
+import { GetUserByToken, LogInUser, LogOutUser, ResetAuthState, SignUpUser } from '../ngxs/auth/auth.actions';
 import { AuthGetterState } from '../ngxs/auth/auth-getter.state';
-import { GetUserByToken, LogInUser, LogOutUser, SignUpUser } from '../ngxs/auth/auth.actions';
+import { ResetNotesState } from '../ngxs/notes/notes.actions';
+import { ResetTopicsState } from '../ngxs/topics/topics.actions';
+import { ResetUsersState } from '../ngxs/users/users.actions';
 
 import { LocalStorageService } from './local-storage.service';
 
@@ -67,5 +70,14 @@ export class AuthService {
       this.store.dispatch(new GetUserByToken(token));
     }
     return this.getUserByTokenRequestState$;
+  }
+
+  resetState() {
+    this.store.dispatch([
+      new ResetNotesState(),
+      new ResetTopicsState(),
+      new ResetUsersState(),
+      new ResetAuthState()
+    ]);
   }
 }
