@@ -1,16 +1,23 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { filter, Observable, Subject, takeUntil } from 'rxjs';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { User } from '../../interfaces/models/user.interface';
+import { ResetNotesState } from '../../../core/ngxs/notes/notes.actions';
+import { ResetTopicsState } from '../../../core/ngxs/topics/topics.actions';
+import { ResetUsersState } from '../../../core/ngxs/users/users.actions';
+import { ResetAuthState } from '../../../core/ngxs/auth/auth.actions';
+import { LocalStorageService } from '../../../core/services/local-storage.service';
+import { Store } from '@ngxs/store';
+import { RequestStatus } from 'ngxs-requests-plugin';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit {
   componentDestroyed$: Subject<boolean> = new Subject<boolean>();
 
   currentUser$: Observable<User>;
@@ -18,6 +25,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private router: Router,
+    private localStorageService: LocalStorageService,
+    private store: Store,
   ) {
   }
 
@@ -26,14 +35,27 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logOut() {
-    this.authService.logOutUser();
+    this.authService.logOutUser().pipe(
+      filter(res => res.status === RequestStatus.Success),
+      takeUntil(this.componentDestroyed$)
+    ).subscribe(() => {
+      this.localStorageService.removeItem('authToken');
+      this.router.navigate(['/login']);
+      this.store.dispatch([
+        new ResetNotesState(),
+        new ResetTopicsState(),
+        new ResetUsersState(),
+        new ResetAuthState()
+      ]);
+      this.unsubscribe();
+    });
   }
 
   logIn() {
     this.router.navigate(['login']);
   }
 
-  ngOnDestroy() {
+  unsubscribe() {
     this.componentDestroyed$.next(true);
     this.componentDestroyed$.complete();
   }
