@@ -16,4 +16,5 @@ const loginRoutes: Routes = [
   ],
   declarations: []
 })
+
 export class LoginRoutingModule {}

@@ -18,7 +18,6 @@ interface SignUpForm {
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit, OnDestroy {
   signUpSubject$: Subject<void> = new Subject<void>();

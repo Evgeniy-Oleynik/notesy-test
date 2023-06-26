@@ -17,6 +17,5 @@ const notesRoutes: Routes = [
   exports: [
     RouterModule
   ],
-  declarations: []
 })
 export class NotesRoutingModule {}

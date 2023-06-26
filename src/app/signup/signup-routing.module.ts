@@ -14,6 +14,5 @@ const signupRoutes: Routes = [
   exports: [
     RouterModule
   ],
-  declarations: []
 })
 export class SignupRoutingModule {}

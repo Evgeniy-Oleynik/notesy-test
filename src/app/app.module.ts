@@ -21,9 +21,6 @@ import { AppComponent } from './app.component';
     HeaderModule,
     SpinnerModule,
   ],
-  providers: [],
-  exports: [
-  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
