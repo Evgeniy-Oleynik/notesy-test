@@ -6,7 +6,7 @@ import { NgxsRequestsPluginModule } from 'ngxs-requests-plugin';
 
 import { environment } from '../../../environments/environment';
 
-import { AuthState, LogInUserRequestState, SignUpUserRequestState } from './auth/auth.state';
+import { AuthState, LogInUserRequestState, LogOutUserRequestState, SignUpUserRequestState } from './auth/auth.state';
 import { GetTopicsRequestState, TopicsState } from './topics/topics.state';
 import { GetAllUsersRequestState, GetUserByIdRequestState, UsersState } from './users/users.state';
 import {
@@ -45,6 +45,7 @@ import {
       GetNoteByIdRequestState,
       PatchNoteRequestState,
       DeleteNoteByIdRequestState,
+      LogOutUserRequestState,
     ]),
 
   ]
