@@ -14,6 +14,9 @@
 
     .notes-container {
       width: 100%;
+      display: flex;
+      flex-flow: column;
+      align-items: center;
 
       .notes-main__header {
         font-size: 28px;
@@ -104,6 +107,11 @@
         .mat-column-updated {
           width: 15%;
         }
+      }
+
+      .notes-no-notes {
+        font-weight: 600;
+        margin-top: 16px;
       }
     }
   }

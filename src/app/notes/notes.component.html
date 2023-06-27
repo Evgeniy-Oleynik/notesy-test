@@ -29,50 +29,56 @@
         </mat-form-field>
       </div>
 
-      <button mat-button (click)="openDialog(null)" class="notes-actions__button">Add Note</button>
+      <button (click)="openDialog(null)" class="notes-actions__button" mat-button>Add Note</button>
 
       <mat-form-field class="action__search">
         <mat-label>Search:</mat-label>
-        <input matInput [formControl]="searchFormControl">
-        <button *ngIf="searchFormControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+        <input [formControl]="searchFormControl" matInput>
+        <button (click)="clearSearch()" *ngIf="searchFormControl.value" aria-label="Clear" mat-icon-button matSuffix>
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
     </div>
 
-    <table *ngIf="notesList$ | async as notesList" [dataSource]="notesList" class="notes-table" mat-table>
-      <ng-container matColumnDef="topic">
-        <th *matHeaderCellDef mat-header-cell>Topic</th>
-        <td *matCellDef="let note" mat-cell>{{note.topicType}}</td>
-      </ng-container>
+    <ng-template [ngIfElse]="noNotes" [ngIf]="(notesList$ | async).data.length">
+      <table [dataSource]="notesList$ | async" class="notes-table" mat-table>
+        <ng-container matColumnDef="topic">
+          <th *matHeaderCellDef mat-header-cell>Topic</th>
+          <td *matCellDef="let note" mat-cell>{{note.topicType}}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="title">
-        <th *matHeaderCellDef mat-header-cell>Title</th>
-        <td *matCellDef="let note" mat-cell>{{note.title}}</td>
-      </ng-container>
+        <ng-container matColumnDef="title">
+          <th *matHeaderCellDef mat-header-cell>Title</th>
+          <td *matCellDef="let note" mat-cell>{{note.title}}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="author">
-        <th *matHeaderCellDef mat-header-cell>Author</th>
-        <td *matCellDef="let note" mat-cell>{{note.userName}}</td>
-      </ng-container>
+        <ng-container matColumnDef="author">
+          <th *matHeaderCellDef mat-header-cell>Author</th>
+          <td *matCellDef="let note" mat-cell>{{note.userName}}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="updated">
-        <th *matHeaderCellDef mat-header-cell>Created</th>
-        <td *matCellDef="let note" mat-cell>{{note.createdAt | date: 'short'}}</td>
-      </ng-container>
+        <ng-container matColumnDef="updated">
+          <th *matHeaderCellDef mat-header-cell>Created</th>
+          <td *matCellDef="let note" mat-cell>{{note.createdAt | date: 'short'}}</td>
+        </ng-container>
 
-      <ng-container matColumnDef="created">
-        <th *matHeaderCellDef mat-header-cell>Updated</th>
-        <td *matCellDef="let note" mat-cell>{{note.updatedAt | date: 'short'}}</td>
-      </ng-container>
+        <ng-container matColumnDef="created">
+          <th *matHeaderCellDef mat-header-cell>Updated</th>
+          <td *matCellDef="let note" mat-cell>{{note.updatedAt | date: 'short'}}</td>
+        </ng-container>
 
-      <tr *matHeaderRowDef="tableColumnsList" mat-header-row></tr>
-      <tr
-        (click)="openDialog(row)"
-        *matRowDef="let row; columns: tableColumnsList;"
-        class="notes-table__row"
-        mat-row
-      ></tr>
-    </table>
+        <tr *matHeaderRowDef="tableColumnsList" mat-header-row></tr>
+        <tr
+          (click)="openDialog(row)"
+          *matRowDef="let row; columns: tableColumnsList;"
+          class="notes-table__row"
+          mat-row
+        ></tr>
+      </table>
+    </ng-template>
   </div>
 </div>
+
+<ng-template #noNotes>
+  <div class="notes-no-notes">There are no Notes yet</div>
+</ng-template>
