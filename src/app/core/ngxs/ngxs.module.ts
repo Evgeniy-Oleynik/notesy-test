@@ -6,7 +6,13 @@ import { NgxsRequestsPluginModule } from 'ngxs-requests-plugin';
 
 import { environment } from '../../../environments/environment';
 
-import { AuthState, LogInUserRequestState, LogOutUserRequestState, SignUpUserRequestState } from './auth/auth.state';
+import {
+  AuthState,
+  GetUserByTokenRequestState,
+  LogInUserRequestState,
+  LogOutUserRequestState,
+  SignUpUserRequestState
+} from './auth/auth.state';
 import { GetTopicsRequestState, TopicsState } from './topics/topics.state';
 import { GetAllUsersRequestState, GetUserByIdRequestState, UsersState } from './users/users.state';
 import {
@@ -24,9 +30,9 @@ import {
     CommonModule,
     NgxsModule.forRoot([
       AuthState,
+      NotesState,
       TopicsState,
       UsersState,
-      NotesState,
     ], {
       developmentMode: !environment.production
     }),
@@ -34,17 +40,18 @@ import {
       disabled: environment.production,
     }),
     NgxsRequestsPluginModule.forRoot([
-      SignUpUserRequestState,
-      LogInUserRequestState,
-      GetTopicsRequestState,
-      GetAllUsersRequestState,
-      GetUserByIdRequestState,
-      GetNotesRequestState,
-      PostNoteRequestState,
-      GetNoteByIdRequestState,
-      PatchNoteRequestState,
       DeleteNoteByIdRequestState,
+      GetAllUsersRequestState,
+      GetNoteByIdRequestState,
+      GetNotesRequestState,
+      GetTopicsRequestState,
+      GetUserByIdRequestState,
+      GetUserByTokenRequestState,
+      LogInUserRequestState,
       LogOutUserRequestState,
+      PatchNoteRequestState,
+      PostNoteRequestState,
+      SignUpUserRequestState,
     ]),
 
   ]
