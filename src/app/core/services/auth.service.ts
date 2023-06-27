@@ -66,7 +66,7 @@ export class AuthService {
       this.store.dispatch(new GetUserByToken(token));
     }
     return this.getUserByTokenRequestState$.pipe(
-      filter(res => res.loaded && !res.loading)
+      filter(res => res?.loaded && !res?.loading)
     );
   }
 
