@@ -37,7 +37,6 @@ export class AuthService {
     private store: Store,
     private localStorageService: LocalStorageService,
   ) {
-    this.getUserByToken();
   }
 
   signUpUser(user: Partial<User>) {
@@ -66,7 +65,9 @@ export class AuthService {
     if (token) {
       this.store.dispatch(new GetUserByToken(token));
     }
-    return this.getUserByTokenRequestState$;
+    return this.getUserByTokenRequestState$.pipe(
+      filter(res => res.loaded && !res.loading)
+    );
   }
 
   resetState() {
