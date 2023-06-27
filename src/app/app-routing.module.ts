@@ -18,7 +18,7 @@ const routes: Routes = [
   },
   {
     path: 'notes',
-    canActivate: [AuthGuard],
+    canLoad: [AuthGuard],
     resolve: [NotesResolver, TopicsResolver, UsersResolver],
     loadChildren: () => import('./notes/notes.module').then(mod => mod.NotesModule)
   },
